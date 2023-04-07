@@ -150,8 +150,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
 
 # Eclipse m2e generated files
 # Eclipse Core
@@ -184,3 +182,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+/HELP.md

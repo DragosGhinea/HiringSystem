@@ -5,10 +5,10 @@ This project represents a web application made specifically for one company to h
 ## Team
 
 The team that works on this project is composed of:
-  - Ghinea Dragoș-Dumitru
-  - Iliescu Gabriel-Bogdan
-  - Rîncu Ștefania
-  - Trufaș Dafina
+  - Dragoș-Dumitru Ghinea
+  - Gabriel-Bogdan Iliescu
+  - Ștefania Rîncu
+  - Dafina Trufaș
 
 ## User Stories
 (20 user stories)
