@@ -9,12 +9,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public enum InterviewerType {
 
-    TECHNICAL("technical"),
+    TECHNICAL("evaluates mostly hard-skills"),
 
-    HR("hr"),
+    HR("evaluates mostly soft-skills"),
 
     NONE("none");
 
-    private final String typeString;
+    private final String roleInAssessmentProcess;
 
 }

@@ -14,12 +14,12 @@ import java.util.Optional;
 @Setter
 public class CandidateUser extends User {
 
-    private File cv;
+    private CV cv;
 
-    private Optional<File> recommendation;
+    private File recommendation;
 
-    private Optional<URL> githubProfileLink;
+    private URL githubProfileLink;
 
-    private Optional<URL> linkedInProfileLink;
+    private URL linkedInProfileLink;
 
 }

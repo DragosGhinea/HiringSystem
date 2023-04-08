@@ -12,6 +12,6 @@ import java.io.File;
 @Setter
 public class ManagerUser extends User {
 
-    private String personalInformation;
+    private String professionalBackground;
 
 }

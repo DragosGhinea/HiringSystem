@@ -1,5 +1,6 @@
 package ro.hiringsystem.service;
 
+import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 
@@ -7,22 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface InterviewerUserService {
+public interface InterviewerUserService extends UserService<InterviewerUser> {
 
-    Optional<InterviewerUser> getById(UUID id);
+    Map<UUID, InterviewerUser> getByLastName(String lastName);
 
-    Optional<InterviewerUser> getByLastName(Optional<String> lastName);
-
-    Optional<InterviewerUser> getByType(InterviewerType interviewerType);
-
-    Map<UUID, InterviewerUser> getAllFromMap();
-
-    void addAllFromGivenMap(Map<UUID, InterviewerUser> interviewerUserMap);
-
-    void addOnlyOne(InterviewerUser interviewerUser);
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, InterviewerUser newInterviewerUser);
+    Map<UUID, InterviewerUser> getByType(InterviewerType interviewerType);
 
 }

@@ -1,13 +1,13 @@
 package ro.hiringsystem.service.impl;
 
 import ro.hiringsystem.model.AnonymousUser;
-import ro.hiringsystem.service.AnonymousUserService;
+import ro.hiringsystem.model.CandidateUser;
+import ro.hiringsystem.service.UserService;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class AnonymousUserServiceImpl implements AnonymousUserService {
+public class AnonymousUserServiceImpl implements UserService<AnonymousUser> {
 
     private static Map<UUID, AnonymousUser> anonymousUserMap = new HashMap<>();
 
@@ -29,7 +29,7 @@ public class AnonymousUserServiceImpl implements AnonymousUserService {
     }
 
     @Override
-    public void addOnlyOne(AnonymousUser anonymousUser) {
+    public void add(AnonymousUser anonymousUser) {
         anonymousUserMap.put(anonymousUser.getId(), anonymousUser);
     }
 
@@ -41,9 +41,12 @@ public class AnonymousUserServiceImpl implements AnonymousUserService {
     }
 
     @Override
-    public void updateElementById(UUID id, AnonymousUser newAnonymousUser) {
-        removeElementById(id);
-        addOnlyOne(newAnonymousUser);
+    public Boolean updateElementById(UUID id, AnonymousUser newAnonymousUser) {
+        if (getById(id).equals(Optional.empty())) {
+            return false;
+        }
+        anonymousUserMap.put(newAnonymousUser.getId(), newAnonymousUser);
+        return true;
     }
 
 }

@@ -1,5 +1,6 @@
 package ro.hiringsystem.service.impl;
 
+import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.service.InterviewerUserService;
@@ -20,17 +21,17 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public Optional<InterviewerUser> getByLastName(Optional<String> lastName) {
+    public Map<UUID, InterviewerUser> getByLastName(String lastName) {
         return interviewerUserMap.values().stream()
                 .filter(element -> lastName.equals(element.getLastName()))
-                .findAny();
+                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
     }
 
     @Override
-    public Optional<InterviewerUser> getByType(InterviewerType interviewerType) {
+    public Map<UUID, InterviewerUser> getByType(InterviewerType interviewerType) {
         return interviewerUserMap.values().stream()
                 .filter(element -> interviewerType.equals(element.getInterviewerType()))
-                .findAny();
+                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public void addOnlyOne(InterviewerUser interviewerUser) {
+    public void add(InterviewerUser interviewerUser) {
         interviewerUserMap.put(interviewerUser.getId(), interviewerUser);
     }
 
@@ -56,9 +57,12 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public void updateElementById(UUID id, InterviewerUser newCandidateUser) {
-        removeElementById(id);
-        addOnlyOne(newCandidateUser);
+    public Boolean updateElementById(UUID id, InterviewerUser newInterviewerUser) {
+        if (getById(id).equals(Optional.empty())) {
+            return false;
+        }
+        interviewerUserMap.put(newInterviewerUser.getId(), newInterviewerUser);
+        return true;
     }
 
 }

@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import ro.hiringsystem.model.MailInformation;
-import ro.hiringsystem.model.PhoneNumberInformation;
 import ro.hiringsystem.model.enums.UserType;
 
-import java.beans.Transient;
-import java.net.URL;
+import java.time.LocalDate;
 import java.util.AbstractList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -25,14 +21,16 @@ public abstract class User {
 
     private UUID id;
 
-    private Optional<String> firstName;
+    private String firstName;
 
-    private Optional<String> lastName;
+    private String lastName;
 
-    private Optional<List<MailInformation>> mailList;
+    private List<String> mailList;
 
-    private Optional<List<PhoneNumberInformation>> phoneNumberList;
+    private List<String> phoneNumberList;
 
-    private transient Optional<AbstractList<UserType>> allRoles;
+    private LocalDate birthDate;
+
+    private transient List<UserType> allRoles;
 
 }

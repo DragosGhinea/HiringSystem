@@ -3,6 +3,7 @@ package ro.hiringsystem.service.impl;
 
 import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.service.CandidateUserService;
+import ro.hiringsystem.service.InterviewerUserService;
 
 import java.util.*;
 import java.util.function.Function;
@@ -20,10 +21,10 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public Optional<CandidateUser> getByLastName(Optional<String> lastName) {
+    public Map<UUID, CandidateUser> getByLastName(String lastName) {
         return candidateUserMap.values().stream()
                 .filter(element -> lastName.equals(element.getLastName()))
-                .findAny();
+                .collect(Collectors.toMap(CandidateUser::getId, Function.identity()));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public void addOnlyOne(CandidateUser candidateUser) {
+    public void add(CandidateUser candidateUser) {
         candidateUserMap.put(candidateUser.getId(), candidateUser);
     }
 
@@ -49,9 +50,12 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public void updateElementById(UUID id, CandidateUser newCandidateUser) {
-        removeElementById(id);
-        addOnlyOne(newCandidateUser);
+    public Boolean updateElementById(UUID id, CandidateUser newCandidateUser) {
+        if (getById(id).equals(Optional.empty())) {
+            return false;
+        }
+        candidateUserMap.put(newCandidateUser.getId(), newCandidateUser);
+        return true;
     }
 
 }

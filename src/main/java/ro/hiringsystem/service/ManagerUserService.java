@@ -1,25 +1,15 @@
 package ro.hiringsystem.service;
 
+import org.apache.catalina.User;
+import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.ManagerUser;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ManagerUserService {
+public interface ManagerUserService extends UserService<ManagerUser> {
 
-    Optional<ManagerUser> getById(UUID id);
-
-    Optional<ManagerUser> getByLastName(Optional<String> lastName);
-
-    Map<UUID, ManagerUser> getAllFromMap();
-
-    void addAllFromGivenMap(Map<UUID, ManagerUser> managerUserMap);
-
-    void addOnlyOne(ManagerUser managerUser);
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, ManagerUser newManagerUser);
+    Map<UUID, ManagerUser> getByLastName(String lastName);
 
 }

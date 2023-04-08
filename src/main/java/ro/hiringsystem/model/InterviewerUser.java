@@ -16,6 +16,6 @@ public class InterviewerUser extends User {
 
     private InterviewerType interviewerType;
 
-    private String personalInformation;
+    private String professionalBackground;
 
 }

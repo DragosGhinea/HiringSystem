@@ -7,16 +7,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserType {
 
-    ANONYMOUS("anonymous"),
+    ANONYMOUS,
 
-    CANDIDATE("candidate"),
+    CANDIDATE,
 
-    INTERVIEWER("interviewer"),
+    INTERVIEWER,
 
-    MANAGER("manager"),
+    MANAGER,
 
-    NONE("none");
-
-    private final String typeString;
+    NONE;
 
 }

@@ -1,5 +1,7 @@
 package ro.hiringsystem.service.impl;
 
+import ro.hiringsystem.model.CandidateUser;
+import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.ManagerUser;
 import ro.hiringsystem.service.ManagerUserService;
 
@@ -19,10 +21,10 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public Optional<ManagerUser> getByLastName(Optional<String> lastName) {
+    public Map<UUID, ManagerUser> getByLastName(String lastName) {
         return managerUserMap.values().stream()
                 .filter(element -> lastName.equals(element.getLastName()))
-                .findAny();
+                .collect(Collectors.toMap(ManagerUser::getId, Function.identity()));
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public void addOnlyOne(ManagerUser interviewerUser) {
+    public void add(ManagerUser interviewerUser) {
         managerUserMap.put(interviewerUser.getId(), interviewerUser);
     }
 
@@ -48,9 +50,12 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public void updateElementById(UUID id, ManagerUser newManagerUser) {
-        removeElementById(id);
-        addOnlyOne(newManagerUser);
+    public Boolean updateElementById(UUID id, ManagerUser newManagerUser) {
+        if (getById(id).equals(Optional.empty())) {
+            return false;
+        }
+        managerUserMap.put(newManagerUser.getId(), newManagerUser);
+        return true;
     }
 
 }
