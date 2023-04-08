@@ -51,7 +51,7 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     @Override
     public Boolean updateElementById(UUID id, CandidateUser newCandidateUser) {
-        if (getById(id).equals(Optional.empty())) {
+        if (getById(id).isEmpty()) {
             return false;
         }
         candidateUserMap.put(newCandidateUser.getId(), newCandidateUser);

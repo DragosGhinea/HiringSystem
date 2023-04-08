@@ -42,7 +42,7 @@ public class AnonymousUserServiceImpl implements UserService<AnonymousUser> {
 
     @Override
     public Boolean updateElementById(UUID id, AnonymousUser newAnonymousUser) {
-        if (getById(id).equals(Optional.empty())) {
+        if (getById(id).isEmpty()) {
             return false;
         }
         anonymousUserMap.put(newAnonymousUser.getId(), newAnonymousUser);

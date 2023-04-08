@@ -51,7 +51,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
 
     @Override
     public Boolean updateElementById(UUID id, ManagerUser newManagerUser) {
-        if (getById(id).equals(Optional.empty())) {
+        if (getById(id).isEmpty()) {
             return false;
         }
         managerUserMap.put(newManagerUser.getId(), newManagerUser);

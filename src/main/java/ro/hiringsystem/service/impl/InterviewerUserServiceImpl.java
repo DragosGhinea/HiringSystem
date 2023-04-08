@@ -58,7 +58,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
 
     @Override
     public Boolean updateElementById(UUID id, InterviewerUser newInterviewerUser) {
-        if (getById(id).equals(Optional.empty())) {
+        if (getById(id).isEmpty()) {
             return false;
         }
         interviewerUserMap.put(newInterviewerUser.getId(), newInterviewerUser);

@@ -1,17 +1,23 @@
 package ro.hiringsystem.model;
 
-import java.io.File;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.File;
+import java.util.List;
+
+@Getter
+@Setter
 public class CV {
 
     private File cvFile;
 
-    private String academicBackground;
+    private List<String> academicBackground;
 
-    private String workExperience;
+    private List<String> workExperience;
 
-    private String skills;
+    private List<String> skills;
 
-    private String projects;
+    private List<String> projects;
 
 }
