@@ -34,8 +34,11 @@ h4, h6, .project-title {
     text-align:left;
 }
 
-.card.experienceCard {
-    min-height:18em;
+.card.experienceCard > .card-body {
+    min-height:14em;
+    max-height:14em;
+    overflow:hidden;
+    overflow-y:auto;
 }
 
 .card-body {
@@ -50,10 +53,6 @@ h4, h6, .project-title {
 
 #projects {
     max-width:60em;
-}
-
-.row {
-    color:red;
 }
 
 li {
@@ -90,4 +89,20 @@ li {
 
 .btn-info:hover {
     background-color:#ace9fa;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background:#ace9fa;
+}
+
+::-webkit-scrollbar-thumb {
+    background:#2d98da;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background:#2d98da;
 }

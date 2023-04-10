@@ -15,7 +15,7 @@ h4, h6, span {
     position:relative;
     overflow:hidden;
     border-radius:8px;
-    cursor:pointer;
+    cursor:default;
 }
 
 .card:before{
@@ -28,7 +28,8 @@ h4, h6, span {
     background-color:#ace9fa;
     transform:scaleY(1);
     transition:all 0.5s;
-    transform-origin: bottom
+    transform-origin:bottom;
+    cursor:default;
 }
 
 .card:after{
@@ -41,7 +42,8 @@ h4, h6, span {
     background-color:#2d98da;
     transform:scaleY(0);
     transition:all 0.5s;
-    transform-origin: bottom
+    transform-origin:bottom;
+    cursor:default;
 }
 
 .card:hover::after{

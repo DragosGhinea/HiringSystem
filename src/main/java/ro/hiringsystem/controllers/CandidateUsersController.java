@@ -41,6 +41,21 @@ public class CandidateUsersController {
                                         .startDate(LocalDate.of(2021, 7, 25))
                                         .endDate(LocalDate.of(2024, 6, 10))
                                         .institution("University of Bucharest")
+                                        .specialization("Computer Science").build(),
+                                AcademicExperience.builder()
+                                        .startDate(LocalDate.of(2024, 7, 28))
+                                        .endDate(LocalDate.of(2027, 6, 11))
+                                        .institution("University of Bucharest")
+                                        .specialization("Computer Science").build(),
+                                AcademicExperience.builder()
+                                        .startDate(LocalDate.of(2027, 7, 25))
+                                        .endDate(LocalDate.of(2030, 6, 10))
+                                        .institution("University of Zurich")
+                                        .specialization("Computer Science").build(),
+                                AcademicExperience.builder()
+                                        .startDate(LocalDate.of(2030, 7, 25))
+                                        .endDate(LocalDate.of(2032, 6, 10))
+                                        .institution("University of Chicago")
                                         .specialization("Computer Science").build()))
                         .workExperience(List.of(WorkExperience.builder()
                                 .startDate(LocalDate.of(2022, 6, 12))
