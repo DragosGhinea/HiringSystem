@@ -1,11 +1,9 @@
-package ro.hiringsystem.controllers;
+package ro.hiringsystem.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.ManagerUser;
-import ro.hiringsystem.model.enums.InterviewerType;
 
 import java.time.LocalDate;
 import java.util.List;
