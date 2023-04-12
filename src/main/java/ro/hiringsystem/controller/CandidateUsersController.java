@@ -18,7 +18,7 @@ import java.util.UUID;
 @Controller
 public class CandidateUsersController {
 
-    @GetMapping("/candidate/profile")
+    /*@GetMapping("/candidate/profile")
     String getUser(Model model) throws MalformedURLException {
 
         model.addAttribute("user", CandidateUser.builder()
@@ -83,6 +83,6 @@ public class CandidateUsersController {
 
         return "candidateProfile";
 
-    }
+    }*/
 
 }

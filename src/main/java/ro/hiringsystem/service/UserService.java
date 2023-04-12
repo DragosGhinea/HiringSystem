@@ -1,6 +1,5 @@
 package ro.hiringsystem.service;
 
-import ro.hiringsystem.model.AnonymousUser;
 import ro.hiringsystem.model.abstracts.User;
 
 import java.util.Map;
