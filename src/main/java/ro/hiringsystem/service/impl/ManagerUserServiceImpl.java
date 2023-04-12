@@ -1,61 +1,62 @@
 package ro.hiringsystem.service.impl;
 
+import org.springframework.stereotype.Service;
 import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.abstracts.User;
+import ro.hiringsystem.model.dto.ManagerUserDto;
+import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.service.ManagerUserService;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Service
 public class ManagerUserServiceImpl implements ManagerUserService {
-
-    private static Map<UUID, ManagerUser> managerUserMap = new HashMap<>();
-
     @Override
-    public Optional<ManagerUser> getById(UUID id) {
-        return managerUserMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public Map<UUID, ManagerUserDto> getByLastName(String lastName) {
+        return null;
     }
 
     @Override
-    public Map<UUID, ManagerUser> getByLastName(String lastName) {
-        return managerUserMap.values().stream()
-                .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(ManagerUser::getId, Function.identity()));
+    public ManagerUserDto getById(UUID id) {
+        return null;
     }
 
     @Override
-    public Map<UUID, ManagerUser> getAllFromMap() {
-        return managerUserMap;
+    public Map<UUID, ManagerUserDto> getAllFromMap() {
+        return null;
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, ManagerUser> managerUserMap) {
-        ManagerUserServiceImpl.managerUserMap.putAll(managerUserMap);
+    public void addAllFromGivenMap(Map<UUID, ManagerUserDto> clientMap) {
+
     }
 
     @Override
-    public void add(ManagerUser interviewerUser) {
-        managerUserMap.put(interviewerUser.getId(), interviewerUser);
+    public void add(ManagerUserDto user) {
+
+    }
+
+    @Override
+    public void add(User user) {
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        managerUserMap = managerUserMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
     }
 
     @Override
-    public Boolean updateElementById(UUID id, ManagerUser newManagerUser) {
-        if (getById(id).isEmpty()) {
-            return false;
-        }
-        managerUserMap.put(newManagerUser.getId(), newManagerUser);
-        return true;
+    public Boolean updateElementById(UUID id, ManagerUserDto newUser) {
+        return null;
     }
 
+    @Override
+    public UserDto getUserByFirstName(String firstName) {
+        return null;
+    }
 }

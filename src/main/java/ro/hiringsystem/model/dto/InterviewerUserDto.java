@@ -1,4 +1,4 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,14 +19,11 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewerUser extends User {
+public class InterviewerUserDto extends UserDto {
 
-    @Enumerated(value = EnumType.STRING)
     private InterviewerType interviewerType;
 
     private String professionalBackground;
-
 }

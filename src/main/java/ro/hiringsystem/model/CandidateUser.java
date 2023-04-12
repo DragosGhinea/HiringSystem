@@ -1,7 +1,12 @@
 package ro.hiringsystem.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -20,9 +25,12 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class CandidateUser extends User {
 
-    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToOne
+    @JoinTable(name = "cv_id")
     private CV cv;
 
     private File recommendation;
@@ -30,16 +38,5 @@ public class CandidateUser extends User {
     private URL githubProfileLink;
 
     private URL linkedInProfileLink;
-
-    public CandidateUser() {
-    }
-
-    public CandidateUser(@NotNull String firstName, @NotNull String lastName, List<String> mailList, List<String> phoneNumberList, LocalDate birthDate, List<UserType> allRoles, CV cv, File recommendation, URL githubProfileLink, URL linkedInProfileLink) {
-        super(firstName, lastName, mailList, phoneNumberList, birthDate, allRoles);
-        this.cv = cv;
-        this.recommendation = recommendation;
-        this.githubProfileLink = githubProfileLink;
-        this.linkedInProfileLink = linkedInProfileLink;
-    }
 
 }

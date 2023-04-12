@@ -1,7 +1,10 @@
-package ro.hiringsystem.model.abstracts;
+package ro.hiringsystem.model.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.jetbrains.annotations.NotNull;
 import ro.hiringsystem.model.enums.UserType;
@@ -13,14 +16,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-@Entity
-@Table(name="\"USER\"")
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NotNull
@@ -29,12 +28,12 @@ public abstract class User {
     @NotNull
     private String lastName;
 
-    @ElementCollection
     private List<String> mailList;
 
-    @ElementCollection
     private List<String> phoneNumberList;
 
     private LocalDate birthDate;
+
+    private List<UserType> allRoles;
 
 }

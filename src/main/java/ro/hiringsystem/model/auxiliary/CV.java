@@ -1,9 +1,7 @@
 package ro.hiringsystem.model.auxiliary;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +13,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class CV {
     @Id
     private UUID id;
@@ -32,18 +32,5 @@ public class CV {
 
     @OneToMany
     private List<Project> projects;
-
-    public CV() {
-
-    }
-
-    public CV(UUID id, File cvFile, List<AcademicExperience> academicBackground, List<WorkExperience> workExperience, List<String> skills, List<Project> projects) {
-        this.id = id;
-        this.cvFile = cvFile;
-        this.academicBackground = academicBackground;
-        this.workExperience = workExperience;
-        this.skills = skills;
-        this.projects = projects;
-    }
 
 }

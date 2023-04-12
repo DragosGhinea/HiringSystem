@@ -72,6 +72,7 @@
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:bootstrap:5.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.5.3.Final" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.19" level="project" />
