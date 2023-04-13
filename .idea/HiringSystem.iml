@@ -19,6 +19,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="HiringSystem" />
+          <factory-entry name="entityManagerFactory" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
@@ -65,6 +66,21 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf-spring6:3.1.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:3.1.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:bootstrap:5.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.19" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:3.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:3.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aspects:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.5.3.Final" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:3.0.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:3.0.5" level="project" />
@@ -129,6 +145,5 @@
     <orderEntry type="library" name="Maven: com.intellij:annotations:7.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:6.0.7" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.0.7" level="project" />
   </component>
 </module>

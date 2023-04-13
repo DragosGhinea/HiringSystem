@@ -1,14 +1,10 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.auxiliary.CV;
 
 import java.io.File;
@@ -19,10 +15,8 @@ import java.net.URL;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class CandidateUser extends User {
+public class CandidateUserDto extends UserDto {
 
-    @OneToOne
     private CV cv;
 
     private File recommendation;

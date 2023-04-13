@@ -1,68 +1,93 @@
 package ro.hiringsystem.service.impl;
 
-import ro.hiringsystem.model.CandidateUser;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.InterviewerUserMapper;
 import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
+import ro.hiringsystem.repository.InterviewerUserRepository;
 import ro.hiringsystem.service.InterviewerUserService;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class InterviewerUserServiceImpl implements InterviewerUserService {
 
-    private static Map<UUID, InterviewerUser> interviewerUserMap = new HashMap<>();
+    private final InterviewerUserRepository interviewerUserRepository;
 
     @Override
-    public Optional<InterviewerUser> getById(UUID id) {
-        return interviewerUserMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public InterviewerUserDto getById(UUID id) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(id);
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return InterviewerUserMapper.INSTANCE.toDto(interviewerUser.get());
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getByLastName(String lastName) {
-        return interviewerUserMap.values().stream()
-                .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
+    public Map<UUID, InterviewerUserDto> getByLastName(String lastName) {
+        return listToMap(interviewerUserRepository.findByLastName(lastName).stream()
+                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getByType(InterviewerType interviewerType) {
-        return interviewerUserMap.values().stream()
-                .filter(element -> interviewerType.equals(element.getInterviewerType()))
-                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
+    public Map<UUID, InterviewerUserDto> getByType(InterviewerType interviewerType) {
+        return listToMap(interviewerUserRepository.findByType(interviewerType).stream()
+                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getAllFromMap() {
-        return interviewerUserMap;
+    public Map<UUID, InterviewerUserDto> getAllFromMap() {
+        return listToMap(interviewerUserRepository.findAll().stream()
+                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, InterviewerUser> interviewerUserMap) {
-        InterviewerUserServiceImpl.interviewerUserMap.putAll(interviewerUserMap);
+    public void addAllFromGivenMap(Map<UUID, InterviewerUserDto> interviewerUserMap) {
+        interviewerUserRepository.saveAll(interviewerUserMap.values().stream()
+                .map(InterviewerUserMapper.INSTANCE::toEntity).toList());
     }
 
     @Override
-    public void add(InterviewerUser interviewerUser) {
-        interviewerUserMap.put(interviewerUser.getId(), interviewerUser);
+    public void add(InterviewerUserDto interviewerUser) {
+        interviewerUserRepository.save(InterviewerUserMapper.INSTANCE.toEntity(interviewerUser));
     }
 
     @Override
     public void removeElementById(UUID id) {
-        interviewerUserMap = interviewerUserMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(id);
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        else interviewerUserRepository.delete(interviewerUser.get());
     }
 
     @Override
-    public Boolean updateElementById(UUID id, InterviewerUser newInterviewerUser) {
-        if (getById(id).isEmpty()) {
-            return false;
+    public void updateElementById(InterviewerUserDto interviewerUserDto) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(interviewerUserDto.getId());
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
         }
-        interviewerUserMap.put(newInterviewerUser.getId(), newInterviewerUser);
-        return true;
+
+        else interviewerUserRepository.save(InterviewerUserMapper.INSTANCE.toEntity(interviewerUserDto));
+    }
+
+    @Override
+    public Map<UUID, InterviewerUserDto> listToMap(List<InterviewerUserDto> interviewerUserDtoList) {
+        Map<UUID, InterviewerUserDto> interviewerUserDtoMap = new HashMap<>();
+
+        for (InterviewerUserDto user : interviewerUserDtoList) {
+            interviewerUserDtoMap.put(user.getId(), user);
+        }
+
+        return interviewerUserDtoMap;
     }
 
 }

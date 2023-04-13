@@ -1,61 +1,86 @@
 package ro.hiringsystem.service.impl;
 
-import ro.hiringsystem.model.CandidateUser;
-import ro.hiringsystem.model.InterviewerUser;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.ManagerUserMapper;
 import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.dto.ManagerUserDto;
+import ro.hiringsystem.repository.ManagerUserRepository;
 import ro.hiringsystem.service.ManagerUserService;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class ManagerUserServiceImpl implements ManagerUserService {
 
-    private static Map<UUID, ManagerUser> managerUserMap = new HashMap<>();
+    private final ManagerUserRepository managerUserRepository;
 
     @Override
-    public Optional<ManagerUser> getById(UUID id) {
-        return managerUserMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public ManagerUserDto getById(UUID id) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findById(id);
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return ManagerUserMapper.INSTANCE.toDto(managerUser.get());
     }
 
     @Override
-    public Map<UUID, ManagerUser> getByLastName(String lastName) {
-        return managerUserMap.values().stream()
-                .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(ManagerUser::getId, Function.identity()));
+    public Map<UUID, ManagerUserDto> getByLastName(String lastName) {
+        return listToMap(managerUserRepository.findByLastName(lastName).stream()
+                .map(ManagerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public Map<UUID, ManagerUser> getAllFromMap() {
-        return managerUserMap;
+    public Map<UUID, ManagerUserDto> getAllFromMap() {
+        return listToMap(managerUserRepository.findAll().stream()
+                .map(ManagerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, ManagerUser> managerUserMap) {
-        ManagerUserServiceImpl.managerUserMap.putAll(managerUserMap);
+    public void addAllFromGivenMap(Map<UUID, ManagerUserDto> managerUserMap) {
+        managerUserRepository.saveAll(managerUserMap.values().stream()
+                .map(ManagerUserMapper.INSTANCE::toEntity).toList());
     }
 
     @Override
-    public void add(ManagerUser interviewerUser) {
-        managerUserMap.put(interviewerUser.getId(), interviewerUser);
+    public void add(ManagerUserDto managerUser) {
+        managerUserRepository.save(ManagerUserMapper.INSTANCE.toEntity(managerUser));
     }
 
     @Override
     public void removeElementById(UUID id) {
-        managerUserMap = managerUserMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Optional<ManagerUser> managerUser = managerUserRepository.findById(id);
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        else managerUserRepository.delete(managerUser.get());
     }
 
     @Override
-    public Boolean updateElementById(UUID id, ManagerUser newManagerUser) {
-        if (getById(id).isEmpty()) {
-            return false;
+    public void updateElementById(ManagerUserDto managerUserDto) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findById(managerUserDto.getId());
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
         }
-        managerUserMap.put(newManagerUser.getId(), newManagerUser);
-        return true;
+
+        else managerUserRepository.save(ManagerUserMapper.INSTANCE.toEntity(managerUserDto));
+    }
+
+    @Override
+    public Map<UUID, ManagerUserDto> listToMap(List<ManagerUserDto> managerUserDtoList) {
+        Map<UUID, ManagerUserDto> managerUserDtoMap = new HashMap<>();
+
+        for (ManagerUserDto user : managerUserDtoList) {
+            managerUserDtoMap.put(user.getId(), user);
+        }
+
+        return managerUserDtoMap;
     }
 
 }
