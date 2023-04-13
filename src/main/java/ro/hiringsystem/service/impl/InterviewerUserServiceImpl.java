@@ -2,6 +2,8 @@ package ro.hiringsystem.service.impl;
 
 import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.dto.AnonymousUserDto;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.service.InterviewerUserService;
 
@@ -11,41 +13,47 @@ import java.util.stream.Collectors;
 
 public class InterviewerUserServiceImpl implements InterviewerUserService {
 
-    private static Map<UUID, InterviewerUser> interviewerUserMap = new HashMap<>();
+    private static Map<UUID, InterviewerUserDto> interviewerUserMap = new HashMap<>();
 
     @Override
-    public Optional<InterviewerUser> getById(UUID id) {
-        return interviewerUserMap.values().stream()
+    public InterviewerUserDto getById(UUID id) {
+        Optional<InterviewerUserDto> user = interviewerUserMap.values().stream()
                 .filter(element -> id.equals(element.getId()))
                 .findAny();
+
+        if(user.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return user.get();
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getByLastName(String lastName) {
+    public Map<UUID, InterviewerUserDto> getByLastName(String lastName) {
         return interviewerUserMap.values().stream()
                 .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
+                .collect(Collectors.toMap(InterviewerUserDto::getId, Function.identity()));
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getByType(InterviewerType interviewerType) {
+    public Map<UUID, InterviewerUserDto> getByType(InterviewerType interviewerType) {
         return interviewerUserMap.values().stream()
                 .filter(element -> interviewerType.equals(element.getInterviewerType()))
-                .collect(Collectors.toMap(InterviewerUser::getId, Function.identity()));
+                .collect(Collectors.toMap(InterviewerUserDto::getId, Function.identity()));
     }
 
     @Override
-    public Map<UUID, InterviewerUser> getAllFromMap() {
+    public Map<UUID, InterviewerUserDto> getAllFromMap() {
         return interviewerUserMap;
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, InterviewerUser> interviewerUserMap) {
+    public void addAllFromGivenMap(Map<UUID, InterviewerUserDto> interviewerUserMap) {
         InterviewerUserServiceImpl.interviewerUserMap.putAll(interviewerUserMap);
     }
 
     @Override
-    public void add(InterviewerUser interviewerUser) {
+    public void add(InterviewerUserDto interviewerUser) {
         interviewerUserMap.put(interviewerUser.getId(), interviewerUser);
     }
 
@@ -57,12 +65,8 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public Boolean updateElementById(UUID id, InterviewerUser newInterviewerUser) {
-        if (getById(id).isEmpty()) {
-            return false;
-        }
-        interviewerUserMap.put(newInterviewerUser.getId(), newInterviewerUser);
-        return true;
+    public void updateElementById(UUID id, InterviewerUserDto newInterviewerUser) {
+            interviewerUserMap.put(newInterviewerUser.getId(), newInterviewerUser);
     }
 
 }

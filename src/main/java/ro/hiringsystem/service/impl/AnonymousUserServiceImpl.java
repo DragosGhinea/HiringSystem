@@ -2,34 +2,41 @@ package ro.hiringsystem.service.impl;
 
 import ro.hiringsystem.model.AnonymousUser;
 import ro.hiringsystem.model.CandidateUser;
+import ro.hiringsystem.model.dto.AnonymousUserDto;
 import ro.hiringsystem.service.UserService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AnonymousUserServiceImpl implements UserService<AnonymousUser> {
+public class AnonymousUserServiceImpl implements UserService<AnonymousUserDto> {
 
-    private static Map<UUID, AnonymousUser> anonymousUserMap = new HashMap<>();
+    private static Map<UUID, AnonymousUserDto> anonymousUserMap = new HashMap<>();
 
     @Override
-    public Optional<AnonymousUser> getById(UUID id) {
-        return anonymousUserMap.values().stream()
+    public AnonymousUserDto getById(UUID id) {
+        Optional<AnonymousUserDto> user = anonymousUserMap.values().stream()
                 .filter(element -> id.equals(element.getId()))
                 .findAny();
+
+        if(user.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return user.get();
     }
 
     @Override
-    public Map<UUID, AnonymousUser> getAllFromMap() {
+    public Map<UUID, AnonymousUserDto> getAllFromMap() {
         return anonymousUserMap;
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, AnonymousUser> anonymousUserMap) {
+    public void addAllFromGivenMap(Map<UUID, AnonymousUserDto> anonymousUserMap) {
         AnonymousUserServiceImpl.anonymousUserMap.putAll(anonymousUserMap);
     }
 
     @Override
-    public void add(AnonymousUser anonymousUser) {
+    public void add(AnonymousUserDto anonymousUser) {
         anonymousUserMap.put(anonymousUser.getId(), anonymousUser);
     }
 
@@ -41,12 +48,8 @@ public class AnonymousUserServiceImpl implements UserService<AnonymousUser> {
     }
 
     @Override
-    public Boolean updateElementById(UUID id, AnonymousUser newAnonymousUser) {
-        if (getById(id).isEmpty()) {
-            return false;
-        }
+    public void updateElementById(UUID id, AnonymousUserDto newAnonymousUser) {
         anonymousUserMap.put(newAnonymousUser.getId(), newAnonymousUser);
-        return true;
     }
 
 }

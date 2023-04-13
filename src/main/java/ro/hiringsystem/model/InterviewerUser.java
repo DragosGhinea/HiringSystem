@@ -3,20 +3,19 @@ package ro.hiringsystem.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
 import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.enums.InterviewerType;
-import ro.hiringsystem.model.enums.UserType;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @SuperBuilder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class InterviewerUser extends User {
 
@@ -24,14 +23,5 @@ public class InterviewerUser extends User {
     private InterviewerType interviewerType;
 
     private String professionalBackground;
-
-    public InterviewerUser() {
-
-    }
-
-    public InterviewerUser(@NotNull String firstName, @NotNull String lastName, List<String> mailList, List<String> phoneNumberList, LocalDate birthDate, List<UserType> allRoles, InterviewerType interviewerType) {
-        super(firstName, lastName, mailList, phoneNumberList, birthDate, allRoles);
-        this.interviewerType = interviewerType;
-    }
 
 }

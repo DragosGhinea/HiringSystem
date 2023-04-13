@@ -1,4 +1,4 @@
-package ro.hiringsystem.model.abstracts;
+package ro.hiringsystem.model.dto;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,27 +15,20 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="\"USER\"")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public abstract class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
-    @ElementCollection
     private List<String> mailList;
 
-    @ElementCollection
     private List<String> phoneNumberList;
 
     private LocalDate birthDate;
+
+    private transient List<UserType> allRoles;
 
 }

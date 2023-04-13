@@ -3,6 +3,8 @@ package ro.hiringsystem.service.impl;
 import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.service.ManagerUserService;
 
 import java.util.*;
@@ -11,35 +13,41 @@ import java.util.stream.Collectors;
 
 public class ManagerUserServiceImpl implements ManagerUserService {
 
-    private static Map<UUID, ManagerUser> managerUserMap = new HashMap<>();
+    private static Map<UUID, ManagerUserDto> managerUserMap = new HashMap<>();
 
     @Override
-    public Optional<ManagerUser> getById(UUID id) {
-        return managerUserMap.values().stream()
+    public ManagerUserDto getById(UUID id) {
+        Optional<ManagerUserDto> user = managerUserMap.values().stream()
                 .filter(element -> id.equals(element.getId()))
                 .findAny();
+
+        if(user.isPresent()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return user.get();
     }
 
     @Override
-    public Map<UUID, ManagerUser> getByLastName(String lastName) {
+    public Map<UUID, ManagerUserDto> getByLastName(String lastName) {
         return managerUserMap.values().stream()
                 .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(ManagerUser::getId, Function.identity()));
+                .collect(Collectors.toMap(ManagerUserDto::getId, Function.identity()));
     }
 
     @Override
-    public Map<UUID, ManagerUser> getAllFromMap() {
+    public Map<UUID, ManagerUserDto> getAllFromMap() {
         return managerUserMap;
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, ManagerUser> managerUserMap) {
+    public void addAllFromGivenMap(Map<UUID, ManagerUserDto> managerUserMap) {
         ManagerUserServiceImpl.managerUserMap.putAll(managerUserMap);
     }
 
     @Override
-    public void add(ManagerUser interviewerUser) {
-        managerUserMap.put(interviewerUser.getId(), interviewerUser);
+    public void add(ManagerUserDto managerUser) {
+        managerUserMap.put(managerUser.getId(), managerUser);
     }
 
     @Override
@@ -50,12 +58,8 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public Boolean updateElementById(UUID id, ManagerUser newManagerUser) {
-        if (getById(id).isEmpty()) {
-            return false;
-        }
-        managerUserMap.put(newManagerUser.getId(), newManagerUser);
-        return true;
+    public void updateElementById(UUID id, ManagerUserDto newManagerUser) {
+            managerUserMap.put(newManagerUser.getId(), newManagerUser);
     }
 
 }

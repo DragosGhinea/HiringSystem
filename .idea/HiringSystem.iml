@@ -80,6 +80,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.5.3.Final" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:3.0.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:3.0.5" level="project" />

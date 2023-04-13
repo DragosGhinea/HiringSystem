@@ -1,14 +1,15 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.abstracts.User;
+import ro.hiringsystem.model.dto.UserDto;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserService <T extends User> {
+public interface UserService <T extends UserDto> {
 
-    Optional<T> getById(UUID id);
+    T getById(UUID id);
 
     Map<UUID, T> getAllFromMap();
 
@@ -18,6 +19,6 @@ public interface UserService <T extends User> {
 
     void removeElementById(UUID id);
 
-    Boolean updateElementById(UUID id, T newUser);
+    void updateElementById(UUID id, T newUser);
 
 }
