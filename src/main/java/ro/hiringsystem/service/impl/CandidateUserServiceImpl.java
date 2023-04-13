@@ -1,66 +1,87 @@
 package ro.hiringsystem.service.impl;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CandidateUserMapper;
 import ro.hiringsystem.model.CandidateUser;
-import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
-import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.repository.CandidateUserRepository;
 import ro.hiringsystem.service.CandidateUserService;
-import ro.hiringsystem.service.InterviewerUserService;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class CandidateUserServiceImpl implements CandidateUserService {
 
-    private static Map<UUID, CandidateUserDto> candidateUserMap = new HashMap<>();
+    private final CandidateUserRepository candidateUserRepository;
 
     @Override
     public CandidateUserDto getById(UUID id) {
-        Optional<CandidateUserDto> user = candidateUserMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(id);
 
-        if(user.isEmpty()) {
+        if(candidateUser.isEmpty()) {
             throw new RuntimeException("User not found!");
         }
 
-        return user.get();
+        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getByLastName(String lastName) {
-        return candidateUserMap.values().stream()
-                .filter(element -> lastName.equals(element.getLastName()))
-                .collect(Collectors.toMap(CandidateUserDto::getId, Function.identity()));
+        return listToMap(candidateUserRepository.findByLastName(lastName).stream()
+                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getAllFromMap() {
-        return candidateUserMap;
+        return listToMap(candidateUserRepository.findAll().stream()
+                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, CandidateUserDto> candidateUserMap) {
-        CandidateUserServiceImpl.candidateUserMap.putAll(candidateUserMap);
+        candidateUserRepository.saveAll(candidateUserMap.values().stream()
+                            .map(CandidateUserMapper.INSTANCE::toEntity).toList());
     }
 
     @Override
     public void add(CandidateUserDto candidateUser) {
-        candidateUserMap.put(candidateUser.getId(), candidateUser);
+        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUser));
     }
 
     @Override
     public void removeElementById(UUID id) {
-        candidateUserMap = candidateUserMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(id);
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        else candidateUserRepository.delete(candidateUser.get());
     }
 
     @Override
-    public void updateElementById(UUID id, CandidateUserDto newCandidateUser) {
-            candidateUserMap.put(newCandidateUser.getId(), newCandidateUser);
+    public void updateElementById(CandidateUserDto candidateUserDto) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        else candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUserDto));
+    }
+
+    @Override
+    public Map<UUID, CandidateUserDto> listToMap(List<CandidateUserDto> candidateUserDtoList) {
+        Map<UUID, CandidateUserDto> candidateUserDtoMap = new HashMap<>();
+
+        for (CandidateUserDto user : candidateUserDtoList) {
+            candidateUserDtoMap.put(user.getId(), user);
+        }
+
+        return candidateUserDtoMap;
     }
 
 }

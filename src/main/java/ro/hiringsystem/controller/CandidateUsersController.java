@@ -1,19 +1,6 @@
 package ro.hiringsystem.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import ro.hiringsystem.model.auxiliary.AcademicExperience;
-import ro.hiringsystem.model.auxiliary.CV;
-import ro.hiringsystem.model.CandidateUser;
-import ro.hiringsystem.model.auxiliary.Project;
-import ro.hiringsystem.model.auxiliary.WorkExperience;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class CandidateUsersController {
