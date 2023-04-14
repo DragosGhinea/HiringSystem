@@ -35,13 +35,24 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
+    public InterviewerUserDto getByEmail(String email) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findByEmail(email);
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return InterviewerUserMapper.INSTANCE.toDto(interviewerUser.get());
+    }
+
+    @Override
     public Map<UUID, InterviewerUserDto> getByType(InterviewerType interviewerType) {
         return listToMap(interviewerUserRepository.findByType(interviewerType).stream()
                 .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public Map<UUID, InterviewerUserDto> getAllFromMap() {
+    public Map<UUID, InterviewerUserDto> getAll() {
         return listToMap(interviewerUserRepository.findAll().stream()
                 .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }

@@ -35,7 +35,18 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public Map<UUID, CandidateUserDto> getAllFromMap() {
+    public CandidateUserDto getByEmail(String email) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findByEmail(email);
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+    }
+
+    @Override
+    public Map<UUID, CandidateUserDto> getAll() {
         return listToMap(candidateUserRepository.findAll().stream()
                             .map(CandidateUserMapper.INSTANCE::toDto).toList());
     }

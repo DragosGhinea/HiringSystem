@@ -3,8 +3,6 @@ package ro.hiringsystem.model.abstracts;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
-import ro.hiringsystem.model.enums.UserType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,10 +22,10 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NonNull
     private String firstName;
 
-    @NotNull
+    @NonNull
     private String lastName;
 
     @ElementCollection
