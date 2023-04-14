@@ -24,10 +24,10 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NonNull
     private String firstName;
 
-    @NotNull
+    @NonNull
     private String lastName;
 
     @ElementCollection

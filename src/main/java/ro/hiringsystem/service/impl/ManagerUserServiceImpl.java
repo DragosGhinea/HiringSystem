@@ -34,7 +34,18 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public Map<UUID, ManagerUserDto> getAllFromMap() {
+    public ManagerUserDto getByEmail(String email) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findByEmail(email);
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return ManagerUserMapper.INSTANCE.toDto(managerUser.get());
+    }
+
+    @Override
+    public Map<UUID, ManagerUserDto> getAll() {
         return listToMap(managerUserRepository.findAll().stream()
                 .map(ManagerUserMapper.INSTANCE::toDto).toList());
     }

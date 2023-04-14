@@ -2,6 +2,7 @@ package ro.hiringsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ro.hiringsystem.model.CandidateUser;
 import ro.hiringsystem.model.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 
@@ -13,6 +14,9 @@ public interface InterviewerUserRepository extends JpaRepository<InterviewerUser
 
     @Query("SELECT u FROM InterviewerUser u WHERE u.id = :id")
     Optional<InterviewerUser> findById(UUID id);
+
+    @Query("SELECT u FROM CandidateUser u WHERE :mail MEMBER OF u.mailList")
+    Optional<InterviewerUser> findByEmail(String mail);
 
     @Query("SELECT u FROM InterviewerUser u")
     List<InterviewerUser> findAll();
