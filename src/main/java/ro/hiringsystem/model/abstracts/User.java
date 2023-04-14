@@ -3,8 +3,6 @@ package ro.hiringsystem.model.abstracts;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
-import ro.hiringsystem.model.enums.UserType;
 
 import java.time.LocalDate;
 import java.util.List;
