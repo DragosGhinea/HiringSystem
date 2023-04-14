@@ -35,31 +35,27 @@ public class UserServiceImpl implements UserService<UserDto> {
     @Override
     public UserDto getById(UUID id) {
         try {
-            candidateUserService.getById(id);
+            return candidateUserService.getById(id);
         } catch(RuntimeException ec) {
             try {
-                interviewerUserService.getById(id);
+                return interviewerUserService.getById(id);
             } catch(RuntimeException ei){
-                 managerUserService.getById(id);
+                 return managerUserService.getById(id);
             }
         }
-
-        return null;
     }
 
     @Override
     public UserDto getByEmail(String email) {
         try {
-            candidateUserService.getByEmail(email);
+            return candidateUserService.getByEmail(email);
         } catch(RuntimeException ec) {
             try {
-                interviewerUserService.getByEmail(email);
+                return interviewerUserService.getByEmail(email);
             } catch(RuntimeException ei){
-                managerUserService.getByEmail(email);
+                return interviewerUserService.getByEmail(email);
             }
         }
-
-        return null;
     }
 
     @Override
@@ -96,12 +92,12 @@ public class UserServiceImpl implements UserService<UserDto> {
     @Override
     public void removeElementById(UUID id) {
         try {
-            candidateUserService.getById(id);
+            candidateUserService.removeElementById(id);
         } catch(RuntimeException ec) {
             try {
-                interviewerUserService.getById(id);
+                interviewerUserService.removeElementById(id);
             } catch(RuntimeException ei){
-                managerUserService.getById(id);
+                managerUserService.removeElementById(id);
             }
         }
     }
