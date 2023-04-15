@@ -2,19 +2,10 @@ package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.mapper.CandidateUserMapper;
-import ro.hiringsystem.mapper.InterviewerUserMapper;
-import ro.hiringsystem.mapper.ManagerUserMapper;
-import ro.hiringsystem.mapper.UserMapper;
-import ro.hiringsystem.model.CandidateUser;
-import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.model.dto.UserDto;
-import ro.hiringsystem.repository.CandidateUserRepository;
-import ro.hiringsystem.repository.InterviewerUserRepository;
-import ro.hiringsystem.repository.ManagerUserRepository;
 import ro.hiringsystem.service.CandidateUserService;
 import ro.hiringsystem.service.InterviewerUserService;
 import ro.hiringsystem.service.ManagerUserService;
@@ -53,7 +44,7 @@ public class UserServiceImpl implements UserService<UserDto> {
             try {
                 return interviewerUserService.getByEmail(email);
             } catch(RuntimeException ei){
-                return interviewerUserService.getByEmail(email);
+                return managerUserService.getByEmail(email);
             }
         }
     }
@@ -103,15 +94,15 @@ public class UserServiceImpl implements UserService<UserDto> {
     }
 
     @Override
-    public void updateElementById(UserDto user) {
+    public void saveElement(UserDto user) {
         if (user instanceof CandidateUserDto candidateUserDto) {
-            candidateUserService.updateElementById(candidateUserDto);
+            candidateUserService.saveElement(candidateUserDto);
         }
         else if (user instanceof InterviewerUserDto interviewerUserDto) {
-            interviewerUserService.updateElementById(interviewerUserDto);
+            interviewerUserService.saveElement(interviewerUserDto);
         }
         else {
-            managerUserService.updateElementById((ManagerUserDto) user);
+            managerUserService.saveElement((ManagerUserDto) user);
         }
     }
 

@@ -3,7 +3,7 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.InterviewerUserMapper;
-import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.InterviewerUserRepository;
@@ -80,7 +80,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public void updateElementById(InterviewerUserDto interviewerUserDto) {
+    public void saveElement(InterviewerUserDto interviewerUserDto) {
         Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(interviewerUserDto.getId());
 
         if(interviewerUser.isEmpty()) {

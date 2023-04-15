@@ -17,20 +17,21 @@ import java.util.UUID;
 @Entity
 public class CV {
     @Id
+    @GeneratedValue
     private UUID id;
 
     private File cvFile;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<AcademicExperience> academicBackground;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<WorkExperience> workExperience;
 
     @ElementCollection
     private List<String> skills;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects;
 
 }

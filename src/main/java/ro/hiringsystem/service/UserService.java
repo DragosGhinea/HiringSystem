@@ -1,6 +1,5 @@
 package ro.hiringsystem.service;
 
-import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.dto.UserDto;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface UserService <T extends UserDto> {
 
     void removeElementById(UUID id);
 
-    void updateElementById(T newUser);
+    void saveElement(T newUser);
 
     Map<UUID, T> listToMap(List<T> userList);
 
