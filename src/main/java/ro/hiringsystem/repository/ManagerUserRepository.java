@@ -2,8 +2,7 @@ package ro.hiringsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ro.hiringsystem.model.CandidateUser;
-import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.entity.ManagerUser;
 
 import java.util.List;
 import java.util.Optional;

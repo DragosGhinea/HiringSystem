@@ -3,7 +3,7 @@ package ro.hiringsystem.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.entity.ManagerUser;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +19,8 @@ public class ManagerUsersController {
                 .id(UUID.randomUUID())
                 .firstName("Tom")
                 .lastName("Scott")
+                .primaryEmail("toms@gmail.com")
+                .password("test")
                 .mailList(List.of("tomscott@yahoo.com", "tom.scott@gmail.com"))
                 .phoneNumberList(List.of("0724143235", "0735877578"))
                 .birthDate(LocalDate.of(1975, 7, 4))

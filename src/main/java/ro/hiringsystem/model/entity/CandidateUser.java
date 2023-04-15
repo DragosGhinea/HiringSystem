@@ -1,12 +1,10 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.auxiliary.CV;
@@ -22,7 +20,7 @@ import java.net.URL;
 @Entity
 public class CandidateUser extends User {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CV cv;
 
     private File recommendation;
@@ -31,4 +29,13 @@ public class CandidateUser extends User {
 
     private URL linkedInProfileLink;
 
+    @Override
+    public String toString() {
+        return "CandidateUser{" +
+                "cv=" + cv +
+                ", recommendation=" + recommendation +
+                ", githubProfileLink=" + githubProfileLink +
+                ", linkedInProfileLink=" + linkedInProfileLink +
+                '}'+super.toString();
+    }
 }
