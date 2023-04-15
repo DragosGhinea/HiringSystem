@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .lastName(request.getLastName())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .primaryEmail(request.getEmail())
-                    .mailList(List.of())
+                    .mailList(List.of(request.getEmail()))
                     .phoneNumberList(List.of("0761425366", "0725347587"))
                     .birthDate(LocalDate.of(2002, 3, 7))
                     .githubProfileLink(new URL("https://github.com/UserName"))

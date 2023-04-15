@@ -14,7 +14,7 @@ public interface CandidateUserRepository extends JpaRepository<CandidateUser, UU
     Optional<CandidateUser> findById(UUID id);
 
     //modified for testing the authentication system
-    @Query("SELECT u FROM CandidateUser u WHERE :mail = u.primaryEmail")
+    @Query("SELECT u FROM CandidateUser u WHERE :mail MEMBER OF u.mailList")
     Optional<CandidateUser> findByEmail(String mail);
 
     @Query("SELECT u FROM CandidateUser u WHERE u.lastName = :lastName")
