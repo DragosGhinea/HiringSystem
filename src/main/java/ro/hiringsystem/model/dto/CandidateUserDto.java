@@ -9,6 +9,7 @@ import ro.hiringsystem.model.auxiliary.CV;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 @SuperBuilder
 @Getter
@@ -24,5 +25,7 @@ public class CandidateUserDto extends UserDto {
     private URL githubProfileLink;
 
     private URL linkedInProfileLink;
+
+    private List<JobApplicationDto> jobApplications;
 
 }
