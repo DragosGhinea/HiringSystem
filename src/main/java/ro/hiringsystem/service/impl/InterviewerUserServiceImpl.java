@@ -3,7 +3,7 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.InterviewerUserMapper;
-import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.InterviewerUserRepository;
@@ -35,13 +35,24 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
+    public InterviewerUserDto getByEmail(String email) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findByEmail(email);
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return InterviewerUserMapper.INSTANCE.toDto(interviewerUser.get());
+    }
+
+    @Override
     public Map<UUID, InterviewerUserDto> getByType(InterviewerType interviewerType) {
         return listToMap(interviewerUserRepository.findByType(interviewerType).stream()
                 .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
 
     @Override
-    public Map<UUID, InterviewerUserDto> getAllFromMap() {
+    public Map<UUID, InterviewerUserDto> getAll() {
         return listToMap(interviewerUserRepository.findAll().stream()
                 .map(InterviewerUserMapper.INSTANCE::toDto).toList());
     }
@@ -69,7 +80,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
     }
 
     @Override
-    public void updateElementById(InterviewerUserDto interviewerUserDto) {
+    public void saveElement(InterviewerUserDto interviewerUserDto) {
         Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(interviewerUserDto.getId());
 
         if(interviewerUser.isEmpty()) {

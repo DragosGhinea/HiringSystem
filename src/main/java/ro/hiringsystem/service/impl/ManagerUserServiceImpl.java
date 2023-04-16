@@ -3,7 +3,7 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.ManagerUserMapper;
-import ro.hiringsystem.model.ManagerUser;
+import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.repository.ManagerUserRepository;
 import ro.hiringsystem.service.ManagerUserService;
@@ -34,7 +34,18 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public Map<UUID, ManagerUserDto> getAllFromMap() {
+    public ManagerUserDto getByEmail(String email) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findByEmail(email);
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return ManagerUserMapper.INSTANCE.toDto(managerUser.get());
+    }
+
+    @Override
+    public Map<UUID, ManagerUserDto> getAll() {
         return listToMap(managerUserRepository.findAll().stream()
                 .map(ManagerUserMapper.INSTANCE::toDto).toList());
     }
@@ -62,7 +73,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
     }
 
     @Override
-    public void updateElementById(ManagerUserDto managerUserDto) {
+    public void saveElement(ManagerUserDto managerUserDto) {
         Optional<ManagerUser> managerUser = managerUserRepository.findById(managerUserDto.getId());
 
         if(managerUser.isEmpty()) {

@@ -1,5 +1,10 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
+import lombok.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +26,7 @@ import java.util.List;
 @Entity
 public class CandidateUser extends User {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CV cv;
 
     private File recommendation;
@@ -33,4 +38,13 @@ public class CandidateUser extends User {
     @OneToMany(mappedBy = "candidateUser")
     private List<JobApplication> jobApplications;
 
+    @Override
+    public String toString() {
+        return "CandidateUser{" +
+                "cv=" + cv +
+                ", recommendation=" + recommendation +
+                ", githubProfileLink=" + githubProfileLink +
+                ", linkedInProfileLink=" + linkedInProfileLink +
+                '}'+super.toString();
+    }
 }

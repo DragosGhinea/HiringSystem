@@ -1,9 +1,6 @@
 package ro.hiringsystem.model.auxiliary;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -17,11 +14,12 @@ import java.util.UUID;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     public Project() {

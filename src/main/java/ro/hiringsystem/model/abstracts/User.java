@@ -3,8 +3,7 @@ package ro.hiringsystem.model.abstracts;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
-import ro.hiringsystem.model.enums.UserType;
+import ro.hiringsystem.security.token.Token;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="\"USER\"")
+@ToString
+@Table(name="_USER")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
@@ -24,18 +24,27 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NonNull
     private String firstName;
 
-    @NotNull
+    @NonNull
     private String lastName;
 
-    @ElementCollection
+    @NonNull
+    private String primaryEmail;
+
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> mailList;
 
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> phoneNumberList;
 
     private LocalDate birthDate;
+
+    @NonNull
+    private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private List<Token> tokens;
 
 }

@@ -2,7 +2,7 @@ package ro.hiringsystem.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 
 @Mapper

@@ -4,7 +4,7 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.CandidateUserMapper;
-import ro.hiringsystem.model.CandidateUser;
+import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
 import ro.hiringsystem.service.CandidateUserService;
@@ -35,7 +35,18 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public Map<UUID, CandidateUserDto> getAllFromMap() {
+    public CandidateUserDto getByEmail(String email) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findByEmail(email);
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        }
+
+        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+    }
+
+    @Override
+    public Map<UUID, CandidateUserDto> getAll() {
         return listToMap(candidateUserRepository.findAll().stream()
                             .map(CandidateUserMapper.INSTANCE::toDto).toList());
     }
@@ -63,14 +74,9 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
-    public void updateElementById(CandidateUserDto candidateUserDto) {
-        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
-
-        if(candidateUser.isEmpty()) {
-            throw new RuntimeException("User not found!");
-        }
-
-        else candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUserDto));
+    public void saveElement(CandidateUserDto candidateUserDto) {
+        CandidateUser user = CandidateUserMapper.INSTANCE.toEntity(candidateUserDto);
+        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUserDto));
     }
 
     @Override

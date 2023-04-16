@@ -3,7 +3,7 @@ package ro.hiringsystem.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ro.hiringsystem.model.InterviewerUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 
 import java.time.LocalDate;
@@ -20,6 +20,8 @@ public class InterviewerUsersController {
                 .id(UUID.randomUUID())
                 .firstName("Jane")
                 .lastName("Bergshire")
+                .primaryEmail("janeber@gmail.com")
+                .password("test")
                 .mailList(List.of("janebergshire@yahoo.com", "jane.berghsire@gmail.com"))
                 .phoneNumberList(List.of("0724135235", "0735647578"))
                 .birthDate(LocalDate.of(1980, 9, 11))
