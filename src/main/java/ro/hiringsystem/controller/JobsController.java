@@ -1,12 +1,9 @@
 package ro.hiringsystem.controller;
 
-import jakarta.persistence.ElementCollection;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ro.hiringsystem.model.InterviewerUser;
-import ro.hiringsystem.model.Job;
-import ro.hiringsystem.model.enums.InterviewerType;
+import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
 

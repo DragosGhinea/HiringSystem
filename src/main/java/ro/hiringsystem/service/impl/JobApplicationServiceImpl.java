@@ -2,14 +2,13 @@ package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CandidateUserMapper;
 import ro.hiringsystem.mapper.JobApplicationMapper;
-import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.Job;
-import ro.hiringsystem.model.JobApplication;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.entity.CandidateUser;
+import ro.hiringsystem.model.entity.JobApplication;
 import ro.hiringsystem.model.dto.JobApplicationDto;
-import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.repository.JobApplicationRepository;
-import ro.hiringsystem.repository.JobRepository;
 import ro.hiringsystem.service.JobApplicationService;
 
 import java.util.*;
@@ -60,14 +59,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    public void updateElementById(JobApplicationDto newJobApplicationDto) {
-        Optional<JobApplication> jobApplication = jobApplicationRepository.findById(newJobApplicationDto.getId());
-
-        if(jobApplication.isEmpty()) {
-            throw new RuntimeException("Job Application not found!");
-        }
-
-        else jobApplicationRepository.save(JobApplicationMapper.INSTANCE.toEntity(newJobApplicationDto));
+    public void saveElement(JobApplicationDto jobApplicationDto) {
+        JobApplication jobApplication = JobApplicationMapper.INSTANCE.toEntity(jobApplicationDto);
+        jobApplicationRepository.save(JobApplicationMapper.INSTANCE.toEntity(jobApplicationDto));
     }
 
     @Override

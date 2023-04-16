@@ -17,7 +17,7 @@ public interface JobService{
 
     void removeElementById(UUID id);
 
-    void updateElementById(JobDto newJobDto);
+    void saveElement(JobDto jobDto);
 
     Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList);
 }

@@ -1,12 +1,8 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
 import ro.hiringsystem.model.enums.Status;
 
 import java.time.LocalDate;
@@ -18,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="\"JOB_APPLICATION\"")
+@Table(name="JOB_APPLICATION")
 public class JobApplication {
 
     @Id
@@ -33,9 +29,9 @@ public class JobApplication {
     @JoinColumn(name = "job_id")
     private Job job;
 
-    @NotNull
+    @NonNull
     private LocalDate applicationDate;
 
-    @NotNull
+    @NonNull
     private Status status;
 }

@@ -19,7 +19,7 @@ public interface JobApplicationService {
 
     void removeElementById(UUID id);
 
-    void updateElementById(JobApplicationDto newJobApplicationDto);
+    void saveElement(JobApplicationDto jobApplicationDto);
 
     Map<UUID, JobApplicationDto> listToMap(List<JobApplicationDto> jobApplicationDtoList);
 

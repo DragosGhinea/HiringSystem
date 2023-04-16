@@ -1,12 +1,8 @@
-package ro.hiringsystem.model;
+package ro.hiringsystem.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.jetbrains.annotations.NotNull;
 import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
 
@@ -21,22 +17,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="\"JOB\"")
+@Table(name="JOB")
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NonNull
     private String title;
 
-    @NotNull
+    @NonNull
     private String description;
 
-    @NotNull
+    @NonNull
     private JobType jobType;
 
-    @NotNull
+    @NonNull
     private Position position;
 
     private Double salary;
