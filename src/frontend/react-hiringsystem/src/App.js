@@ -31,14 +31,6 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route
-              path="/fav-movies"
-              element={
-                <ProtectedRoute accessBy="">
-                  {/*<FavouriteMovie />*/}
-                </ProtectedRoute>
-              }
-            ></Route>
           </Routes>
         </Layout>
       </AuthContextProvider>
