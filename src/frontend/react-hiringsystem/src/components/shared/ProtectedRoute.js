@@ -6,7 +6,7 @@ import AuthContext from "./AuthContext";
 const ProtectedRoute = ({ children, accessBy }) => {
   const { user } = useContext(AuthContext);
  
-  if (accessBy == "non-authenticated") {
+  if (accessBy === "non-authenticated") {
     if (!user) {
       return children;
     }
