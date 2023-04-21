@@ -2,11 +2,12 @@ package ro.hiringsystem.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface CandidateUserMapper {
 
     CandidateUserMapper INSTANCE = Mappers.getMapper(CandidateUserMapper.class);
