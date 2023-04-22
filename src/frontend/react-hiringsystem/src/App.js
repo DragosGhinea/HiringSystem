@@ -6,7 +6,6 @@ import { AuthContextProvider } from "./components/shared/AuthContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
 import Register from "./pages/Register";
-import CandidateProfile from "./pages/CandidateProfile";
  
 function App() {
   return (
@@ -29,14 +28,6 @@ function App() {
               element={
                 <ProtectedRoute accessBy="non-authenticated">
                   <Register />
-                </ProtectedRoute>
-              }
-            ></Route>
-            <Route
-              path="/candidate"
-              element={
-                <ProtectedRoute accessBy="non-authenticated">
-                  <CandidateProfile />
                 </ProtectedRoute>
               }
             ></Route>
