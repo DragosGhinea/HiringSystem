@@ -1,8 +1,11 @@
 package ro.hiringsystem.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 
@@ -10,13 +13,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
+@RequestMapping(value = "/api/v1/interviewer")
 public class InterviewerUsersController {
 
-    @GetMapping("/interviewer/profile")
-    String getUser(Model model) {
+    @GetMapping("profile")
+    public ResponseEntity<InterviewerUser> getUser(Model model) {
 
-        model.addAttribute("user", InterviewerUser.builder()
+        return ResponseEntity.ok(InterviewerUser.builder()
                 .id(UUID.randomUUID())
                 .firstName("Jane")
                 .lastName("Bergshire")
@@ -28,8 +32,6 @@ public class InterviewerUsersController {
                 .interviewerType(InterviewerType.TECHNICAL)
                 .professionalBackground("Jane is a software developer with 10 years of experience in web development using languages such as JavaScript, Python, and PHP. She has expertise in front-end development with React and Angular and has worked on enterprise-level applications. She's proficient in agile methodologies and version control tools like Git, with experience in continuous integration and deployment tools. Jane is a strong problem-solver and effective communicator with a passion for learning and keeping up-to-date with the latest technologies.")
                 .build());
-
-        return "interviewerProfile";
 
     }
 

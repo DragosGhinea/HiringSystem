@@ -1,14 +1,29 @@
 package ro.hiringsystem.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ro.hiringsystem.model.auxiliary.AcademicExperience;
+import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.auxiliary.Project;
+import ro.hiringsystem.model.auxiliary.WorkExperience;
+import ro.hiringsystem.model.entity.CandidateUser;
 
-@Controller
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/api/v1/candidate")
 public class CandidateUsersController {
 
-    /*@GetMapping("/candidate/profile")
-    String getUser(Model model) throws MalformedURLException {
+    @GetMapping("profile")
+    public ResponseEntity<CandidateUser> getCandidateUser() throws MalformedURLException {
 
-        model.addAttribute("user", CandidateUser.builder()
+        return ResponseEntity.ok(CandidateUser.builder()
                                                     .id(UUID.randomUUID())
                                                     .firstName("John")
                                                     .lastName("Neumann")
@@ -68,8 +83,6 @@ public class CandidateUsersController {
                                 .build())
                 .build());
 
-        return "candidateProfile";
-
-    }*/
+    }
 
 }
