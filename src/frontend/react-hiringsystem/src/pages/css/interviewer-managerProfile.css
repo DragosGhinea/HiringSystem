@@ -1,4 +1,4 @@
-body{
+body.containerInterviewerManager {
     background:#e3f9ff;
 }
 
@@ -18,7 +18,7 @@ h4, h6, span {
     cursor:default;
 }
 
-.card:before{
+.containerInterviewerManager .card:before{
     content:"";
     position:absolute;
     left:0;
@@ -32,7 +32,7 @@ h4, h6, span {
     cursor:default;
 }
 
-.card:after{
+.containerInterviewerManager .card:after{
     content:"";
     position:absolute;
     left:0;
@@ -46,7 +46,7 @@ h4, h6, span {
     cursor:default;
 }
 
-.card:hover::after{
+.containerInterviewerManager .card:hover::after{
     transform:scaleY(1);
 }
 

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 
@@ -18,13 +19,13 @@ import java.util.UUID;
 public class InterviewerUsersController {
 
     @GetMapping("profile")
-    public ResponseEntity<InterviewerUser> getUser(Model model) {
+    public ResponseEntity<InterviewerUserDto> getInterviewerUser() {
 
-        return ResponseEntity.ok(InterviewerUser.builder()
+        return ResponseEntity.ok(InterviewerUserDto.builder()
                 .id(UUID.randomUUID())
                 .firstName("Jane")
                 .lastName("Bergshire")
-                .primaryEmail("janeber@gmail.com")
+                .primaryEmail("janeberg@gmail.com")
                 .password("test")
                 .mailList(List.of("janebergshire@yahoo.com", "jane.berghsire@gmail.com"))
                 .phoneNumberList(List.of("0724135235", "0735647578"))

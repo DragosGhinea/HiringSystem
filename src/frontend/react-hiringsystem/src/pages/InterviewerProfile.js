@@ -4,35 +4,38 @@ import "./css/interviewer-managerProfile.css"
 
 function InterviewerProfile() {
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
 
+        document.body.classList.add('containerInterviewerManager');
+
         axios
-            .get("localhost:8081/api/v1/interviewer/profile")
+            .get("http://localhost:8081/api/v1/interviewer/profile")
             .then(function (response) {
                 console.log(response);
+                setUser(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
+
     }, [])
     
-    return (
-        <div className="container mt-5">
+    return (user &&
+        <div className="containerInterviewerManager mt-5">
             <div className="row d-flex justify-content-center">
                 <div className="col-md-7">
                     <div className="card p-3 py-4">
 
                         <div className="text-center">
-                            <img src="/src/frontend/react-hiringsystem/src/pages/css/images/interviewer.jpg"
-                                 alt="Interviewer" width="300" className="rounded-circle"/>
+                            <img src={require("./css/images/interviewer.jpg")} alt="Interviewer" width="300" className="rounded-circle"/>
                         </div>
 
                         <div className="text-center">
-                            <h4>{user.firstName} + ' ' + {user.lastName}></h4>
+                            <h4>{user.firstName + ' ' + user.lastName}</h4>
 
-                            <span>{user.interviewerType} + " Interviewer"></span>
+                            <span>{user.interviewerType} Interviewer</span>
 
                             <div className="row row-divider m-3">
                                 <div className="col-md-6">
@@ -56,7 +59,7 @@ function InterviewerProfile() {
                                         </div>
                                         <div className="col-sm-9 text-secondary">
                                             <ul className="style-type-none">
-                                                {user.phoneList.map(phone => (
+                                                {user.phoneNumberList.map(phone => (
                                                     <li key={phone}>{phone}</li>
                                                 ))}
                                             </ul>
