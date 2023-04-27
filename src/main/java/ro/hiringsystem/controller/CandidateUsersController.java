@@ -1,14 +1,30 @@
 package ro.hiringsystem.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ro.hiringsystem.model.auxiliary.AcademicExperience;
+import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.auxiliary.Project;
+import ro.hiringsystem.model.auxiliary.WorkExperience;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.entity.CandidateUser;
 
-@Controller
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/api/v1/candidate")
 public class CandidateUsersController {
 
-    /*@GetMapping("/candidate/profile")
-    String getUser(Model model) throws MalformedURLException {
+    @GetMapping("profile")
+    public ResponseEntity<CandidateUserDto> getCandidateUser() throws MalformedURLException {
 
-        model.addAttribute("user", CandidateUser.builder()
+        return ResponseEntity.ok(CandidateUserDto.builder()
                                                     .id(UUID.randomUUID())
                                                     .firstName("John")
                                                     .lastName("Neumann")
@@ -16,7 +32,7 @@ public class CandidateUsersController {
                                                     .phoneNumberList(List.of("0761425366", "0725347587"))
                                                     .birthDate(LocalDate.of(2002, 3, 7))
                 .githubProfileLink(new URL("https://github.com/UserName"))
-                .linkedInProfileLink(new URL("https://www.linkedin.com/user/"))
+                .linkedInProfileLink(new URL("https://www.linkedin.com/in/user/"))
                 .cv(CV.builder()
                         .academicBackground(List.of(AcademicExperience.builder()
                                 .startDate(LocalDate.of(2017, 9, 15))
@@ -66,10 +82,10 @@ public class CandidateUsersController {
                                                 .title("ASP.NET Web Development Project")
                                                 .description("This is a team project I made for the Web Development course, using the MVC-Architecture of ASP.NET framework, and the Entity Framework technology. For the authentication system, I used the Identity component. The general strategy I used for the implementation is Code-First.").build()))
                                 .build())
+                .primaryEmail("test")
+                .password("test")
                 .build());
 
-        return "candidateProfile";
-
-    }*/
+    }
 
 }
