@@ -16,6 +16,7 @@ import java.util.*;
 public class CandidateUserServiceImpl implements CandidateUserService {
 
     private final CandidateUserRepository candidateUserRepository;
+    private final CandidateUserMapper candidateUserMapper;
 
     @Override
     public CandidateUserDto getById(UUID id) {
@@ -25,13 +26,13 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+        return candidateUserMapper.toDto(candidateUser.get());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getByLastName(String lastName) {
         return listToMap(candidateUserRepository.findByLastName(lastName).stream()
-                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
+                            .map(candidateUserMapper::toDto).toList());
     }
 
     @Override
@@ -42,24 +43,24 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+        return candidateUserMapper.toDto(candidateUser.get());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getAll() {
         return listToMap(candidateUserRepository.findAll().stream()
-                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
+                            .map(candidateUserMapper::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, CandidateUserDto> candidateUserMap) {
         candidateUserRepository.saveAll(candidateUserMap.values().stream()
-                            .map(CandidateUserMapper.INSTANCE::toEntity).toList());
+                            .map(candidateUserMapper::toEntity).toList());
     }
 
     @Override
     public void add(CandidateUserDto candidateUser) {
-        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUser));
+        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUser));
     }
 
     @Override
@@ -75,8 +76,8 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     @Override
     public void saveElement(CandidateUserDto candidateUserDto) {
-        CandidateUser user = CandidateUserMapper.INSTANCE.toEntity(candidateUserDto);
-        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUserDto));
+        CandidateUser user = candidateUserMapper.toEntity(candidateUserDto);
+        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
     }
 
     @Override
