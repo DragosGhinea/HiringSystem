@@ -32,6 +32,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/libraries" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
@@ -137,7 +138,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: jakarta.inject:jakarta.inject-api:2.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.antlr:antlr4-runtime:4.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.orm:hibernate-hikaricp:6.1.7.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.5.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:5.0.1" level="project" />
@@ -151,5 +151,6 @@
     <orderEntry type="library" name="Maven: com.intellij:annotations:7.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
   </component>
 </module>

@@ -17,28 +17,32 @@ import ro.hiringsystem.model.dto.UserDto;
 @Service
 @RequiredArgsConstructor
 public class UserMapperService {
+    private final CandidateUserMapper candidateUserMapper;
+    private final InterviewerUserMapper interviewerUserMapper;
+    private final ManagerUserMapper managerUserMapper;
+    
     public UserDto toDto(User user){
         if(user instanceof CandidateUser instancedUser){
-            return CandidateUserMapper.INSTANCE.toDto(instancedUser);
+            return candidateUserMapper.toDto(instancedUser);
         }
         else if(user instanceof InterviewerUser instancedUser){
-            return InterviewerUserMapper.INSTANCE.toDto(instancedUser);
+            return interviewerUserMapper.toDto(instancedUser);
         }
         else{
-            return ManagerUserMapper.INSTANCE.toDto((ManagerUser) user);
+            return managerUserMapper.toDto((ManagerUser) user);
         }
-    };
+    }
 
     public User toEntity(UserDto userDto){
         if(userDto instanceof CandidateUserDto instancedUser){
-            return CandidateUserMapper.INSTANCE.toEntity(instancedUser);
+            return candidateUserMapper.toEntity(instancedUser);
         }
         else if(userDto instanceof InterviewerUserDto instancedUser){
-            return InterviewerUserMapper.INSTANCE.toEntity(instancedUser);
+            return interviewerUserMapper.toEntity(instancedUser);
         }
         else{
-            return ManagerUserMapper.INSTANCE.toEntity((ManagerUserDto) userDto);
+            return managerUserMapper.toEntity((ManagerUserDto) userDto);
         }
-    };
+    }
 
 }

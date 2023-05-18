@@ -16,6 +16,7 @@ import java.util.*;
 public class InterviewerUserServiceImpl implements InterviewerUserService {
 
     private final InterviewerUserRepository interviewerUserRepository;
+    private final InterviewerUserMapper interviewerUserMapper;
 
     @Override
     public InterviewerUserDto getById(UUID id) {
@@ -25,13 +26,13 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return InterviewerUserMapper.INSTANCE.toDto(interviewerUser.get());
+        return interviewerUserMapper.toDto(interviewerUser.get());
     }
 
     @Override
     public Map<UUID, InterviewerUserDto> getByLastName(String lastName) {
         return listToMap(interviewerUserRepository.findByLastName(lastName).stream()
-                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
+                .map(interviewerUserMapper::toDto).toList());
     }
 
     @Override
@@ -42,30 +43,30 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return InterviewerUserMapper.INSTANCE.toDto(interviewerUser.get());
+        return interviewerUserMapper.toDto(interviewerUser.get());
     }
 
     @Override
     public Map<UUID, InterviewerUserDto> getByType(InterviewerType interviewerType) {
         return listToMap(interviewerUserRepository.findByType(interviewerType).stream()
-                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
+                .map(interviewerUserMapper::toDto).toList());
     }
 
     @Override
     public Map<UUID, InterviewerUserDto> getAll() {
         return listToMap(interviewerUserRepository.findAll().stream()
-                .map(InterviewerUserMapper.INSTANCE::toDto).toList());
+                .map(interviewerUserMapper::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, InterviewerUserDto> interviewerUserMap) {
         interviewerUserRepository.saveAll(interviewerUserMap.values().stream()
-                .map(InterviewerUserMapper.INSTANCE::toEntity).toList());
+                .map(interviewerUserMapper::toEntity).toList());
     }
 
     @Override
     public void add(InterviewerUserDto interviewerUser) {
-        interviewerUserRepository.save(InterviewerUserMapper.INSTANCE.toEntity(interviewerUser));
+        interviewerUserRepository.save(interviewerUserMapper.toEntity(interviewerUser));
     }
 
     @Override
@@ -87,7 +88,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        else interviewerUserRepository.save(InterviewerUserMapper.INSTANCE.toEntity(interviewerUserDto));
+        else interviewerUserRepository.save(interviewerUserMapper.toEntity(interviewerUserDto));
     }
 
     @Override

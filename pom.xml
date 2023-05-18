@@ -18,6 +18,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
+		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
 
 	<dependencies>
@@ -46,13 +47,13 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.5.3.Final</version>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
-			<version>1.5.3.Final</version>
+			<version>${org.mapstruct.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -140,12 +141,14 @@
 		</dependency>
 
 		<!-- H2 database dependency (for development) -->
+		<!-- duplicate dependency
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>2.1.214</version>
 			<scope>test</scope>
 		</dependency>
+		-->
 
 		<!-- PostgreSQL database dependency (for production) -->
 		<dependency>
@@ -218,6 +221,36 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<dependency>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</dependency>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<compilerArg>
+							-Amapstruct.defaultComponentModel=spring
+						</compilerArg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>

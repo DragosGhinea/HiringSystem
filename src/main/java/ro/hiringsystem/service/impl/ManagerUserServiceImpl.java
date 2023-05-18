@@ -15,6 +15,7 @@ import java.util.*;
 public class ManagerUserServiceImpl implements ManagerUserService {
 
     private final ManagerUserRepository managerUserRepository;
+    private final ManagerUserMapper managerUserMapper;
 
     @Override
     public ManagerUserDto getById(UUID id) {
@@ -24,13 +25,13 @@ public class ManagerUserServiceImpl implements ManagerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return ManagerUserMapper.INSTANCE.toDto(managerUser.get());
+        return managerUserMapper.toDto(managerUser.get());
     }
 
     @Override
     public Map<UUID, ManagerUserDto> getByLastName(String lastName) {
         return listToMap(managerUserRepository.findByLastName(lastName).stream()
-                .map(ManagerUserMapper.INSTANCE::toDto).toList());
+                .map(managerUserMapper::toDto).toList());
     }
 
     @Override
@@ -41,24 +42,24 @@ public class ManagerUserServiceImpl implements ManagerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return ManagerUserMapper.INSTANCE.toDto(managerUser.get());
+        return managerUserMapper.toDto(managerUser.get());
     }
 
     @Override
     public Map<UUID, ManagerUserDto> getAll() {
         return listToMap(managerUserRepository.findAll().stream()
-                .map(ManagerUserMapper.INSTANCE::toDto).toList());
+                .map(managerUserMapper::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, ManagerUserDto> managerUserMap) {
         managerUserRepository.saveAll(managerUserMap.values().stream()
-                .map(ManagerUserMapper.INSTANCE::toEntity).toList());
+                .map(managerUserMapper::toEntity).toList());
     }
 
     @Override
     public void add(ManagerUserDto managerUser) {
-        managerUserRepository.save(ManagerUserMapper.INSTANCE.toEntity(managerUser));
+        managerUserRepository.save(managerUserMapper.toEntity(managerUser));
     }
 
     @Override
@@ -80,7 +81,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
             throw new RuntimeException("User not found!");
         }
 
-        else managerUserRepository.save(ManagerUserMapper.INSTANCE.toEntity(managerUserDto));
+        else managerUserRepository.save(managerUserMapper.toEntity(managerUserDto));
     }
 
     @Override
