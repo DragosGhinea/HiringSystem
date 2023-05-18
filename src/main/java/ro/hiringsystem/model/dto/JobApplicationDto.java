@@ -26,4 +26,5 @@ public class JobApplicationDto {
     private LocalDate applicationDate;
 
     private Status status;
+
 }

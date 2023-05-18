@@ -4,12 +4,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobApplicationMapper;
 import ro.hiringsystem.mapper.JobMapper;
+import ro.hiringsystem.model.auxiliary.AcademicExperience;
+import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.auxiliary.Project;
+import ro.hiringsystem.model.auxiliary.WorkExperience;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.responses.CreateJobResponse;
 import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.entity.JobApplication;
+import ro.hiringsystem.model.enums.JobType;
+import ro.hiringsystem.model.enums.Position;
 import ro.hiringsystem.repository.JobRepository;
+import ro.hiringsystem.security.auth.AuthenticationResponse;
+import ro.hiringsystem.security.auth.RegisterRequest;
 import ro.hiringsystem.service.JobService;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 @Service
@@ -72,5 +85,31 @@ public class JobServiceImpl implements JobService {
         }
 
         return jobDtoMap;
+    }
+
+    @Override
+    public CreateJobResponse create(JobDto jobDto) {
+        try {
+
+            add(jobDto);
+
+            return CreateJobResponse.builder()
+                    .id(jobDto.getId())
+                    .title(jobDto.getTitle())
+                    .description(jobDto.getDescription())
+                    .jobType(jobDto.getJobType())
+                    .position(jobDto.getPosition())
+                    .salary(jobDto.getSalary())
+                    .hoursPerWeek(jobDto.getHoursPerWeek())
+                    .startDate(jobDto.getStartDate())
+                    .period(jobDto.getPeriod())
+                    .skillsNeeded(jobDto.getSkillsNeeded())
+                    .offers(jobDto.getOffers())
+                    .build();
+
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
     }
 }

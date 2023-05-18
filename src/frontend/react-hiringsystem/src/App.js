@@ -3,17 +3,19 @@ import Layout from "./components/shared/Layout";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthContextProvider } from "./components/shared/AuthContext";
+import { JobContextProvider } from "./components/shared/JobContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
 import Register from "./pages/Register";
 import CandidateProfile from "./pages/CandidateProfile";
 import InterviewerProfile from "./pages/InterviewerProfile";
 import ManagerProfile from "./pages/ManagerProfile";
- 
+import CreateJob from "./pages/CreateJob";
+
 function App() {
   return (
     <>
-      <AuthContextProvider>
+      <AuthContextProvider><JobContextProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -58,9 +60,17 @@ function App() {
                       </ProtectedRoute>
                   }
               ></Route>
+              <Route
+                  path="/job/create"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <CreateJob />
+                      </ProtectedRoute>
+                  }
+              ></Route>
           </Routes>
         </Layout>
-      </AuthContextProvider>
+      </JobContextProvider></AuthContextProvider>
     </>
   );
 }
