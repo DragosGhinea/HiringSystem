@@ -11,6 +11,7 @@ import CandidateProfile from "./pages/CandidateProfile";
 import InterviewerProfile from "./pages/InterviewerProfile";
 import ManagerProfile from "./pages/ManagerProfile";
 import CreateJob from "./pages/CreateJob";
+import EditJob from "./pages/EditJob";
 
 function App() {
   return (
@@ -67,6 +68,18 @@ function App() {
                           <CreateJob />
                       </ProtectedRoute>
                   }
+              ></Route>
+              <Route
+                  path="/job/edit/:id"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <EditJob />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/job/delete/:id"
+                  element={<MainPage />}
               ></Route>
           </Routes>
         </Layout>

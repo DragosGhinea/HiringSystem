@@ -30,9 +30,11 @@ public class Job {
     private String description;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private JobType jobType;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     private Double salary;

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import JobContext from "../components/shared/JobContext";
 
-const Create = () => {
+const Edit = () => {
     const title = useRef("");
     const description = useRef("");
     const jobType = useRef("");
@@ -41,7 +41,7 @@ const Create = () => {
         }
     };
 
-    const createSubmit = async () => {
+    const editSubmit = async () => {
         let payload = {
             title: title.current.value,
             description: description.current.value,
@@ -66,7 +66,7 @@ const Create = () => {
             <Container className="mt-2">
                 <Row>
                     <Col className="col-md-8 offset-md-2">
-                        <legend>Create Job Form</legend>
+                        <legend>Edit Job Form</legend>
                         <form>
                             <Form.Group className="mb-3" controlId="formTitle">
                                 <Form.Label>Title</Form.Label>
@@ -126,8 +126,8 @@ const Create = () => {
                                     Add Offer
                                 </Button>
                             </Form.Group>
-                            <Button variant="primary" type="button" onClick={createSubmit}>
-                                Create
+                            <Button variant="primary" type="button" onClick={editSubmit}>
+                                Edit
                             </Button>
                         </form>
                     </Col>
@@ -137,4 +137,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Edit;

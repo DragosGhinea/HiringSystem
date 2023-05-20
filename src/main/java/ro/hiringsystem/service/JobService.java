@@ -1,9 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.JobDto;
-import ro.hiringsystem.model.dto.responses.CreateJobResponse;
-import ro.hiringsystem.security.auth.AuthenticationResponse;
-import ro.hiringsystem.security.auth.RegisterRequest;
+import ro.hiringsystem.model.dto.responses.CreateEditJobResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +22,5 @@ public interface JobService{
 
     Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList);
 
-    CreateJobResponse create(JobDto jobDto);
+    CreateEditJobResponse createEdit(JobDto jobDto);
 }

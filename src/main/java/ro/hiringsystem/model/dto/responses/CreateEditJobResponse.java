@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ro.hiringsystem.model.dto.JobApplicationDto;
 import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
 
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateJobResponse {
+public class CreateEditJobResponse {
     @JsonProperty("id")
     private UUID id;
 
@@ -42,9 +41,6 @@ public class CreateJobResponse {
 
     @JsonProperty("start_date")
     private LocalDate startDate;
-
-    @JsonProperty("period")
-    private Period period;
 
     @JsonProperty("skills_needed")
     private List<String> skillsNeeded;

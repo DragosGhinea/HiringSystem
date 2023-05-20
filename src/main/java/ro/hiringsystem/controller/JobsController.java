@@ -2,17 +2,13 @@ package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.JobDto;
-import ro.hiringsystem.model.dto.responses.CreateJobResponse;
+import ro.hiringsystem.model.dto.responses.CreateEditJobResponse;
 import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
-import ro.hiringsystem.security.auth.AuthenticationResponse;
-import ro.hiringsystem.security.auth.RegisterRequest;
-import ro.hiringsystem.service.AuthenticationService;
 import ro.hiringsystem.service.JobService;
 
 import java.time.LocalDate;
@@ -48,12 +44,23 @@ public class JobsController {
 
     }
 
-    @PostMapping("create")
-    public ResponseEntity<CreateJobResponse> create(
+    @PostMapping("{action}")
+    public ResponseEntity<CreateEditJobResponse> createOrEdit(
+            @PathVariable String action,
+            @RequestParam(required = false) UUID id,
             @RequestBody JobDto jobDto
-    ){
-        System.out.println("se creeaza jobul");
-        return ResponseEntity.ok(jobService.create(jobDto));
+    ) {
+        if (action.equals("create")) {
+            return ResponseEntity.ok(jobService.createEdit(jobDto));
+        } else if (action.equals("edit") && id != null) {
+            return ResponseEntity.ok(jobService.createEdit(jobDto));
+        } else if (action.equals("delete") && id != null) {
+            jobService.removeElementById(id);
+            return ResponseEntity.ok().build();
+        }
+        else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
