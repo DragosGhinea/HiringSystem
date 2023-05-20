@@ -29,8 +29,6 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http    .cors()
@@ -47,7 +45,6 @@ public class SecurityConfig {
                     //.authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
 //                .formLogin()
 //                    .loginPage("/login")
