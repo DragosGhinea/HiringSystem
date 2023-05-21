@@ -5,14 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.JobDto;
-import ro.hiringsystem.model.dto.responses.CreateEditJobResponse;
 import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
 import ro.hiringsystem.service.JobService;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,12 +47,12 @@ public class JobsController {
     }
 
     @PostMapping("/job/create")
-    public ResponseEntity<CreateEditJobResponse> create (@RequestBody JobDto jobDto) {
+    public ResponseEntity<JobDto> create (@RequestBody JobDto jobDto) {
         return ResponseEntity.ok(jobService.createEdit(jobDto));
     }
 
     @PostMapping("/job/edit")
-    public ResponseEntity<CreateEditJobResponse> edit(
+    public ResponseEntity<JobDto> edit(
             @RequestParam(required = true) UUID id,
             @RequestBody JobDto jobDto
     ) {
@@ -63,7 +61,7 @@ public class JobsController {
     }
 
     @PostMapping("/job/delete")
-    public ResponseEntity<CreateEditJobResponse> delete(@RequestParam(required = true) UUID id) {
+    public ResponseEntity<JobDto> delete(@RequestParam(required = true) UUID id) {
         jobService.removeElementById(id);
         return ResponseEntity.ok().build();
     }

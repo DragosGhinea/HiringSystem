@@ -3,7 +3,6 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.dto.responses.CreateEditJobResponse;
 import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.repository.JobRepository;
@@ -77,11 +76,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public CreateEditJobResponse createEdit(JobDto jobDto) {
+    public JobDto createEdit(JobDto jobDto) {
         try {
             saveElement(jobDto);
 
-            return CreateEditJobResponse.builder()
+            return JobDto.builder()
                     .id(jobDto.getId())
                     .title(jobDto.getTitle())
                     .description(jobDto.getDescription())
