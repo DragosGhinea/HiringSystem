@@ -30,12 +30,11 @@ public class JobsController {
                 .id(UUID.randomUUID())
                 .title("Software developer")
                 .description("Our team is high-talent and high-energy, creating new technologies that must achieve the best protection in the marketplace. Our Trainees will develop independent modules or products, working closely with our Senior Developers. The aim is to develop practical designs and then implement them, going through all the stages of a research project, including a public release")
-                .jobType(JobType.INTERNSHIP)
+                .jobType(JobType.INTERNSHIP_ONE_MONTH)
                 .position(Position.INTERN)
                 .salary(4200.0)
                 .hoursPerWeek(8)
                 .startDate(LocalDate.of(2023, 7, 1))
-                .period(Period.of(0, 3, 0))
                 .skillsNeeded(List.of("Basic OOP knowledge", "Team management"))
                 .offers(List.of("Great trainees", "New technologies"))
                 .build());
@@ -44,23 +43,28 @@ public class JobsController {
 
     }
 
-    @PostMapping("{action}")
-    public ResponseEntity<CreateEditJobResponse> createOrEdit(
-            @PathVariable String action,
-            @RequestParam(required = false) UUID id,
-            @RequestBody JobDto jobDto
-    ) {
-        if (action.equals("create")) {
-            return ResponseEntity.ok(jobService.createEdit(jobDto));
-        } else if (action.equals("edit") && id != null) {
-            return ResponseEntity.ok(jobService.createEdit(jobDto));
-        } else if (action.equals("delete") && id != null) {
-            jobService.removeElementById(id);
-            return ResponseEntity.ok().build();
-        }
-        else {
-            return ResponseEntity.badRequest().build();
-        }
+    @GetMapping("/get")
+    public ResponseEntity<JobDto> get (@RequestParam(required = true) UUID id) {
+        return ResponseEntity.ok(jobService.getById(id));
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<CreateEditJobResponse> create (@RequestBody JobDto jobDto) {
+        return ResponseEntity.ok(jobService.createEdit(jobDto));
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<CreateEditJobResponse> edit(
+            @RequestParam(required = true) UUID id,
+            @RequestBody JobDto jobDto
+    ) {
+        jobDto.setId(id);
+        return ResponseEntity.ok(jobService.createEdit(jobDto));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<CreateEditJobResponse> delete(@RequestParam(required = true) UUID id) {
+        jobService.removeElementById(id);
+        return ResponseEntity.ok().build();
+    }
 }

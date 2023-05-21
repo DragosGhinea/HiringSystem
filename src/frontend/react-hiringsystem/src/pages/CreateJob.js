@@ -1,23 +1,49 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import JobContext from "../components/shared/JobContext";
 
 const Create = () => {
+
+    const {create} = useContext(JobContext);
+
     const title = useRef("");
     const description = useRef("");
-    const jobType = useRef("");
-    const position = useRef("");
     const salary = useRef("");
     const hoursPerWeek = useRef("");
     const startDate = useRef("");
-    const {create} = useContext(JobContext);
 
     const [skills, setSkills] = useState([]);
     const [newSkill, setNewSkill] = useState('');
     const [offers, setOffers] = useState([]);
     const [newOffer, setNewOffer] = useState('');
+    const [jobTypes, setJobTypes] = useState([]);
+    const [positions, setPositions] = useState([]);
+    const [jobTypeSelected, setJobTypeSelected] = useState('');
+    const [positionSelected, setPositionSelected] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:8081/api/v1/jobTypes')
+            .then(response => response.json())
+            .then(data => {
+                setJobTypes(data);
+            })
+            .catch(error => {
+                console.error('Error fetching jobTypes:', error);
+            });
+    }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:8081/api/v1/positions')
+            .then(response => response.json())
+            .then(data => {
+                setPositions(data);
+            })
+            .catch(error => {
+                console.error('Error fetching positions:', error);
+            });
+    }, []);
 
     const handleNewSkillChange = (event) => {
         setNewSkill(event.target.value);
@@ -45,10 +71,10 @@ const Create = () => {
         let payload = {
             title: title.current.value,
             description: description.current.value,
-            jobType: jobType.current.value,
-            position: position.current.value,
+            jobType: jobTypeSelected,
+            position: positionSelected,
             salary: salary.current.value,
-            hoursPerWeek: salary.current.value,
+            hoursPerWeek: hoursPerWeek.current.value,
             startDate: startDate.current.value,
             skillsNeeded: skills,
             offers: offers
@@ -77,12 +103,34 @@ const Create = () => {
                                 <Form.Control type="text" ref={description} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formJobType">
-                                <Form.Label>Type</Form.Label>
-                                <Form.Control type="text" ref={jobType} />
+                                <Form.Label>Job Type</Form.Label>
+                                {jobTypes.map((jobType) => (
+                                    <div key={jobType}>
+                                        <Form.Check
+                                            type="radio"
+                                            label={jobType}
+                                            name="jobType"
+                                            value={jobType}
+                                            checked={jobType === jobTypeSelected}
+                                            onChange={(e) => setJobTypeSelected(e.target.value)}
+                                        />
+                                    </div>
+                                ))}
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formPosition">
                                 <Form.Label>Position</Form.Label>
-                                <Form.Control type="text" ref={position} />
+                                {positions.map((position) => (
+                                    <div key={position}>
+                                        <Form.Check
+                                            type="radio"
+                                            label={position}
+                                            name="position"
+                                            value={position}
+                                            checked={position === positionSelected}
+                                            onChange={(e) => setPositionSelected(e.target.value)}
+                                        />
+                                    </div>
+                                ))}
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formSalary">
                                 <Form.Label>Salary</Form.Label>
