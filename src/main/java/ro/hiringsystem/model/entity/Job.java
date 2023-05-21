@@ -30,9 +30,11 @@ public class Job {
     private String description;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private JobType jobType;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     private Double salary;
@@ -41,7 +43,7 @@ public class Job {
 
     private LocalDate startDate;
 
-    private Period period;
+    //private Period period;
 
     @ElementCollection
     private List<String> skillsNeeded;

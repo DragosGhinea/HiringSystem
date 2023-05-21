@@ -3,8 +3,8 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.entity.Job;
+import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.repository.JobRepository;
 import ro.hiringsystem.service.JobService;
 
@@ -15,6 +15,7 @@ import java.util.*;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
+    
     private final JobMapper jobMapper;
 
     @Override
@@ -59,8 +60,9 @@ public class JobServiceImpl implements JobService {
     @Override
     public void saveElement(JobDto jobDto) {
         Job job = jobMapper.toEntity(jobDto);
-        jobRepository.save(jobMapper.toEntity(jobDto));
+        jobRepository.save(job);
     }
+
 
     @Override
     public Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList) {
@@ -71,5 +73,16 @@ public class JobServiceImpl implements JobService {
         }
 
         return jobDtoMap;
+    }
+
+    @Override
+    public JobDto createEdit(JobDto jobDto) {
+        try {
+            saveElement(jobDto);
+            return jobDto;
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
     }
 }
