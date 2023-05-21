@@ -61,23 +61,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public void saveElement(JobDto jobDto) {
         Job job = jobMapper.toEntity(jobDto);
-        Optional<Job> existingJob = jobRepository.findById(job.getId());
-
-        if (existingJob.isPresent()) {
-            Job existingJobEntity = existingJob.get();
-            existingJobEntity.setTitle(job.getTitle());
-            existingJobEntity.setDescription(job.getDescription());
-            existingJobEntity.setJobType(job.getJobType());
-            existingJobEntity.setPosition(job.getPosition());
-            existingJobEntity.setSalary(job.getSalary());
-            existingJobEntity.setHoursPerWeek(job.getHoursPerWeek());
-            existingJobEntity.setStartDate(job.getStartDate());
-            existingJobEntity.setSkillsNeeded(job.getSkillsNeeded());
-            existingJobEntity.setOffers(job.getOffers());
-            jobRepository.save(existingJobEntity);
-        } else {
-            jobRepository.save(job);
-        }
+        jobRepository.save(job);
     }
 
 

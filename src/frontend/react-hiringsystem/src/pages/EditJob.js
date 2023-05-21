@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import JobContext from "../components/shared/JobContext";
 import { useParams } from 'react-router-dom';
 
-const Edit = () => {
+const EditJobForm = () => {
 
     const { id } = useParams();
 
@@ -205,4 +205,4 @@ const Edit = () => {
     );
 };
 
-export default Edit;
+export default EditJobForm;

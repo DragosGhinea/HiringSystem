@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const JobContext = createContext();
 
-export const CreateJobContextProvider = ({ children }) => {
+export const JobContextProvider = ({ children }) => {
 
     const navigate = useNavigate();
 

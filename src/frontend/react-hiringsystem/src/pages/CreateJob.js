@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import JobContext from "../components/shared/JobContext";
 
-const Create = () => {
+const CreateJobForm = () => {
 
     const {create} = useContext(JobContext);
 
@@ -185,4 +185,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default CreateJobForm;

@@ -3,8 +3,7 @@ import Layout from "./components/shared/Layout";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthContextProvider } from "./components/shared/AuthContext";
-import { CreateJobContextProvider } from "./components/shared/JobContext";
-import {EditJobContextProvider} from "./components/shared/EditJobContext";
+import { JobContextProvider } from "./components/shared/JobContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
 import Register from "./pages/Register";
@@ -17,7 +16,7 @@ import EditJob from "./pages/EditJob";
 function App() {
   return (
     <>
-      <AuthContextProvider><CreateJobContextProvider>
+      <AuthContextProvider><JobContextProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -92,7 +91,7 @@ function App() {
               ></Route>
           </Routes>
         </Layout>
-      </CreateJobContextProvider></AuthContextProvider>
+      </JobContextProvider></AuthContextProvider>
     </>
   );
 }
