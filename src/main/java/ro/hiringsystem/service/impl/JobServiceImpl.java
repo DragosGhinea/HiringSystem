@@ -79,20 +79,7 @@ public class JobServiceImpl implements JobService {
     public JobDto createEdit(JobDto jobDto) {
         try {
             saveElement(jobDto);
-
-            return JobDto.builder()
-                    .id(jobDto.getId())
-                    .title(jobDto.getTitle())
-                    .description(jobDto.getDescription())
-                    .jobType(jobDto.getJobType())
-                    .position(jobDto.getPosition())
-                    .salary(jobDto.getSalary())
-                    .hoursPerWeek(jobDto.getHoursPerWeek())
-                    .startDate(jobDto.getStartDate())
-                    .skillsNeeded(jobDto.getSkillsNeeded())
-                    .offers(jobDto.getOffers())
-                    .build();
-
+            return jobDto;
         } catch (Exception x) {
             x.printStackTrace();
             return null;

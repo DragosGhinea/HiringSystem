@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/job")
 @RequiredArgsConstructor
 public class JobsController {
 
     private final JobService jobService;
 
-    @GetMapping("/job/display")
+    @GetMapping("/display")
     String getUser(Model model) {
 
         model.addAttribute("job", Job.builder()
@@ -41,17 +41,17 @@ public class JobsController {
 
     }
 
-    @GetMapping("/job/get")
+    @GetMapping("/get")
     public ResponseEntity<JobDto> get (@RequestParam(required = true) UUID id) {
         return ResponseEntity.ok(jobService.getById(id));
     }
 
-    @PostMapping("/job/create")
+    @PostMapping("/create")
     public ResponseEntity<JobDto> create (@RequestBody JobDto jobDto) {
         return ResponseEntity.ok(jobService.createEdit(jobDto));
     }
 
-    @PostMapping("/job/edit")
+    @PostMapping("/edit")
     public ResponseEntity<JobDto> edit(
             @RequestParam(required = true) UUID id,
             @RequestBody JobDto jobDto
@@ -60,13 +60,13 @@ public class JobsController {
         return ResponseEntity.ok(jobService.createEdit(jobDto));
     }
 
-    @PostMapping("/job/delete")
+    @PostMapping("/delete")
     public ResponseEntity<JobDto> delete(@RequestParam(required = true) UUID id) {
         jobService.removeElementById(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/jobTypes")
+    @GetMapping("/types")
     public ResponseEntity<JobType[]> getAllJobTypes() {
         JobType[] jobTypes = JobType.values();
         return ResponseEntity.ok(jobTypes);
