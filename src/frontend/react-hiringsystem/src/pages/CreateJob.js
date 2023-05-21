@@ -24,7 +24,7 @@ const CreateJobForm = () => {
     const [positionSelected, setPositionSelected] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/v1/jobTypes')
+        fetch('http://localhost:8081/api/v1/job/types')
             .then(response => response.json())
             .then(data => {
                 setJobTypes(data);
@@ -35,7 +35,7 @@ const CreateJobForm = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:8081/api/v1/positions')
+        fetch('http://localhost:8081/api/v1/job/positions')
             .then(response => response.json())
             .then(data => {
                 setPositions(data);

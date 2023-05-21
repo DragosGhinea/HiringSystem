@@ -43,7 +43,7 @@ public class Job {
 
     private LocalDate startDate;
 
-    private Period period;
+    //private Period period;
 
     @ElementCollection
     private List<String> skillsNeeded;
