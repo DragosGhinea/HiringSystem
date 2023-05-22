@@ -1,10 +1,7 @@
 package ro.hiringsystem.model.entity.interview;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ro.hiringsystem.model.abstracts.User;
 
 import java.util.UUID;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class InterviewParticipant {
 
     @Id

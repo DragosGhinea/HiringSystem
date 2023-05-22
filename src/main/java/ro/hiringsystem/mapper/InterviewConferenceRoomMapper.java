@@ -12,6 +12,9 @@ public interface InterviewConferenceRoomMapper {
     @Mapping(target = "participants", source = "participants")
     InterviewConferenceRoomDto toDto(InterviewConferenceRoom interviewConferenceRoom);
 
+    @Mapping(target = "participants", source = "participants", qualifiedBy = InterviewParticipantMapper.ExtraUserInfo.class)
+    InterviewConferenceRoomDto toDtoFullyLoaded(InterviewConferenceRoom interviewConferenceRoom);
+
     @Mapping(target = "participants", source = "participants")
     InterviewConferenceRoom toEntity(InterviewConferenceRoomDto interviewConferenceRoomDto);
 

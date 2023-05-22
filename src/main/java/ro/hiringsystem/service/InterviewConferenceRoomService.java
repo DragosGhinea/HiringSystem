@@ -8,5 +8,11 @@ public interface InterviewConferenceRoomService {
 
     InterviewConferenceRoomDto getById(UUID id);
 
+    InterviewConferenceRoomDto getByIdFullyLoaded(UUID id);
+
     InterviewConferenceRoomDto create(InterviewConferenceRoomDto interviewConferenceRoomDto);
+
+    void saveElement(InterviewConferenceRoomDto interviewConferenceRoomDto);
+
+    boolean deleteById(UUID id);
 }
