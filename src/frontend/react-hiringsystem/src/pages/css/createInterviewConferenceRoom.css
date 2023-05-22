@@ -1,0 +1,7 @@
+.participants{
+    width: 600px;
+}
+
+.participants .error{
+    color: red;
+}

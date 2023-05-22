@@ -12,6 +12,9 @@ import InterviewerProfile from "./pages/InterviewerProfile";
 import ManagerProfile from "./pages/ManagerProfile";
 import CreateJob from "./pages/CreateJob";
 import EditJob from "./pages/EditJob";
+import CreateInterviewConferenceRoom from "./pages/interview/CreateInterviewConferenceRoom";
+import DisplayInterviewConferenceRoom from "./pages/interview/DisplayInterviewConferenceRoom";
+import EditInterviewConferenceRoom from "./pages/interview/EditInterviewConferenceRoom";
 
 function App() {
   return (
@@ -86,6 +89,38 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="non-authenticated">
                           <EditJob />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interview/create"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <CreateInterviewConferenceRoom />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interview/display/:id"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <DisplayInterviewConferenceRoom />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interview/edit/:id"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <EditInterviewConferenceRoom />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interview/delete/:id"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <EditInterviewConferenceRoom />
                       </ProtectedRoute>
                   }
               ></Route>
