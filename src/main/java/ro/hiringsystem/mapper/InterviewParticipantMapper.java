@@ -4,8 +4,8 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Qualifier;
-import ro.hiringsystem.model.dto.InterviewParticipantDto;
-import ro.hiringsystem.model.dto.InterviewParticipantExtraUserInfoDto;
+import ro.hiringsystem.model.dto.interview.InterviewParticipantDto;
+import ro.hiringsystem.model.dto.interview.InterviewParticipantExtraUserInfoDto;
 import ro.hiringsystem.model.entity.interview.InterviewParticipant;
 
 import java.util.List;

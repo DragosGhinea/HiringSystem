@@ -1,14 +1,13 @@
-package ro.hiringsystem.model.dto;
+package ro.hiringsystem.model.dto.interview;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
-public class InterviewParticipantExtraUserInfoDto extends InterviewParticipantDto{
+public class InterviewParticipantExtraUserInfoDto extends InterviewParticipantDto {
 
     private String firstName;
 

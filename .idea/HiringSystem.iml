@@ -70,6 +70,9 @@
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:bootstrap:5.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.19" level="project" />

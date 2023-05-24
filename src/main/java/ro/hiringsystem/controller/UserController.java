@@ -1,11 +1,14 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.repository.UserRepository;
 
 import java.util.HashMap;
@@ -25,5 +28,16 @@ public class UserController {
         Map<String, UUID> map = new HashMap<>();
         map.put("id", userRepository.findIdByEmail(mail));
         return ResponseEntity.ok(map);
+    }
+
+    @GetMapping("getLoggedIn")
+    public ResponseEntity<UserDto> getLoggedInUser(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDto userDto = (UserDto) authentication.getPrincipal();
+
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

@@ -12,9 +12,10 @@ import InterviewerProfile from "./pages/InterviewerProfile";
 import ManagerProfile from "./pages/ManagerProfile";
 import CreateJob from "./pages/CreateJob";
 import EditJob from "./pages/EditJob";
-import CreateInterviewConferenceRoom from "./pages/interview/CreateInterviewConferenceRoom";
-import DisplayInterviewConferenceRoom from "./pages/interview/DisplayInterviewConferenceRoom";
-import EditInterviewConferenceRoom from "./pages/interview/EditInterviewConferenceRoom";
+import CreateInterviewConferenceRoom from "./pages/interviewCrud/CreateInterviewConferenceRoom";
+import DisplayInterviewConferenceRoom from "./pages/interviewCrud/DisplayInterviewConferenceRoom";
+import EditInterviewConferenceRoom from "./pages/interviewCrud/EditInterviewConferenceRoom";
+import InterviewRoomPage from "./pages/interviewRoom/InterviewRoomPage";
 
 function App() {
   return (
@@ -121,6 +122,14 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="non-authenticated">
                           <EditInterviewConferenceRoom />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interview/room/:id"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <InterviewRoomPage />
                       </ProtectedRoute>
                   }
               ></Route>

@@ -3,7 +3,7 @@ package ro.hiringsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.hiringsystem.model.dto.InterviewConferenceRoomDto;
+import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.service.InterviewConferenceRoomService;
 
 import java.util.UUID;

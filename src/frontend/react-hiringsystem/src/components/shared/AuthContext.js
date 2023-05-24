@@ -37,6 +37,8 @@ export const AuthContextProvider = ({ children }) => {
       "http://localhost:8081/api/v1/auth/authenticate",
       payload
     ).then(apiResponse => {
+      console.log("LOGIN: ");
+      console.log(apiResponse);
       localStorage.setItem("tokens", JSON.stringify(apiResponse.data));
       const userData = {
         access_token: jwt_decode(apiResponse.data.access_token),
