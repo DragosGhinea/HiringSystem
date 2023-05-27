@@ -1,23 +1,51 @@
 import TextMessage from "./TextMessage";
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
-const ChatBox = ({messages, addNewMessage, userId}) => {
+const ChatBox = ({roomId, stompClient, userData}) => {
     const messagesEnd = useRef();
     const newMessageText = useRef("");
+    const [chatMessages, setChatMessages] = useState([]);
+
+    useEffect(() => {
+        onConnected();
+
+        return () => {
+            console.log("triggered chatbox")
+            handleBeforeUnload();
+        }
+    }, []);
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+    }, [chatMessages]);
+
+    const handleBeforeUnload = () => {
+        if (userData) {
+            const chatMessage = {
+                user_id: userData.id,
+                sender_full_name: `${userData.firstName} ${userData.lastName}`,
+                sender_email: userData.primaryEmail,
+                message: 'Has left the interview room',
+                message_type: 'LEAVE'
+            };
+        
+            stompClient.publish({
+                destination: `/api/v1/sockets/interview/room/message/${roomId}`,
+                body: JSON.stringify(chatMessage),
+                skipContentLengthHeader: true
+            });
+        }
+    };
 
     const renderMessages = () => {
         return (
             <div className="chatbox-messages flex-1 p-4">
                 {
-                    messages.map((msg, index) => (
+                    chatMessages.map((msg, index) => (
                         <TextMessage
                             key = {index}
                             message = {msg}
-                            direction={msg.user_id === userId ? "outgoing" : "incoming"}
+                            direction={msg.user_id === userData.id ? "outgoing" : "incoming"}
                         />
                     ))
                 }
@@ -26,6 +54,51 @@ const ChatBox = ({messages, addNewMessage, userId}) => {
             </div>
         )
     }
+
+    const onConnected = () => {
+        stompClient.subscribe(`/interview/room/chat/${roomId}`, onMessageReceived);
+        userJoin();
+    };
+
+    const userJoin = () => {
+        const chatMessage = {
+            user_id: userData.id,
+            sender_full_name: `${userData.firstName} ${userData.lastName}`,
+            sender_email: userData.primaryEmail,
+            message: 'Has joined the interview room',
+            message_type: "JOIN"
+        };
+    
+    
+        stompClient.publish({
+          destination: `/api/v1/sockets/interview/room/message/${roomId}`,
+          body: JSON.stringify(chatMessage),
+          skipContentLengthHeader: true,
+        });
+      };
+
+      const addNewMessage = (text) => {
+    
+        const chatMessage = {
+            user_id: userData.id,
+            sender_full_name: `${userData.firstName} ${userData.lastName}`,
+            sender_email: userData.primaryEmail,
+            message: text,
+            message_type: "MESSAGE"
+        };
+    
+        stompClient.publish({
+            destination: `/api/v1/sockets/interview/room/message/${roomId}`,
+            body: JSON.stringify(chatMessage),
+            skipContentLengthHeader: true
+        });
+      }
+
+      const onMessageReceived = (message) => {
+        const payloadData = JSON.parse(message.body);
+        setChatMessages((prevMessages) => [...prevMessages, payloadData]);
+      };
+
 
     const renderFooter = () => {
         return (
@@ -44,7 +117,10 @@ const ChatBox = ({messages, addNewMessage, userId}) => {
                   }}
                 />
                 <button className="btn"><i className="bi bi-upload"></i></button>
-                <button className="btn border-left-0"><i className="bi bi-send-fill"></i></button>
+                <button onClick={() => {
+                    addNewMessage(newMessageText.current.value);
+                    newMessageText.current.value = "";
+                }} className="btn border-left-0"><i className="bi bi-send-fill"></i></button>
             </div>
           );
     }
@@ -62,6 +138,6 @@ const ChatBox = ({messages, addNewMessage, userId}) => {
             </div>
         </div>
     );
-}
+};
 
 export default ChatBox;

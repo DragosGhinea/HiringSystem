@@ -2,6 +2,7 @@ package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class UserController {
         return ResponseEntity.ok(map);
     }
 
-    @GetMapping("getLoggedIn")
+    @GetMapping(value = "getLoggedIn", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getLoggedInUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto userDto = (UserDto) authentication.getPrincipal();

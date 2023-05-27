@@ -104,3 +104,104 @@
     height: 40vh;
     border: 1px solid gray;
 }
+
+.videobox{
+    margin: auto;
+    position: relative;
+    max-height: 100%;
+}
+
+/*
+
+.videobox .videos{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+*/
+
+.videobox .buttons{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.videobox .buttons div{
+    margin: 20px;
+}
+
+.videobox:hover .buttons{
+    opacity: 1;
+}
+
+.videobox .buttons .buttonsPad{
+    background-color:rgba(0, 0, 0, 0.425);
+    border-radius: 20px;
+    display: inline-block;
+    width: 30%;
+}
+
+/*
+.videobox video{
+    position: relative;
+    max-height: 100%;
+}
+*/
+
+.videobox .videos {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .video-tile {
+    width: 33.33%; 
+    height: 70.33%; 
+    position: relative;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .video-tile video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+
+  .participant-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    color: #fff; 
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 14px; 
+  }
+  
+  @media (max-width: 768px) {
+    .video-tile {
+      width: 50%;
+      height: 50%;
+    }
+}
+
+
+  
