@@ -9,33 +9,11 @@ const ChatBox = ({roomId, stompClient, userData}) => {
     useEffect(() => {
         onConnected();
 
-        return () => {
-            console.log("triggered chatbox")
-            handleBeforeUnload();
-        }
     }, []);
 
     useEffect(() => {
         scrollToBottom();
     }, [chatMessages]);
-
-    const handleBeforeUnload = () => {
-        if (userData) {
-            const chatMessage = {
-                user_id: userData.id,
-                sender_full_name: `${userData.firstName} ${userData.lastName}`,
-                sender_email: userData.primaryEmail,
-                message: 'Has left the interview room',
-                message_type: 'LEAVE'
-            };
-        
-            stompClient.publish({
-                destination: `/api/v1/sockets/interview/room/message/${roomId}`,
-                body: JSON.stringify(chatMessage),
-                skipContentLengthHeader: true
-            });
-        }
-    };
 
     const renderMessages = () => {
         return (
@@ -71,7 +49,7 @@ const ChatBox = ({roomId, stompClient, userData}) => {
     
     
         stompClient.publish({
-          destination: `/api/v1/sockets/interview/room/message/${roomId}`,
+          destination: `/api/v1/sockets/interview/room/chat/message/${roomId}`,
           body: JSON.stringify(chatMessage),
           skipContentLengthHeader: true,
         });
@@ -88,7 +66,7 @@ const ChatBox = ({roomId, stompClient, userData}) => {
         };
     
         stompClient.publish({
-            destination: `/api/v1/sockets/interview/room/message/${roomId}`,
+            destination: `/api/v1/sockets/interview/room/chat/message/${roomId}`,
             body: JSON.stringify(chatMessage),
             skipContentLengthHeader: true
         });

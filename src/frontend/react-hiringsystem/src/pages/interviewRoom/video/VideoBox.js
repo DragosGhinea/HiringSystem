@@ -1,19 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 
 
-const Video = (props) => {
+const Video = ({data}) => {
     const ref = useRef();
 
     useEffect(() => {
-        props.peer.on("stream", stream => {
+        data.peer.on("stream", stream => {
             ref.current.srcObject = stream;
         });
-    }, [props]);
+    }, [data]);
 
     return (
       <div className="video-tile">
         <video playsInline autoPlay ref={ref} />
-        <div className="participant-name">%Participant name%</div>
+        <div className="participant-name">
+              <div className="name">{data.peerFullName}</div>
+              {ref.current && ref.current.srcObject && 
+                <div className="status">
+                  {data.mic === "off" && <i className="bi bi-mic-mute-fill"></i>}
+                  {data.camera === "off" && <i className="bi bi-camera-video-off-fill"></i>}
+                </div>
+              }
+            </div>
       </div>
     );
 };
@@ -34,7 +42,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
             userStream = stream;
 
             onConnected();
-        });
+        })
 
         return () => {
             const tracks = userStream?.getTracks();
@@ -56,8 +64,6 @@ const VideoBox = ({roomId, userData, stompClient}) => {
 
       stompClient.subscribe(`/api/v1/user/sockets/${userData.id}/interview/room/receiving-returned-signal`, handleReceivingReturnedSignal);
 
-      stompClient.subscribe(`/api/v1/user/sockets/${userData.id}/interview/room/update-signal`, handleVideoUpdate);
-
       stompClient.publish({
         destination: `/api/v1/sockets/interview/room/video/message/${roomId}/join`,
         body: JSON.stringify({ userId: userData.id }),
@@ -65,25 +71,18 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       });
     };
 
-  const handleVideoUpdate = (message) => {
-    const data = JSON.parse(message.body);
-    const item = peersRef.current.find(p => p.peerID === data.callerID);
-    if(item){
-
-    }
-  }
-
   const handleAllUsers = (message) => {
       const users = JSON.parse(message.body);
       const peers = [];
-      users.forEach(userID => {
-          const peer = createPeer(userID, userData.id);
+      users.forEach(userGot => {
+          const peer = createPeer(userGot.userId, userData.id);
           peersRef.current.push({
-              peerID: userID,
+              peerID: userGot.userId,
               peer: peer,
           });
           peers.push({
-            peerID: userID,
+            peerID: userGot.userId,
+            peerFullName: `${userGot.firstName} ${userGot.lastName}`,
             peer: peer
           });
       });
@@ -99,6 +98,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       });
       setPeers(users => [...users, {
         peerID: payload.callerID,
+        peerFullName: `${payload.extraUserInfo.firstName} ${payload.extraUserInfo.lastName}`,
         peer: peer,
     }]);
   };
@@ -136,6 +136,10 @@ const VideoBox = ({roomId, userData, stompClient}) => {
           });
       });
 
+      peer.on('data', data => {
+        handleEvents(data);
+      })
+
       return peer;
   };
 
@@ -153,10 +157,41 @@ const VideoBox = ({roomId, userData, stompClient}) => {
           });
       });
 
+      peer.on('data', data => {
+        handleEvents(data);
+      })
+
       peer.signal(incomingSignal);
 
       return peer;
   };
+
+  function handleEvents(data){
+    const decoder = new TextDecoder('utf-8');
+    const jsonString = decoder.decode(data);
+
+    const jsonData = JSON.parse(jsonString);
+    setPeers(prevPeers => {
+      const updatedPeers = prevPeers.map(peer => {
+        if (peer.peerID === jsonData.userId) {
+          switch (jsonData.type) {
+            case "microphone_on":
+              return { ...peer, mic: "on" };
+            case "microphone_off":
+              return { ...peer, mic: "off" };
+            case "camera_on":
+              return { ...peer, camera: "on" };
+            case "camera_off":
+              return { ...peer, camera: "off" };
+            default:
+              return peer;
+          }
+        }
+        return peer;
+      });
+      return updatedPeers;
+    });
+  }
 
   function muteMic() {
     if(audioMuted){
@@ -164,7 +199,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       audios.forEach(track => track.enabled = true);
 
       peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({type: "microphone_on"}))
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_on"}))
       });
     }
     else{
@@ -172,7 +207,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       audios.forEach(track => track.enabled = false);
 
       peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({type: "microphone_off"}))
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_off"}))
       });
     }
 
@@ -185,7 +220,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       videos.forEach(track => track.enabled = true);
 
       peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({type: "camera_on"}))
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_on"}))
       });
     }
     else{
@@ -193,7 +228,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       videos.forEach(track => track.enabled = false);
 
       peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({type: "camera_off"}))
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_off"}))
       });
 
     }
@@ -201,28 +236,23 @@ const VideoBox = ({roomId, userData, stompClient}) => {
     setCameraMuted(!cameraMuted);
   }
 
-  /*
-  const sendVideoUpdate = (signal) => {
-    peersRef.current.forEach(peer => {
-      stompClient.publish({
-        destination: `/api/v1/sockets/interview/room/video/message/${roomID}/update-signal`,
-        body: JSON.stringify({ id: peer.peerID, signal: signal, callerID: userData.id }),
-      });
-    })
-  }
-  */
-
 
   return (
       <div className="videobox">
         <div className="videos">
           <div className="video-tile">
             <video muted ref={userVideo} autoPlay playsInline />
-            <div className="participant-name">%Participant name%</div>
+            <div className="participant-name">
+              <div className="name">Myself</div>
+              <div className="status">
+                {audioMuted && <i className="bi bi-mic-mute-fill"></i>}
+                {cameraMuted && <i className="bi bi-camera-video-off-fill"></i>}
+              </div>
+            </div>
           </div>
           {peers.map((peer) => {
               return (
-                  <Video key={peer.peerID} peer={peer.peer} />
+                  <Video key={peer.peerID} data = {peer}/>
               );
           })}
         </div>

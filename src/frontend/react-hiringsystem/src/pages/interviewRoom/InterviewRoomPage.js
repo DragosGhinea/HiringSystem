@@ -16,23 +16,23 @@ const InterviewRoomPage = () => {
 
   useEffect(() => {
     if(userData == null){
-    jwtInterceptor.get("http://localhost:8081/api/v1/user/getLoggedIn")
-      .then(data => {
-          setUserData(data.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      jwtInterceptor.get("http://localhost:8081/api/v1/user/getLoggedIn")
+        .then(data => {
+            setUserData(data.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
 
       return;
     }
 
-    connect();
-    console.log("Connecting...");
+    const clientToCleanup = connect();
     
     return () => {
-      console.log("LEFT TRIGGERED");
-      disconnect();
+      if(clientToCleanup){
+        clientToCleanup.deactivate();
+      }
     };
   }, [userData]);
 
@@ -43,25 +43,35 @@ const InterviewRoomPage = () => {
       webSocketFactory: () => sockJS,
       reconnectDelay: 5000, // Optional: Adjust the reconnect delay as needed
     });
-
-    client.onConnect = onConnected;
-    client.onStompError = onError;
-    client.activate();
-
     setStompClient(client);
+    return client;
   };
 
-  const disconnect = () => {
-    if (stompClient) {
-      stompClient.deactivate();
+  useEffect(() => {
+    if(stompClient){
+      stompClient.onConnect = onConnected;
+      stompClient.onStompError = onError;
+
+      stompClient.activate();
     }
-  };
+  }, [stompClient])
 
   const onError = (error) => {
     console.error(error);
   };
 
-  const onConnected = () => {
+  const onConnected = async () => {
+    await stompClient.publish({
+      destination: `/api/v1/sockets/interview/room/join/${id}`,
+      body: JSON.stringify({
+        userId: userData.id,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        primaryEmail: userData.primaryEmail
+      }),
+      skipContentLengthHeader: true,
+    });
+
     setConnected(true);
   };
 
