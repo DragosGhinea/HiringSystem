@@ -1,4 +1,4 @@
-package ro.hiringsystem.model.dto;
+package ro.hiringsystem.model.dto.interview;
 
 import lombok.Getter;
 import lombok.Setter;

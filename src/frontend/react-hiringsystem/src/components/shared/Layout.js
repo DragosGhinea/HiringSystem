@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
           )}
         </Navbar.Collapse>
       </Navbar>
-      <Container>{children}</Container>
+      <Container fluid>{children}</Container>
     </>
   );
 };

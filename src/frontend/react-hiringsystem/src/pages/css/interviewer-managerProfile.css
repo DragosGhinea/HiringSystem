@@ -2,15 +2,15 @@ body.containerInterviewerManager {
     background:#e3f9ff;
 }
 
-h4, h6, span {
+.containerInterviewerManager h4, h6, span {
     color:#4b6584;
 }
 
-.style-type-none {
+.containerInterviewerManager .style-type-none {
     list-style-type:none;
 }
 
-.card{
+.containerInterviewerManager .card{
     border:none;
     position:relative;
     overflow:hidden;
@@ -50,20 +50,20 @@ h4, h6, span {
     transform:scaleY(1);
 }
 
-.fonts{
+.containerInterviewerManager .fonts{
     font-size:11px;
     text-align:justify;
 }
 
-.btn-info {
+.containerInterviewerManager .btn-info {
     color:#fff;
     background-color:#2d98da;
 }
 
-.btn-info:hover {
+.containerInterviewerManager .btn-info:hover {
     background-color:#ace9fa;
 }
 
-.row-divider .col-md-6:first-child {
+.containerInterviewerManager .row-divider .col-md-6:first-child {
     border-right: 1px solid #ccc;
 }

@@ -1,16 +1,16 @@
 package ro.hiringsystem.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.service.UserMapperService;
 import ro.hiringsystem.model.auxiliary.AcademicExperience;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.auxiliary.Project;
@@ -25,13 +25,13 @@ import ro.hiringsystem.security.token.Token;
 import ro.hiringsystem.security.token.TokenRepository;
 import ro.hiringsystem.security.token.TokenType;
 import ro.hiringsystem.service.AuthenticationService;
+import ro.hiringsystem.service.UserMapperService;
 import ro.hiringsystem.service.UserService;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -185,11 +185,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(refreshToken);
+        try {
+            userEmail = jwtService.extractUsername(refreshToken);
+        }catch(ExpiredJwtException | MalformedJwtException e){
+            return;
+        }
+        catch(Exception x){
+            x.printStackTrace();
+            return;
+        }
+
         if (userEmail != null) {
             var user = userService.getByEmail(userEmail);
             if (jwtService.isTokenValid(refreshToken, user)) {

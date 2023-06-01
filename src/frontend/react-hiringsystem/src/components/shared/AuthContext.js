@@ -10,7 +10,7 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     if (localStorage.getItem("tokens")) {
       let tokens = JSON.parse(localStorage.getItem("tokens"));
-      return {access_token: jwt_decode(tokens.access_token)};
+      return {email: jwt_decode(tokens.access_token).sub};
     }
     return null;
   });
@@ -39,7 +39,6 @@ export const AuthContextProvider = ({ children }) => {
     ).then(apiResponse => {
       localStorage.setItem("tokens", JSON.stringify(apiResponse.data));
       const userData = {
-        access_token: jwt_decode(apiResponse.data.access_token),
         email: payload.email
       }
       setUser(userData);
