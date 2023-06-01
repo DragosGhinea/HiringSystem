@@ -1,24 +1,89 @@
 import React, { useEffect, useRef, useState } from "react";
 
 
-const Video = ({data}) => {
+const Video = ({data, remoteStream}) => {
     const ref = useRef();
+    const [isAudioActive, setIsAudioActive] = useState(false);
 
     useEffect(() => {
-        data.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        });
-    }, [data]);
+      let audioContext = null;
+      let analyser = null;
+      let source = null;
+
+      ref.current.srcObject = remoteStream.stream;
+
+      if(remoteStream){
+        audioContext = new AudioContext();
+        analyser = audioContext.createAnalyser();
+        source = audioContext.createMediaStreamSource(remoteStream.stream);
+
+        source.connect(analyser);
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const analyzeAudio = () => {
+          analyser.getByteFrequencyData(dataArray);
+
+          const average = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+          setIsAudioActive(average > 0.5); 
+
+          requestAnimationFrame(analyzeAudio);
+        };
+
+        analyzeAudio();
+      }
+
+      return () => {
+        analyser?.disconnect();
+        source?.disconnect();
+        audioContext?.close();
+      }
+    }, [remoteStream]);
+
+    useEffect(() => {
+      let audioContext = null;
+      let analyser = null;
+      let source = null;
+
+      if(ref.current && ref.current.srcObject){
+        audioContext = new AudioContext();
+        analyser = audioContext.createAnalyser();
+        source = audioContext.createMediaStreamSource(ref.current.srcObject);
+
+        source.connect(analyser);
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const analyzeAudio = () => {
+          analyser.getByteFrequencyData(dataArray);
+
+          const average = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+          setIsAudioActive(average > 0.5); 
+
+          requestAnimationFrame(analyzeAudio);
+        };
+
+        analyzeAudio();
+      }
+
+      return () => {
+        analyser?.disconnect();
+        source?.disconnect();
+        audioContext?.close();
+      }
+    }, [data, ref.current?.srcObject])
 
     return (
-      <div className="video-tile">
+      <div className={`video-tile ${isAudioActive && 'audio-active'}`}>
         <video playsInline autoPlay ref={ref} />
         <div className="participant-name">
               <div className="name">{data.peerFullName}</div>
               {ref.current && ref.current.srcObject && 
                 <div className="status">
-                  {data.mic === "off" && <i className="bi bi-mic-mute-fill"></i>}
-                  {data.camera === "off" && <i className="bi bi-camera-video-off-fill"></i>}
+                  {remoteStream.mic === "off" && <i className="bi bi-mic-mute-fill"></i>}
+                  {remoteStream.camera === "off" && <i className="bi bi-camera-video-off-fill"></i>}
                 </div>
               }
             </div>
@@ -30,9 +95,12 @@ const VideoBox = ({roomId, userData, stompClient}) => {
     const [peers, setPeers] = useState([]);
     const peersRef = useRef([]);
     const userVideo = useRef();
+    const [remoteStreams, setRemoteStreams] = useState({})
 
     const [cameraMuted, setCameraMuted] = useState(false);
     const [audioMuted, setAudioMuted] = useState(false);
+    const cameraMutedRef = useRef(false);
+    const audioMutedRef = useRef(false);
 
 
     useEffect(() => {
@@ -42,6 +110,9 @@ const VideoBox = ({roomId, userData, stompClient}) => {
             userStream = stream;
 
             onConnected();
+        })
+        .catch(err => {
+          console.log(err);
         })
 
         return () => {
@@ -73,34 +144,65 @@ const VideoBox = ({roomId, userData, stompClient}) => {
 
   const handleAllUsers = (message) => {
       const users = JSON.parse(message.body);
-      const peers = [];
       users.forEach(userGot => {
           const peer = createPeer(userGot.userId, userData.id);
-          peersRef.current.push({
-              peerID: userGot.userId,
-              peer: peer,
+          peer.on('stream', (stream) => {
+            setRemoteStreams(prevStreams => {
+              return {...prevStreams, [userGot.userId]: {
+                stream: stream,
+                mic: "on",
+                camera: "on"
+              }}
+            })
           });
-          peers.push({
+
+          peer.on('connect', () => {
+            peer.send(JSON.stringify({type: 'status_request', userId: userData.id}));
+
+            setPeers(prevPeers => [...prevPeers, 
+              {
+                peerID: userGot.userId,
+                peerFullName: `${userGot.firstName} ${userGot.lastName}`,
+                peer: peer
+              }
+            ]);
+          })
+
+          peersRef.current.push({
             peerID: userGot.userId,
-            peerFullName: `${userGot.firstName} ${userGot.lastName}`,
-            peer: peer
+            peer: peer,
           });
       });
-      setPeers(peers);
   };
 
   const handleUserJoined = (message) => {
       const payload = JSON.parse(message.body);
       const peer = addPeer(payload.signal, payload.callerID);
-      peersRef.current.push({
-          peerID: payload.callerID,
-          peer: peer,
+
+      peer.on('stream', (stream) => {
+        setRemoteStreams(prevStreams => {
+          return {...prevStreams, [payload.callerID]: {
+            stream: stream,
+            mic: "on",
+            camera: "on"
+          }}
+        })
       });
-      setPeers(users => [...users, {
+
+      peer.on('connect', () => {
+        peer.send(JSON.stringify({type: 'status_request', userId: userData.id}));
+
+        setPeers(users => [...users, {
+          peerID: payload.callerID,
+          peerFullName: `${payload.extraUserInfo.firstName} ${payload.extraUserInfo.lastName}`,
+          peer: peer,
+        }]);
+      })
+
+      peersRef.current.push({
         peerID: payload.callerID,
-        peerFullName: `${payload.extraUserInfo.firstName} ${payload.extraUserInfo.lastName}`,
         peer: peer,
-    }]);
+      });
   };
 
   const handleUserLeft = (message) => {
@@ -112,7 +214,13 @@ const VideoBox = ({roomId, userData, stompClient}) => {
 
     const peers = peersRef.current.filter(p => p.peerID !== payload.id);
     peersRef.current = peers;
-    setPeers(peers);
+    setPeers((prevPeers) => prevPeers.filter((peer) => peer.peerID !== payload.id));
+
+    setRemoteStreams((prevStreams) => {
+      const updatedStreams = { ...prevStreams };
+      delete updatedStreams[payload.id];
+      return updatedStreams;
+    });
 };
 
   const handleReceivingReturnedSignal = (message) => {
@@ -166,30 +274,51 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       return peer;
   };
 
-  function handleEvents(data){
+  const handleEvents = (data) => {
     const decoder = new TextDecoder('utf-8');
     const jsonString = decoder.decode(data);
-
     const jsonData = JSON.parse(jsonString);
-    setPeers(prevPeers => {
-      const updatedPeers = prevPeers.map(peer => {
-        if (peer.peerID === jsonData.userId) {
-          switch (jsonData.type) {
-            case "microphone_on":
-              return { ...peer, mic: "on" };
-            case "microphone_off":
-              return { ...peer, mic: "off" };
-            case "camera_on":
-              return { ...peer, camera: "on" };
-            case "camera_off":
-              return { ...peer, camera: "off" };
-            default:
-              return peer;
-          }
-        }
-        return peer;
+
+    if(jsonData.type === "status_request"){
+      const peer = peersRef.current.find(peer => peer.peerID === jsonData.userId);
+      const toSend = JSON.stringify({
+        type: "status_response",
+        mic: audioMutedRef.current ? "off" : "on",
+        camera: cameraMutedRef.current ? "off" : "on",
+        userId: userData.id
       });
-      return updatedPeers;
+      peer.peer.send(toSend);
+      return;
+    }
+  
+    setRemoteStreams((prevStreams) => {
+      const updatedStreams = { ...prevStreams };
+      const stream = updatedStreams[jsonData.userId];
+  
+      if (stream) {
+        switch (jsonData.type) {
+          case 'microphone_on':
+            stream.mic = 'on';
+            break;
+          case 'microphone_off':
+            stream.mic = 'off';
+            break;
+          case 'camera_on':
+            stream.camera = 'on';
+            break;
+          case 'camera_off':
+            stream.camera = 'off';
+            break;
+          case 'status_response':
+            stream.camera = jsonData.camera;
+            stream.mic = jsonData.mic;
+            break;
+          default:
+            break;
+        }
+      }
+  
+      return updatedStreams;
     });
   }
 
@@ -198,7 +327,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const audios = userVideo.current.srcObject.getAudioTracks();
       audios.forEach(track => track.enabled = true);
 
-      peersRef.current.forEach((peer) => {
+      peers.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_on"}))
       });
     }
@@ -206,12 +335,13 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const audios = userVideo.current.srcObject.getAudioTracks();
       audios.forEach(track => track.enabled = false);
 
-      peersRef.current.forEach((peer) => {
+      peers.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_off"}))
       });
     }
 
     setAudioMuted(!audioMuted);
+    audioMutedRef.current = !audioMutedRef.current;
   }
 
   async function muteCam() {
@@ -219,7 +349,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const videos = userVideo.current.srcObject.getVideoTracks();
       videos.forEach(track => track.enabled = true);
 
-      peersRef.current.forEach((peer) => {
+      peers.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_on"}))
       });
     }
@@ -227,13 +357,14 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const videos = userVideo.current.srcObject.getVideoTracks();
       videos.forEach(track => track.enabled = false);
 
-      peersRef.current.forEach((peer) => {
+      peers.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_off"}))
       });
 
     }
 
     setCameraMuted(!cameraMuted);
+    cameraMutedRef.current = !cameraMutedRef.current;
   }
 
 
@@ -252,7 +383,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
           </div>
           {peers.map((peer) => {
               return (
-                  <Video key={peer.peerID} data = {peer}/>
+                  <Video key={peer.peerID} data = {peer} remoteStream = {remoteStreams[peer.peerID]}/>
               );
           })}
         </div>
