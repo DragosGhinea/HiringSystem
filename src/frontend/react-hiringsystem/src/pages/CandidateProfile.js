@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import "./css/candidateProfile.css"
-import { Link } from 'react-router-dom';
 
 function CandidateProfile() {
 

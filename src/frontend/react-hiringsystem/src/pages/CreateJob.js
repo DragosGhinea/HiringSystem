@@ -3,10 +3,11 @@ import { Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import JobContext from "../components/shared/JobContext";
+import {useParams} from "react-router-dom";
 
 const CreateJobForm = () => {
 
-    const {create} = useContext(JobContext);
+    const {createJob} = useContext(JobContext);
 
     const title = useRef("");
     const description = useRef("");
@@ -80,12 +81,11 @@ const CreateJobForm = () => {
             offers: offers
         }
         try {
-            await create(payload);
+            await createJob(payload);
         } catch (err) {
-            console.log(err.config.data);
+            console.log(err);
         }
     };
-
 
     return (
         <>

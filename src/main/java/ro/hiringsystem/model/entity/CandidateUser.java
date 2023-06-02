@@ -35,7 +35,7 @@ public class CandidateUser extends User {
 
     private URL linkedInProfileLink;
 
-    @OneToMany(mappedBy = "candidateUser")
+    @OneToMany(mappedBy = "candidateUserId")
     private List<JobApplication> jobApplications;
 
     @Override
