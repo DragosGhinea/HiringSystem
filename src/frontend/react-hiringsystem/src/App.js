@@ -18,11 +18,15 @@ import EditInterviewConferenceRoom from "./pages/interviewCrud/EditInterviewConf
 import InterviewRoomPage from "./pages/interviewRoom/InterviewRoomPage";
 import InterviewLeft from "./pages/interviewRoom/InterviewLeft";
 import InterviewWaitingRoom from "./pages/interviewRoom/InterviewWaitingRoom";
+import CreateApplication from "./pages/CreateApplication";
+import {JobApplicationContextProvider} from "./components/shared/JobApplicationContext";
+import DeleteJob from "./pages/DeleteJob";
+import DeleteApplication from "./pages/DeleteApplication";
 
 function App() {
   return (
     <>
-      <AuthContextProvider><JobContextProvider>
+      <AuthContextProvider><JobContextProvider><JobApplicationContextProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -46,7 +50,7 @@ function App() {
               <Route
                   path="/candidate/profile"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CandidateProfile />
                       </ProtectedRoute>
                   }
@@ -54,7 +58,7 @@ function App() {
               <Route
                   path="/interviewer/profile"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <InterviewerProfile />
                       </ProtectedRoute>
                   }
@@ -62,7 +66,7 @@ function App() {
               <Route
                   path="/manager/profile"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <ManagerProfile />
                       </ProtectedRoute>
                   }
@@ -70,7 +74,7 @@ function App() {
               <Route
                   path="/job/create"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CreateJob />
                       </ProtectedRoute>
                   }
@@ -78,21 +82,39 @@ function App() {
               <Route
                   path="/job/edit/:id"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <EditJob />
                       </ProtectedRoute>
                   }
               ></Route>
               <Route
                   path="/job/delete/:id"
-                  element={<MainPage />}
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <DeleteJob />
+                      </ProtectedRoute>
+                  }
               ></Route>
               <Route
                   path="/job/get/:id"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <EditJob />
                       </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/application/create/:jobId"
+                  element={<ProtectedRoute accessBy="authenticated">
+                      <CreateApplication />
+                  </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/application/delete/:jobApplicationId"
+                  element={<ProtectedRoute accessBy="authenticated">
+                      <DeleteApplication />
+                  </ProtectedRoute>
                   }
               ></Route>
               <Route
@@ -146,7 +168,7 @@ function App() {
               ></Route>
           </Routes>
         </Layout>
-      </JobContextProvider></AuthContextProvider>
+      </JobApplicationContextProvider></JobContextProvider></AuthContextProvider>
     </>
   );
 }

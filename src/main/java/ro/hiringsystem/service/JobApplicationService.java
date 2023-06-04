@@ -23,4 +23,5 @@ public interface JobApplicationService {
 
     Map<UUID, JobApplicationDto> listToMap(List<JobApplicationDto> jobApplicationDtoList);
 
+    JobApplicationDto create(UUID jobId, UUID userId);
 }
