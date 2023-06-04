@@ -14,6 +14,7 @@ import ro.hiringsystem.model.dto.interview.messaging.InterviewMessage;
 import ro.hiringsystem.model.dto.interview.messaging.InterviewMessageType;
 import ro.hiringsystem.model.dto.interview.video.JoinPayload;
 import ro.hiringsystem.model.dto.interview.video.SignalPayload;
+import ro.hiringsystem.service.InterviewManagerService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +25,7 @@ import java.util.UUID;
 public class InterviewChatController implements ApplicationListener<SessionDisconnectEvent> {
 
     private final SimpMessagingTemplate simpleMessagingTemplate;
-    private final Map<String, Map<String, InterviewParticipantExtraUserInfoDto>> users = new HashMap<>();
-    private final Map<String, String> usersToRooms = new HashMap<>();
+    private final InterviewManagerService interviewManagerService;
 
     private final Map<String, String> sessionsToUsers = new HashMap<>();
 
@@ -35,38 +35,27 @@ public class InterviewChatController implements ApplicationListener<SessionDisco
     }
 
     @MessageMapping("/interview/room/join/{roomID}")
-    private void joinRoom(@DestinationVariable String roomID, @Payload InterviewParticipantExtraUserInfoDto user, SimpMessageHeaderAccessor accessor){
-        sessionsToUsers.put(accessor.getSessionId(), user.getUserId().toString());
-        String userId = user.getUserId().toString();
-        usersToRooms.put(userId, roomID);
+    private void joinRoom(@DestinationVariable UUID roomID, @Payload String userId, SimpMessageHeaderAccessor accessor){
+        sessionsToUsers.put(accessor.getSessionId(), userId);
+        InterviewParticipantExtraUserInfoDto user = interviewManagerService.tryConnectToInterviewRoom(roomID, UUID.fromString(userId));
 
-        users.compute(roomID, (key, value) -> {
-            if(value == null){
-                Map<String, InterviewParticipantExtraUserInfoDto> roomUsers = new HashMap<>();
-                roomUsers.put(userId, user);
-                return roomUsers;
-            }
-            else{
-                value.put(userId, user);
-                return value;
-            }
-        });
+        simpleMessagingTemplate.convertAndSendToUser(userId, "/interview/room/joined/"+roomID, user);
     }
 
     @MessageMapping("/interview/room/video/message/{roomID}/join")
-    public void joinRoom(@DestinationVariable String roomID, @Payload JoinPayload payload) {
+    public void joinRoom(@DestinationVariable UUID roomID, @Payload JoinPayload payload) {
         String userId = payload.getUserId();
 
-        Map<String, InterviewParticipantExtraUserInfoDto> usersInThisRoom = new HashMap<>(users.get(roomID));
-        usersInThisRoom.remove(userId);
+        Map<UUID, InterviewParticipantExtraUserInfoDto> usersInThisRoom = new HashMap<>(interviewManagerService.getConnectedInterviewParticipants(roomID));
+        usersInThisRoom.remove(UUID.fromString(userId));
 
         simpleMessagingTemplate.convertAndSendToUser(userId, "interview/room/users", usersInThisRoom.values());
     }
 
     @MessageMapping("/interview/room/video/message/{roomID}/signal")
-    public void sendSignal(@DestinationVariable String roomID, SignalPayload payload) {
+    public void sendSignal(@DestinationVariable UUID roomID, SignalPayload payload) {
         String userToSignal = payload.getUserToSignal();
-        payload.setExtraUserInfoDto(users.get(roomID).get(payload.getCallerID()));
+        payload.setExtraUserInfoDto(interviewManagerService.getConnectedInterviewParticipants(roomID).get(UUID.fromString(payload.getCallerID())));
 
         simpleMessagingTemplate.convertAndSendToUser(userToSignal, "/interview/room/user-joined", payload);
     }
@@ -83,13 +72,18 @@ public class InterviewChatController implements ApplicationListener<SessionDisco
             return;
         }
 
-        String roomID = usersToRooms.get(userId);
+        UUID roomID = interviewManagerService.getConnectedRoomId(UUID.fromString(userId));
+        if(roomID == null){
+            return;
+        }
+
         SignalPayload payload = new SignalPayload();
         payload.setId(userId);
 
+
         simpleMessagingTemplate.convertAndSend("/interview/room/video/message/"+roomID+"/user-left", payload);
 
-        InterviewParticipantExtraUserInfoDto user = users.get(roomID).get(userId);
+        InterviewParticipantExtraUserInfoDto user = interviewManagerService.getConnectedInterviewParticipants(roomID).get(UUID.fromString(userId));
         simpleMessagingTemplate.convertAndSend("/interview/room/chat/"+roomID,
                 new InterviewMessage(
                         user.getFirstName()+" " + user.getLastName() + " has left the room",
@@ -100,7 +94,7 @@ public class InterviewChatController implements ApplicationListener<SessionDisco
                 )
         );
 
-        users.get(roomID).remove(userId);
+        interviewManagerService.leaveInterviewRoom(roomID, UUID.fromString(userId));
         sessionsToUsers.remove(event.getSessionId());
     }
 

@@ -7,10 +7,10 @@ import SockJS from 'sockjs-client';
 import '../css/interviewRoomPage.css'
 import jwtInterceptor from "../../components/shared/JwtInterceptor";
 
-const InterviewRoomPage = () => {
-  const [userData, setUserData] = useState(null)
-  const [stompClient, setStompClient] = useState(null)
-  const [connected, setConnected] = useState(false)
+const InterviewRoomPage = ({muted, cameraOff, participant}) => {
+  const [userData, setUserData] = useState(null);
+  const [stompClient, setStompClient] = useState(null);
+  const [connected, setConnected] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -60,15 +60,16 @@ const InterviewRoomPage = () => {
     console.error(error);
   };
 
+  const roomClosed = (data) => {
+    navigate("/interview/room/left?closed=true");
+  }
+
   const onConnected = async () => {
+    stompClient.subscribe(`/interview/room/close/${id}`, roomClosed)
+
     await stompClient.publish({
       destination: `/api/v1/sockets/interview/room/join/${id}`,
-      body: JSON.stringify({
-        userId: userData.id,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        primaryEmail: userData.primaryEmail
-      }),
+      body: userData.id,
       skipContentLengthHeader: true,
     });
 
@@ -79,15 +80,14 @@ const InterviewRoomPage = () => {
     return "Loading data...";
   }
 
-  if(!connected){
+  if(!connected)
     return "Connecting...";
-  }
 
   return (
         <div className="row">
           <div className="col-10 offset-1 mt-5">
-            <VideoBox roomId = {id} userData = {userData} stompClient = {stompClient}/>
-            <ChatBox roomId = {id} userData = {userData} stompClient = {stompClient} />
+            <VideoBox muted = {muted} cameraOff = {cameraOff} roomId = {id} userData = {userData} stompClient = {stompClient} participantData = {participant}/>
+            <ChatBox roomId = {id} userData = {userData} stompClient = {stompClient} participantData = {participant}/>
           </div>
         </div>
   );
