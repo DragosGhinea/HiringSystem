@@ -16,6 +16,8 @@ import CreateInterviewConferenceRoom from "./pages/interviewCrud/CreateInterview
 import DisplayInterviewConferenceRoom from "./pages/interviewCrud/DisplayInterviewConferenceRoom";
 import EditInterviewConferenceRoom from "./pages/interviewCrud/EditInterviewConferenceRoom";
 import InterviewRoomPage from "./pages/interviewRoom/InterviewRoomPage";
+import InterviewLeft from "./pages/interviewRoom/InterviewLeft";
+import InterviewWaitingRoom from "./pages/interviewRoom/InterviewWaitingRoom";
 import CreateApplication from "./pages/CreateApplication";
 import {JobApplicationContextProvider} from "./components/shared/JobApplicationContext";
 import DeleteJob from "./pages/DeleteJob";
@@ -151,7 +153,16 @@ function App() {
                   path="/interview/room/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
-                          <InterviewRoomPage />
+                          <InterviewWaitingRoom />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+
+                <Route
+                  path="/interview/room/left"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <InterviewLeft />
                       </ProtectedRoute>
                   }
               ></Route>

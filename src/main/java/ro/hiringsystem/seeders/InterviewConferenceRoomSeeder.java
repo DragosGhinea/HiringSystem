@@ -25,7 +25,7 @@ public class InterviewConferenceRoomSeeder {
         UUID interviewRoomId = UUID.fromString("ce2d2a11-7759-4d9c-88f2-9e2ef29b7853");
         InterviewConferenceRoom interviewRoom1 = InterviewConferenceRoom.builder()
                 .id(interviewRoomId)
-                .startDate(LocalDateTime.now())
+                .startDate(LocalDateTime.now().plusMinutes(2))
                 .creationDate(LocalDateTime.now())
                 .participants(List.of(
                         InterviewParticipant.builder()
@@ -47,7 +47,7 @@ public class InterviewConferenceRoomSeeder {
 
         InterviewConferenceRoom interviewRoom2 = InterviewConferenceRoom.builder()
                 .id(interviewRoomId2)
-                .startDate(LocalDateTime.now())
+                .startDate(LocalDateTime.now().plusMinutes(5))
                 .creationDate(LocalDateTime.now())
                 .participants(List.of(
                         InterviewParticipant.builder()

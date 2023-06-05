@@ -1,13 +1,18 @@
 package ro.hiringsystem.service.impl;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.hiringsystem.mapper.InterviewConferenceRoomMapper;
+import ro.hiringsystem.mapper.InterviewParticipantMapper;
 import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.model.dto.interview.InterviewParticipantDto;
+import ro.hiringsystem.model.dto.interview.InterviewParticipantExtraUserInfoDto;
 import ro.hiringsystem.model.entity.interview.InterviewConferenceRoom;
+import ro.hiringsystem.model.entity.interview.InterviewParticipant;
+import ro.hiringsystem.model.entity.interview.InterviewParticipantId;
 import ro.hiringsystem.repository.InterviewConferenceRoomRepository;
+import ro.hiringsystem.repository.InterviewParticipantRepository;
 import ro.hiringsystem.service.InterviewConferenceRoomService;
 
 import java.time.LocalDateTime;
@@ -17,8 +22,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InterviewConferenceRoomServiceImpl implements InterviewConferenceRoomService {
     private final InterviewConferenceRoomRepository interviewConferenceRoomRepository;
+    private final InterviewParticipantRepository interviewParticipantRepository;
     private final InterviewConferenceRoomMapper interviewConferenceRoomMapper;
-    private final EntityManager entityManager;
+    private final InterviewParticipantMapper interviewParticipantMapper;
+
+    @Override
+    @Transactional
+    public InterviewParticipantExtraUserInfoDto getParticipantInfo(UUID roomId, UUID userId) {
+        try {
+            InterviewParticipant interviewParticipant = interviewParticipantRepository.getReferenceById(new InterviewParticipantId(userId, roomId));
+            interviewParticipant.getUser(); //lazy loading
+            InterviewParticipantExtraUserInfoDto interviewParticipantExtraUserInfoDto = interviewParticipantMapper.toDtoExtraUserInfo(interviewParticipant);
+            return interviewParticipantExtraUserInfoDto;
+        }catch(NullPointerException x){
+            x.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public InterviewConferenceRoomDto getById(UUID id) {
