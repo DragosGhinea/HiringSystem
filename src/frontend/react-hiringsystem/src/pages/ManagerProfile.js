@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "./css/interviewer-managerProfile.css"
+import {useParams} from "react-router-dom";
 
 function ManagerProfile() {
+
+    const { id } = useParams();
 
     const [user, setUser] = useState(null);
 
@@ -11,7 +14,7 @@ function ManagerProfile() {
         document.body.classList.add('containerInterviewerManager');
 
         axios
-            .get("http://localhost:8081/api/v1/manager/profile")
+            .get(`http://localhost:8081/api/v1/manager/profile/${id}`)
             .then(function (response) {
                 console.log(response);
                 setUser(response.data);

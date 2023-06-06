@@ -22,6 +22,9 @@ import CreateApplication from "./pages/CreateApplication";
 import {JobApplicationContextProvider} from "./components/shared/JobApplicationContext";
 import DeleteJob from "./pages/DeleteJob";
 import DeleteApplication from "./pages/DeleteApplication";
+import CreateManualCandidate from "./pages/CreateManualCandidate";
+import CreateManualInterviewer from "./pages/CreateManualInterviewer";
+import CreateManualManager from "./pages/CreateManualManager";
 
 function App() {
   return (
@@ -48,7 +51,7 @@ function App() {
               }
             ></Route>
               <Route
-                  path="/candidate/profile"
+                  path="/candidate/profile/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <CandidateProfile />
@@ -56,7 +59,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/interviewer/profile"
+                  path="/interviewer/profile/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <InterviewerProfile />
@@ -64,7 +67,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/manager/profile"
+                  path="/manager/profile/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <ManagerProfile />
@@ -163,6 +166,30 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <InterviewLeft />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/candidate/create"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <CreateManualCandidate />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interviewer/create"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <CreateManualInterviewer />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/manager/create"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <CreateManualManager />
                       </ProtectedRoute>
                   }
               ></Route>
