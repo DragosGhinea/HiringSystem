@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import jwtInterceptor from "./JwtInterceptor";
- 
+
 const AuthContext = createContext();
  
 export const AuthContextProvider = ({ children }) => {
@@ -29,7 +29,17 @@ export const AuthContextProvider = ({ children }) => {
       email: payload.email
     }
     setUser(userData);
-    navigate("/");
+
+    try {
+      const response = await axios.get(`http://localhost:8081/api/v1/user/id/${userData.email}`);
+      const { id } = response.data;
+      console.log(id)
+
+      navigate(`/candidate/profile/${id}`)
+    } catch (error) {
+      console.error('Error: ', error);
+      return null;
+    }
   };
  
   const login = async (payload) => {
