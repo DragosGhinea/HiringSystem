@@ -18,4 +18,6 @@ public interface InterviewConferenceRoomService {
     void saveElement(InterviewConferenceRoomDto interviewConferenceRoomDto);
 
     boolean deleteById(UUID id);
+
+    void cleanupOldRooms();
 }

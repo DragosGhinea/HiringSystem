@@ -27,6 +27,11 @@ public class InterviewConferenceRoomServiceImpl implements InterviewConferenceRo
     private final InterviewParticipantMapper interviewParticipantMapper;
 
     @Override
+    public void cleanupOldRooms() {
+        interviewConferenceRoomRepository.deleteByStartDateBefore(LocalDateTime.now().minusDays(1));
+    }
+
+    @Override
     @Transactional
     public InterviewParticipantExtraUserInfoDto getParticipantInfo(UUID roomId, UUID userId) {
         try {

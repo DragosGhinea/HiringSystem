@@ -17,9 +17,34 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class InterviewManagerServiceImpl implements InterviewManagerService {
+    private final int NUMBER_OF_MINUTES_UNTIL_CLEANUP = 5;
     private final Map<UUID, Map<UUID, InterviewParticipantExtraUserInfoDto>> users = new ConcurrentHashMap<>();
     private final Map<UUID, UUID> usersToRooms = new ConcurrentHashMap<>();
     private final Map<UUID, InterviewConferenceRoomDto> rooms = new ConcurrentHashMap<>();
+
+    private final Map<UUID, Thread> cleanupThreads = new ConcurrentHashMap<>();
+
+    private void cancelCleanupThread(UUID roomId){
+        Thread thread = cleanupThreads.getOrDefault(roomId, null);
+        if(thread!=null){
+            thread.interrupt();
+            cleanupThreads.remove(roomId);
+        }
+    }
+
+    private void initiateCleanupThread(UUID roomId){
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(NUMBER_OF_MINUTES_UNTIL_CLEANUP * 60 * 1000);
+                System.out.println("Interview room "+roomId+" is empty for a long time, deleting it");
+                closeInterviewRoom(roomId);
+            } catch (InterruptedException e) {
+                System.out.println("Interview room "+roomId+" began cleanup countdown but is still active, cancelled deletion");
+            }
+        });
+        thread.start();
+        cleanupThreads.put(roomId, thread);
+    }
 
     private final InterviewConferenceRoomService interviewConferenceRoomService;
 
@@ -35,7 +60,14 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
             interviewConferenceRoomDto = interviewConferenceRoomService.getById(roomId);
             if (interviewConferenceRoomDto == null)
                 return null;
-            rooms.put(roomId, interviewConferenceRoomDto);
+            if(interviewConferenceRoomDto.getStartDate().plusMinutes(NUMBER_OF_MINUTES_UNTIL_CLEANUP).compareTo(LocalDateTime.now())<0){
+                System.out.println("Interview room "+interviewConferenceRoomDto.getId()+" is empty for a long time, deleting it");
+                interviewConferenceRoomService.deleteById(roomId);
+                return null;
+            }
+            if(interviewConferenceRoomDto.getStartDate().compareTo(LocalDateTime.now())>0) {
+                rooms.put(roomId, interviewConferenceRoomDto);
+            }
         }
 
         return interviewConferenceRoomDto.getStartDate().atZone(ZoneId.systemDefault()).toEpochSecond() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
@@ -46,6 +78,8 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         InterviewParticipantExtraUserInfoDto user = interviewConferenceRoomService.getParticipantInfo(roomId, userId);
         if(user==null)
             return null;
+
+        cancelCleanupThread(roomId);
         usersToRooms.put(userId, roomId);
 
         users.compute(roomId, (key, value) -> {
@@ -70,6 +104,9 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
                 return null;
             else{
                 value.remove(userId);
+                if(value.isEmpty()){
+                    initiateCleanupThread(roomId);
+                }
                 return value;
             }
         });
@@ -86,6 +123,7 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         rooms.remove(roomId);
         users.remove(roomId);
         usersToRooms.entrySet().removeIf(entry -> entry.getValue().equals(roomId));
+        interviewConferenceRoomService.deleteById(roomId);
         return true;
     }
 }
