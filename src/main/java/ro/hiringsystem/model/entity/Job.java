@@ -43,14 +43,12 @@ public class Job {
 
     private LocalDate startDate;
 
-    //private Period period;
-
     @ElementCollection
     private List<String> skillsNeeded;
 
     @ElementCollection
     private List<String> offers;
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany(mappedBy = "jobId")
     private List<JobApplication> jobApplications;
 }

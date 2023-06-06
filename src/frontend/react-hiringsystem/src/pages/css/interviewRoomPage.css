@@ -134,15 +134,25 @@
     transition: opacity 0.7s ease;
 }
 
-.videobox .buttons div{
+.videobox .moderator-buttons{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.videobox .buttons div, .videobox .moderator-buttons div{
     margin: 20px;
 }
 
-.videobox:hover .buttons{
+.videobox:hover .buttons,.videobox:hover .moderator-buttons{
     opacity: 1;
 }
 
-.videobox .buttons .buttonsPad{
+.videobox .buttons .buttonsPad, .videobox .moderator-buttons .buttonsPad{
     background-color:rgba(0, 0, 0, 0.425);
     border-radius: 20px;
     display: inline-block;

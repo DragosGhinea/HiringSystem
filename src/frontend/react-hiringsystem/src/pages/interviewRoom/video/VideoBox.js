@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
+import jwtInterceptor from "../../../components/shared/JwtInterceptor";
+import UsersModal from "./UsersModal";
+import CloseInterviewModal from "./CloseInterviewModal";
 
 const Video = ({data, remoteStream}) => {
     const ref = useRef();
@@ -91,7 +94,9 @@ const Video = ({data, remoteStream}) => {
     );
 };
 
-const VideoBox = ({roomId, userData, stompClient}) => {
+const VideoBox = ({muted, cameraOff, roomId, userData, stompClient, participantData}) => {
+    const [usersModalOpen, setUsersModalOpen] = useState(false);
+    const [confirmCloseModalOpen, setConfirmCloseModalOpen] = useState(false);
     const [peers, setPeers] = useState([]);
     const peersRef = useRef([]);
     const userVideo = useRef();
@@ -101,6 +106,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
     const [audioMuted, setAudioMuted] = useState(false);
     const cameraMutedRef = useRef(false);
     const audioMutedRef = useRef(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -108,6 +114,11 @@ const VideoBox = ({roomId, userData, stompClient}) => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             userStream = stream;
+
+            if(muted)
+              muteMic();
+            if(cameraOff)
+              muteCam();
 
             onConnected();
         })
@@ -126,6 +137,8 @@ const VideoBox = ({roomId, userData, stompClient}) => {
     }, [roomId]);
 
     const onConnected = () => {
+
+      stompClient.subscribe(`/api/v1/user/sockets/${userData.id}/interview/room/force-action`, forcedReceived);
 
       stompClient.subscribe(`/api/v1/user/sockets/${userData.id}/interview/room/users`, handleAllUsers);
 
@@ -322,12 +335,43 @@ const VideoBox = ({roomId, userData, stompClient}) => {
     });
   }
 
+  const forcedReceived = (message) => {
+    const payload = JSON.parse(message.body);
+
+    if(payload.type === "MUTE"){
+      const audios = userVideo.current.srcObject.getAudioTracks();
+      audios.forEach(track => track.enabled = false);
+
+      peersRef.current.forEach((peer) => {
+        console.log("IS SENDING")
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_off"}))
+      });
+
+      setAudioMuted(true);
+      audioMutedRef.current = true;
+    }
+    else if(payload.type === "CAMERA_OFF"){
+      const videos = userVideo.current.srcObject.getVideoTracks();
+      videos.forEach(track => track.enabled = false);
+
+      peersRef.current.forEach((peer) => {
+        peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_off"}))
+      });
+
+      setCameraMuted(true);
+      cameraMutedRef.current = true;
+    }
+    else if(payload.type === "KICK"){
+      navigate("/interview/room/left?kicked=true");
+    }
+  }
+
   function muteMic() {
     if(audioMuted){
       const audios = userVideo.current.srcObject.getAudioTracks();
       audios.forEach(track => track.enabled = true);
 
-      peers.forEach((peer) => {
+      peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_on"}))
       });
     }
@@ -335,7 +379,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const audios = userVideo.current.srcObject.getAudioTracks();
       audios.forEach(track => track.enabled = false);
 
-      peers.forEach((peer) => {
+      peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "microphone_off"}))
       });
     }
@@ -349,7 +393,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const videos = userVideo.current.srcObject.getVideoTracks();
       videos.forEach(track => track.enabled = true);
 
-      peers.forEach((peer) => {
+      peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_on"}))
       });
     }
@@ -357,7 +401,7 @@ const VideoBox = ({roomId, userData, stompClient}) => {
       const videos = userVideo.current.srcObject.getVideoTracks();
       videos.forEach(track => track.enabled = false);
 
-      peers.forEach((peer) => {
+      peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({userId: userData.id, type: "camera_off"}))
       });
 
@@ -365,6 +409,14 @@ const VideoBox = ({roomId, userData, stompClient}) => {
 
     setCameraMuted(!cameraMuted);
     cameraMutedRef.current = !cameraMutedRef.current;
+  }
+
+  function leave(){
+    navigate("/interview/room/left");
+  }
+
+  function closeRoom(){
+    jwtInterceptor.post(`http://localhost:8081/api/v1/interview/closeRoom/${roomId}`);
   }
 
 
@@ -387,12 +439,23 @@ const VideoBox = ({roomId, userData, stompClient}) => {
               );
           })}
         </div>
+        {participantData.isRoomModerator && <div className="moderator-buttons">
+          <div className="buttonsPad">
+            <div onClick={() => setUsersModalOpen(true)}className="btn btn-danger">Users <i className="bi bi-people-fill"></i></div>
+            <div onClick={() => setConfirmCloseModalOpen(true)} className="btn btn-danger">Close Interview <i className="bi bi-x-circle"></i></div>
+          </div>
+        </div>
+        }
         <div className="buttons">
           <div className="buttonsPad">
             <div onClick={muteMic} className="btn btn-primary">{audioMuted? <i className="bi bi-mic-mute-fill"></i> : <i className="bi bi-mic-fill"></i>}</div>
             <div onClick={muteCam} className="btn btn-primary">{cameraMuted? <i className="bi bi-camera-video-off-fill"></i> : <i className="bi bi-camera-video-fill"></i>}</div>
+            <div onClick={leave} className="btn btn-primary"><i className="bi bi-box-arrow-right"></i></div>
           </div>
         </div>
+
+        {usersModalOpen && <UsersModal roomId = {roomId} peers = {peers} streams = {remoteStreams} openModal={usersModalOpen} setOpenModal={setUsersModalOpen} />}
+        {confirmCloseModalOpen && <CloseInterviewModal closeMethod={closeRoom} setOpenModal={setConfirmCloseModalOpen}/>}
       </div>
   );
 };

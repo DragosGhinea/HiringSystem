@@ -1,0 +1,10 @@
+.interview-left{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 5%;
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

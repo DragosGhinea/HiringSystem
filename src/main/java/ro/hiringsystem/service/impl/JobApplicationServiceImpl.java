@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobApplicationMapper;
 import ro.hiringsystem.model.dto.JobApplicationDto;
+import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.entity.JobApplication;
+import ro.hiringsystem.model.enums.Status;
 import ro.hiringsystem.repository.JobApplicationRepository;
 import ro.hiringsystem.service.JobApplicationService;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -71,5 +74,23 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
 
         return jobApplicationDtoMap;
+    }
+
+    @Override
+    public JobApplicationDto create(UUID jobId, UUID userId) {
+        JobApplicationDto jobApplicationDto = JobApplicationDto.builder()
+                .id(UUID.randomUUID())
+                .jobId(jobId)
+                .candidateUserId(userId)
+                .applicationDate(LocalDate.now())
+                .status(Status.SUBMITTED)
+                .build();
+        try {
+            saveElement(jobApplicationDto);
+            return jobApplicationDto;
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
     }
 }
