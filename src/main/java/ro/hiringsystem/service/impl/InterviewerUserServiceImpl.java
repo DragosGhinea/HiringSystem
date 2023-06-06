@@ -1,6 +1,7 @@
 package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.InterviewerUserMapper;
 import ro.hiringsystem.model.entity.InterviewerUser;
@@ -17,6 +18,7 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
 
     private final InterviewerUserRepository interviewerUserRepository;
     private final InterviewerUserMapper interviewerUserMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public InterviewerUserDto getById(UUID id) {
@@ -102,4 +104,15 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
         return interviewerUserDtoMap;
     }
 
+    @Override
+    public InterviewerUserDto create(InterviewerUserDto interviewerUserDto) {
+        if(interviewerUserDto.getId()==null)
+            interviewerUserDto.setId(UUID.randomUUID());
+
+        interviewerUserDto.setPassword(passwordEncoder.encode(interviewerUserDto.getPassword()));
+
+        InterviewerUser interviewerEntity = interviewerUserMapper.toEntity(interviewerUserDto);
+        interviewerUserRepository.save(interviewerEntity);
+        return interviewerUserMapper.toDto(interviewerEntity);
+    }
 }

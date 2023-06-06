@@ -14,7 +14,7 @@
 
 .formInput label{
     font-size: 16px;
-    color: gray;
+    color: black;
 }
 
 .formInput span{
@@ -22,6 +22,18 @@
     padding: 3px;
     color: red;
     display: none;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.radio-container .radio-label {
+    margin-left: 5px;
+    color: black;
+    font-size: 15px;
 }
 
 .formInput input:invalid[focused="true"]{

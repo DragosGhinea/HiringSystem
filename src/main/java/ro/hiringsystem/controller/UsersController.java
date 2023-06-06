@@ -31,6 +31,11 @@ public class UsersController {
         return ResponseEntity.ok(map);
     }
 
+    @GetMapping("/{mail}")
+    public ResponseEntity<Boolean> isEmailUsed(@PathVariable("mail") String mail){
+        return ResponseEntity.ok(userRepository.isEmailUsed(mail));
+    }
+
     @GetMapping(value = "getLoggedIn", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getLoggedInUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {

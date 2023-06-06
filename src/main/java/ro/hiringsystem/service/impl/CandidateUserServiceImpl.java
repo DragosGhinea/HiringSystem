@@ -2,8 +2,10 @@ package ro.hiringsystem.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.CandidateUserMapper;
+import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
@@ -17,6 +19,7 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     private final CandidateUserRepository candidateUserRepository;
     private final CandidateUserMapper candidateUserMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CandidateUserDto getById(UUID id) {
@@ -91,4 +94,16 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         return candidateUserDtoMap;
     }
 
+    @Override
+    public CandidateUserDto create(CandidateUserDto candidateUserDto) {
+        if(candidateUserDto.getId()==null)
+            candidateUserDto.setId(UUID.randomUUID());
+
+        candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
+        candidateUserDto.setCv(new CV());
+
+        CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
+        candidateUserRepository.save(candidateEntity);
+        return candidateUserMapper.toDto(candidateEntity);
+    }
 }

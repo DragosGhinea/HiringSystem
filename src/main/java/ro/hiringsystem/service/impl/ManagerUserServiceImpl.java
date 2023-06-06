@@ -1,6 +1,7 @@
 package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.ManagerUserMapper;
 import ro.hiringsystem.model.entity.ManagerUser;
@@ -16,6 +17,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
 
     private final ManagerUserRepository managerUserRepository;
     private final ManagerUserMapper managerUserMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ManagerUserDto getById(UUID id) {
@@ -95,4 +97,15 @@ public class ManagerUserServiceImpl implements ManagerUserService {
         return managerUserDtoMap;
     }
 
+    @Override
+    public ManagerUserDto create(ManagerUserDto managerUserDto) {
+        if(managerUserDto.getId()==null)
+            managerUserDto.setId(UUID.randomUUID());
+
+        managerUserDto.setPassword(passwordEncoder.encode(managerUserDto.getPassword()));
+
+        ManagerUser managerEntity = managerUserMapper.toEntity(managerUserDto);
+        managerUserRepository.save(managerEntity);
+        return managerUserMapper.toDto(managerEntity);
+    }
 }

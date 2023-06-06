@@ -10,4 +10,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u.id FROM User u WHERE :mail MEMBER OF u.mailList")
     UUID findIdByEmail(String mail);
+
+    @Query("SELECT COUNT(u) > 0 FROM User u WHERE :mail MEMBER OF u.mailList")
+    boolean isEmailUsed(String mail);
 }

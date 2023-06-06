@@ -1,29 +1,25 @@
 package ro.hiringsystem.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ro.hiringsystem.model.auxiliary.AcademicExperience;
-import ro.hiringsystem.model.auxiliary.CV;
-import ro.hiringsystem.model.auxiliary.Project;
-import ro.hiringsystem.model.auxiliary.WorkExperience;
-import ro.hiringsystem.model.dto.CandidateUserDto;
-import ro.hiringsystem.model.entity.CandidateUser;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.service.CandidateUserService;
+
 import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/candidate")
+@RequiredArgsConstructor
 public class CandidateUsersController {
+    private final CandidateUserService candidateUserService;
 
-    @GetMapping("profile")
-    public ResponseEntity<CandidateUserDto> getCandidateUser() throws MalformedURLException {
+    @GetMapping("profile/{id}")
+    public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(candidateUserService.getById(id));
 
+        /*
         return ResponseEntity.ok(CandidateUserDto.builder()
                                                     .id(UUID.randomUUID())
                                                     .firstName("John")
@@ -85,7 +81,12 @@ public class CandidateUsersController {
                 .primaryEmail("test")
                 .password("test")
                 .build());
+        */
+    }
 
+    @PostMapping("/create")
+    public ResponseEntity<CandidateUserDto> register(@RequestBody CandidateUserDto candidateUserDto){
+        return ResponseEntity.ok(candidateUserService.create(candidateUserDto));
     }
 
 }
