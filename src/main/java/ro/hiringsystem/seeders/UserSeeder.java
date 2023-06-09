@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.entity.InterviewerUser;
+import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.CandidateUserRepository;
 import ro.hiringsystem.repository.InterviewerUserRepository;
+import ro.hiringsystem.repository.ManagerUserRepository;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,11 +24,24 @@ public class UserSeeder{
 
     private final InterviewerUserRepository interviewerUserRepository;
     private final CandidateUserRepository candidateUserRepository;
+    private final ManagerUserRepository managerUserRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void seedData() {
         System.out.println("Starting User seeding...");
 
+        // Seed ManagerUsers
+        ManagerUser manager1 = ManagerUser.builder()
+                .id(UUID.fromString("b29c5c47-2b4e-483e-93f3-ae350a22a799"))
+                .firstName("Mark")
+                .lastName("James")
+                .primaryEmail("mark@example.com")
+                .password(passwordEncoder.encode("password"))
+                .birthDate(LocalDate.of(1995, 3, 22))
+                .mailList(Arrays.asList("mark@example.com"))
+                .build();
+
+        // Seed InterviewerUser
         InterviewerUser interviewer1 = InterviewerUser.builder()
                 .id(UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868"))
                 .firstName("John")
@@ -85,6 +100,7 @@ public class UserSeeder{
                 .build();
 
         // Save the users
+        managerUserRepository.saveAll(Arrays.asList(manager1));
         interviewerUserRepository.saveAll(Arrays.asList(interviewer1, interviewer2));
         candidateUserRepository.saveAll(Arrays.asList(candidate1, candidate2, candidate3));
 
