@@ -12,10 +12,14 @@ public class SeederManager {
 
     private final InterviewConferenceRoomSeeder interviewConferenceRoomSeeder;
     private final UserSeeder userSeeder;
+    private final JobSeeder jobSeeder;
+    private final JobApplicationSeeder jobApplicationSeeder;
 
     @PostConstruct
     public void seedData(){
         userSeeder.seedData();
         interviewConferenceRoomSeeder.seedData();
+        jobSeeder.seedData();
+        jobApplicationSeeder.seedData();
     }
 }

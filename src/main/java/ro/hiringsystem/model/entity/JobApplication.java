@@ -20,17 +20,19 @@ public class JobApplication {
     @Id
     private UUID id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "candidate_id")
-//    private CandidateUser candidateUser;
-
+    @Column(name = "user_id")
     private UUID candidateUserId;
 
-    // @ManyToOne
-    // @JoinColumn(name = "job_id")
-    //private Job job;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private CandidateUser candidateUser;
 
+    @Column(name = "job_id")
     private UUID jobId;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "job_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Job job;
 
     @NonNull
     private LocalDate applicationDate;
