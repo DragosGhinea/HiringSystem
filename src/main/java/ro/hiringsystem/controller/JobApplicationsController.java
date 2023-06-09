@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.JobApplicationDto;
-import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.service.JobApplicationService;
-import ro.hiringsystem.service.JobService;
-import ro.hiringsystem.service.impl.JobApplicationServiceImpl;
 
 import java.util.UUID;
 
@@ -37,5 +33,20 @@ public class JobApplicationsController {
     public ResponseEntity<JobApplicationDto> delete (@RequestParam(required = true) UUID jobApplicationId) {
         jobApplicationService.removeElementById(jobApplicationId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/get/all/user/{userId}")
+    public ResponseEntity<Object> getApplications(@PathVariable UUID userId){
+        return ResponseEntity.ok(jobApplicationService.getAllByUserId(userId));
+    }
+
+    @GetMapping("/get/all/my")
+    public ResponseEntity<Object> getMyApplications(Authentication authentication){
+        if (authentication != null && authentication.isAuthenticated()) {
+            return ResponseEntity.ok(jobApplicationService.getAllByUserId(((UserDto) authentication.getPrincipal()).getId()));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
