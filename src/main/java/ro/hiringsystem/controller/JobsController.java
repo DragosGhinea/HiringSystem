@@ -46,6 +46,11 @@ public class JobsController {
         return ResponseEntity.ok(jobService.getById(id));
     }
 
+    @GetMapping("/get/all")
+    public ResponseEntity<Object> getAllJobs () {
+        return ResponseEntity.ok(jobService.getAll());
+    }
+
     @PostMapping("/create")
     public ResponseEntity<JobDto> create (@RequestBody JobDto jobDto) {
         return ResponseEntity.ok(jobService.createEdit(jobDto));

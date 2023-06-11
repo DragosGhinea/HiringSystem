@@ -1,6 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.JobDto;
+import ro.hiringsystem.model.entity.Job;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +23,6 @@ public interface JobService{
     Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList);
 
     JobDto createEdit(JobDto jobDto);
+
+    List<JobDto> getAll();
 }
