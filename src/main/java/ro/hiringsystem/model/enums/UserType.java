@@ -13,8 +13,6 @@ public enum UserType {
 
     INTERVIEWER,
 
-    MANAGER,
-
-    NONE;
+    MANAGER;
 
 }
