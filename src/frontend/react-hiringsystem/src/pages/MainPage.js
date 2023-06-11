@@ -1,24 +1,37 @@
 //import Card from "react-bootstrap/Card";
+import './css/mainPage.css'
+import gearSvg from "./css/images/gear.svg"
+import applicationFlow from "./css/images/application_flow.png"
+import MainPageParticles from '../components/shared/particles/MainPageParticles';
+
 const MainPage = () => {
   return (
     <>
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "500px"}}
-      >
-        <h1>HiringSystem main page!</h1>
-        {/*
-        <Card>
-          <Card.Body>
-            <Card.Text className="text-center">
-              <b>Welcome to the hiring system!</b>
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            To be modified later...
-          </Card.Footer>
-        </Card>
-        */}
+      <div className="row">
+            <div className="col-6 offset-3 mt-5">
+                <div className="main-card">
+                  <div className="title">
+                    <h1>Hiring System Application</h1>
+                    <p className="text-muted">You are on the main page of <b>Company Name</b>'s hiring website.</p>
+                  </div>
+                  <p className="content">
+                    You can checkout our available jobs by clicking the button below.
+                    If you'd like to apply to any of them you need to have an account with an uploaded CV in it.
+                  </p>
+                  <img draggable="false" src={applicationFlow} width="80%" style={{borderRadius: '20px'}}/>
+                  <div className="btn btn-primary btn-lg">Available Jobs</div>
+                  <div className="gearGroup1">
+                    <img draggable="false" className="gear1" src={gearSvg} alt="gear1" />
+                    <img draggable="false" className="gear2" src={gearSvg} alt="gear2" />
+                  </div>
+                  <div className="gearGroup2">
+                    <img draggable="false" className="gear3" src={gearSvg} alt="gear3" />
+                    <img draggable="false" className="gear4" src={gearSvg} alt="gear4" />
+                  </div>
+                </div>
+            </div>
+
+            <MainPageParticles />
       </div>
     </>
   );

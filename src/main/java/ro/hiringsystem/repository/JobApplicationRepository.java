@@ -15,4 +15,7 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
 
     @Query("SELECT ja FROM JobApplication ja")
     List<JobApplication> findAll();
+
+    @Query("SELECT ja, j FROM JobApplication ja JOIN Job j ON ja.jobId = j.id WHERE ja.candidateUserId = :userId")
+    List<Object[]> findAllByUserIdWithJob(UUID userId);
 }

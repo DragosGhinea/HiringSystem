@@ -3,7 +3,9 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobApplicationMapper;
+import ro.hiringsystem.mapper.JobMapper;
 import ro.hiringsystem.model.dto.JobApplicationDto;
+import ro.hiringsystem.model.dto.JobApplicationWithJobDto;
 import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.entity.JobApplication;
 import ro.hiringsystem.model.enums.Status;
@@ -19,6 +21,20 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     private final JobApplicationRepository jobApplicationRepository;
     private final JobApplicationMapper jobApplicationMapper;
+
+    private final JobMapper jobMapper;
+
+    @Override
+    public List<JobApplicationWithJobDto> getAllByUserId(UUID userId) {
+        List<Object[]> jobApplicationList = jobApplicationRepository.findAllByUserIdWithJob(userId);
+        List<JobApplicationWithJobDto> jobApplicationWithJobDtoList = new ArrayList<>();
+        for(Object[] pair : jobApplicationList){
+            JobApplicationDto jobApplicationDto = jobApplicationMapper.toDto((JobApplication) pair[0]);
+            JobDto jobDto = jobMapper.toDto((ro.hiringsystem.model.entity.Job) pair[1]);
+            jobApplicationWithJobDtoList.add(new JobApplicationWithJobDto(jobApplicationDto, jobDto));
+        }
+        return jobApplicationWithJobDtoList;
+    }
 
     @Override
     public JobApplicationDto getById(UUID id) {
@@ -62,7 +78,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     public void saveElement(JobApplicationDto jobApplicationDto) {
         JobApplication jobApplication = jobApplicationMapper.toEntity(jobApplicationDto);
-        jobApplicationRepository.save(jobApplicationMapper.toEntity(jobApplicationDto));
+        jobApplicationRepository.save(jobApplication);
     }
 
     @Override
