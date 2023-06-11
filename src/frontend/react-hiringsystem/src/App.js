@@ -7,24 +7,27 @@ import { JobContextProvider } from "./components/shared/JobContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
 import Register from "./pages/Register";
-import CandidateProfile from "./pages/CandidateProfile";
-import InterviewerProfile from "./pages/InterviewerProfile";
-import ManagerProfile from "./pages/ManagerProfile";
-import CreateJob from "./pages/CreateJob";
-import EditJob from "./pages/EditJob";
+import CandidateProfile from "./pages/users/CandidateProfile";
+import InterviewerProfile from "./pages/users/InterviewerProfile";
+import ManagerProfile from "./pages/users/ManagerProfile";
+import CreateJob from "./pages/jobs/CreateJob";
+import EditJob from "./pages/jobs/EditJob";
 import CreateInterviewConferenceRoom from "./pages/interviewCrud/CreateInterviewConferenceRoom";
 import DisplayInterviewConferenceRoom from "./pages/interviewCrud/DisplayInterviewConferenceRoom";
 import EditInterviewConferenceRoom from "./pages/interviewCrud/EditInterviewConferenceRoom";
 import InterviewRoomPage from "./pages/interviewRoom/InterviewRoomPage";
 import InterviewLeft from "./pages/interviewRoom/InterviewLeft";
 import InterviewWaitingRoom from "./pages/interviewRoom/InterviewWaitingRoom";
-import CreateApplication from "./pages/CreateApplication";
+import CreateApplication from "./pages/jobApplications/CreateApplication";
 import {JobApplicationContextProvider} from "./components/shared/JobApplicationContext";
-import DeleteJob from "./pages/DeleteJob";
-import DeleteApplication from "./pages/DeleteApplication";
-import CreateManualCandidate from "./pages/CreateManualCandidate";
-import CreateManualInterviewer from "./pages/CreateManualInterviewer";
-import CreateManualManager from "./pages/CreateManualManager";
+import DeleteJob from "./pages/jobs/DeleteJob";
+import DeleteApplication from "./pages/jobApplications/DeleteApplication";
+import CreateManualCandidate from "./pages/users/CreateManualCandidate";
+import CreateManualInterviewer from "./pages/users/CreateManualInterviewer";
+import CreateManualManager from "./pages/users/CreateManualManager";
+import DisplayJobsPage from "./pages/jobs/DisplayJobsPage";
+import ViewJobPage from "./pages/jobs/ViewJobPage";
+import AllJobApplicationsPage from "./pages/jobApplications/AllJobApplicationsPage";
 import MyApplicationsPage from "./pages/myApplications/MyApplicationsPage";
 import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
 
@@ -105,6 +108,30 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <EditJob />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/view/job/:id"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ViewJobPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/display/jobs"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <DisplayJobsPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/all-applications/:jobId"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <AllJobApplicationsPage />
                       </ProtectedRoute>
                   }
               ></Route>

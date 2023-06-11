@@ -35,6 +35,37 @@ public class JobApplicationsController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/check/{id}")
+    public ResponseEntity<Object> checkIfAlreadyApplied(@PathVariable("id") UUID jobId, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDto userDto = (UserDto) authentication.getPrincipal();
+
+            UUID candidateUserId = userDto.getId();
+
+            return ResponseEntity.ok(jobApplicationService.checkIfAlreadyApplied(jobId, candidateUserId));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("/apply/{id}")
+    public ResponseEntity<Object> applyToJob(@PathVariable("id") UUID jobId, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDto userDto = (UserDto) authentication.getPrincipal();
+
+            UUID candidateUserId = userDto.getId();
+
+            return ResponseEntity.ok(jobApplicationService.create(jobId, candidateUserId));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @GetMapping("/get/all/{id}")
+    public ResponseEntity<Object> getAllByJobId(@PathVariable("id") UUID jobId) {
+        return ResponseEntity.ok(jobApplicationService.getAllByJobId(jobId));
+    }
+
     @GetMapping("/get/all/user/{userId}")
     public ResponseEntity<Object> getApplications(@PathVariable UUID userId){
         return ResponseEntity.ok(jobApplicationService.getAllByUserId(userId));

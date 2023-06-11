@@ -30,7 +30,7 @@ public class JobSeeder{
                         "As a Software Developer, you will play a key role in designing, developing, and maintaining software solutions that meet " +
                         "the needs of our organization. You will collaborate with cross-functional teams to understand requirements, contribute to architectural " +
                         "discussions, and deliver high-quality code that drives our software products to success.")
-                .jobType(JobType.FULLTIME)
+                .jobType(JobType.FULL_TIME)
                 .position(Position.JUNIOR)
                 .salary(5200.0d)
                 .hoursPerWeek(40)
@@ -66,7 +66,7 @@ public class JobSeeder{
                 .description("As a Software Developer for Chip Design and Verification, you will be responsible for developing and maintaining software tools, frameworks, and methodologies " +
                         "that support the design, verification, and validation of integrated circuits (ICs) and electronic systems. You will collaborate with hardware engineers, verification engineers, " +
                         "and other stakeholders to design and implement efficient and reliable software solutions that drive the success of our chip design projects.")
-                .jobType(JobType.PARTTIME)
+                .jobType(JobType.PART_TIME)
                 .position(Position.SENIOR)
                 .salary(6080.0d)
                 .hoursPerWeek(20)
@@ -82,7 +82,7 @@ public class JobSeeder{
                 .description("We are seeking a highly skilled and inquisitive Data Scientist to join our " +
                         "dynamic team. As a Data Scientist, you will have a pivotal role in analyzing intricate " +
                         "datasets, devising advanced statistical models, and steering data-driven decision-making processes.")
-                .jobType(JobType.PARTTIME)
+                .jobType(JobType.PART_TIME)
                 .position(Position.SENIOR)
                 .salary(4082.0d)
                 .hoursPerWeek(30)

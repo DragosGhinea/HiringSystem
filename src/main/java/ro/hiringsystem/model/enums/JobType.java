@@ -2,7 +2,6 @@ package ro.hiringsystem.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
@@ -14,9 +13,9 @@ public enum JobType {
 
     INTERNSHIP_SIX_MONTHS(6),
 
-    FULLTIME(null),
+    FULL_TIME(null),
 
-    PARTTIME(null);
+    PART_TIME(null);
 
     private final Integer nrMonths;
 }
