@@ -2,14 +2,6 @@ import { useEffect } from 'react'
 
 const ApplicationRow = ({index, application}) => {
 
-    useEffect(() => {
-        console.log(application);
-    });
-
-    useEffect(() => {
-        console.log(application);
-    }, [application]);
-
     return (
         <tr>
             <th scope="row">{index}</th>

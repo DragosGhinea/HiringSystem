@@ -3,6 +3,7 @@ package ro.hiringsystem.service;
 import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.model.dto.interview.InterviewParticipantExtraUserInfoDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface InterviewConferenceRoomService {
@@ -20,4 +21,6 @@ public interface InterviewConferenceRoomService {
     boolean deleteById(UUID id);
 
     void cleanupOldRooms();
+
+    List<InterviewConferenceRoomDto> getAllByUserId(UUID userId);
 }

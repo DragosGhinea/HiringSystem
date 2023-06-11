@@ -16,6 +16,8 @@ import ro.hiringsystem.repository.InterviewParticipantRepository;
 import ro.hiringsystem.service.InterviewConferenceRoomService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -91,5 +93,14 @@ public class InterviewConferenceRoomServiceImpl implements InterviewConferenceRo
 
         interviewConferenceRoomRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<InterviewConferenceRoomDto> getAllByUserId(UUID userId) {
+        List<InterviewConferenceRoom> rooms = interviewConferenceRoomRepository.getAllByUserId(userId);
+        List<InterviewConferenceRoomDto> toReturn = new ArrayList<>();
+        for(InterviewConferenceRoom room : rooms)
+            toReturn.add(interviewConferenceRoomMapper.toDtoFullyLoaded(room));
+        return toReturn;
     }
 }
