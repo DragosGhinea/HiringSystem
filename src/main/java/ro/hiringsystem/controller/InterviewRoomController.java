@@ -85,4 +85,14 @@ public class InterviewRoomController {
         simpMessagingTemplate.convertAndSendToUser(userId.toString(), "/interview/room/force-action", payload);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("get/all/my")
+    public ResponseEntity<Object> getMyInterviewRooms(Authentication authentication){
+        if (authentication != null && authentication.isAuthenticated()) {
+            return ResponseEntity.ok(interviewConferenceRoomService.getAllByUserId(((UserDto) authentication.getPrincipal()).getId()));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }

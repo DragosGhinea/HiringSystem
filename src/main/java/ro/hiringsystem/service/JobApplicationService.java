@@ -1,7 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.JobApplicationDto;
-import ro.hiringsystem.model.dto.JobDto;
+import ro.hiringsystem.model.dto.JobApplicationWithJobDto;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +24,6 @@ public interface JobApplicationService {
     Map<UUID, JobApplicationDto> listToMap(List<JobApplicationDto> jobApplicationDtoList);
 
     JobApplicationDto create(UUID jobId, UUID userId);
+
+    List<JobApplicationWithJobDto> getAllByUserId(UUID userId);
 }

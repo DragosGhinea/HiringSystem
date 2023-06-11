@@ -25,6 +25,8 @@ import DeleteApplication from "./pages/DeleteApplication";
 import CreateManualCandidate from "./pages/CreateManualCandidate";
 import CreateManualInterviewer from "./pages/CreateManualInterviewer";
 import CreateManualManager from "./pages/CreateManualManager";
+import MyApplicationsPage from "./pages/myApplications/MyApplicationsPage";
+import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
 
 function App() {
   return (
@@ -190,6 +192,22 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="non-authenticated">
                           <CreateManualManager />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/my-applications"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <MyApplicationsPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/my-interviews"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <MyInterviewsPage />
                       </ProtectedRoute>
                   }
               ></Route>
