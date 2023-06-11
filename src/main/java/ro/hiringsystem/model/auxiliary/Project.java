@@ -1,13 +1,17 @@
 package ro.hiringsystem.model.auxiliary;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -21,14 +25,5 @@ public class Project {
 
     @Column(columnDefinition = "TEXT")
     private String description;
-
-    public Project() {
-
-    }
-
-    public Project(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
 
 }
