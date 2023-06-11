@@ -16,6 +16,12 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     @Query("SELECT ja FROM JobApplication ja")
     List<JobApplication> findAll();
 
+    @Query("SELECT COUNT(ja) > 0 FROM JobApplication ja WHERE ja.jobId = :jobId AND ja.candidateUserId = :userId")
+    boolean hasAlreadyApplied(UUID jobId, UUID userId);
+
+    @Query("SELECT ja, cu FROM JobApplication ja JOIN CandidateUser cu ON ja.candidateUserId = cu.id WHERE ja.jobId = :jobId")
+    List<Object[]> findAllByJobIdWithUser(UUID jobId);
+
     @Query("SELECT ja, j FROM JobApplication ja JOIN Job j ON ja.jobId = j.id WHERE ja.candidateUserId = :userId")
     List<Object[]> findAllByUserIdWithJob(UUID userId);
 }

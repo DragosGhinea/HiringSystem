@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FormInput from "../components/forms/FormInput";
+import FormInput from "../../components/forms/FormInput";
 import axios from "axios";
 
 const CreateManualInterviewer = () => {

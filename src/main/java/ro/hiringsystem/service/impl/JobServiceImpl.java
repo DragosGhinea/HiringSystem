@@ -85,4 +85,10 @@ public class JobServiceImpl implements JobService {
             return null;
         }
     }
+
+    @Override
+    public List<JobDto> getAll() {
+        return jobRepository.findAll().stream()
+                .map(jobMapper::toDto).toList();
+    }
 }

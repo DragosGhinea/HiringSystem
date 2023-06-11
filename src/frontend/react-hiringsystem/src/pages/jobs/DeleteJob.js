@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import JobApplicationContext from "../components/shared/JobContext";
+import JobApplicationContext from "../../components/shared/JobContext";
 import Button from "react-bootstrap/Button";
 import {useParams} from "react-router-dom";
 

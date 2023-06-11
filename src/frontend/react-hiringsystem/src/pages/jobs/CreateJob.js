@@ -2,16 +2,12 @@ import { useContext, useRef, useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import JobContext from "../components/shared/JobContext";
-import { useParams } from 'react-router-dom';
+import JobContext from "../../components/shared/JobContext";
+import {useParams} from "react-router-dom";
 
-const EditJobForm = () => {
+const CreateJobForm = () => {
 
-    const { id } = useParams();
-
-    const [jobToEdit, setJobToEdit] = useState(null);
-
-    const {postJob, getJob} = useContext(JobContext);
+    const {createJob} = useContext(JobContext);
 
     const title = useRef("");
     const description = useRef("");
@@ -19,29 +15,14 @@ const EditJobForm = () => {
     const hoursPerWeek = useRef("");
     const startDate = useRef("");
 
-    const [jobTypeSelected, setJobTypeSelected] = useState('');
-    const [positionSelected, setPositionSelected] = useState('');
     const [skills, setSkills] = useState([]);
     const [newSkill, setNewSkill] = useState('');
     const [offers, setOffers] = useState([]);
     const [newOffer, setNewOffer] = useState('');
     const [jobTypes, setJobTypes] = useState([]);
     const [positions, setPositions] = useState([]);
-
-    useEffect(() => {
-        const fetchJob = async () => {
-            const job = await getJob(id);
-            setJobToEdit(job);
-            setJobTypeSelected(job.jobType);
-            setPositionSelected(job.position);
-            title.current.value = job.title;
-            description.current.value = job.description;
-            salary.current.value = job.salary;
-            hoursPerWeek.current.value = job.hoursPerWeek;
-            startDate.current.value = job.startDate;
-        };
-        fetchJob();
-    }, [id]);
+    const [jobTypeSelected, setJobTypeSelected] = useState('');
+    const [positionSelected, setPositionSelected] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:8081/api/v1/job/types')
@@ -87,7 +68,7 @@ const EditJobForm = () => {
         }
     };
 
-    const editSubmit = async () => {
+    const createSubmit = async () => {
         let payload = {
             title: title.current.value,
             description: description.current.value,
@@ -98,12 +79,11 @@ const EditJobForm = () => {
             startDate: startDate.current.value,
             skillsNeeded: skills,
             offers: offers
-        };
-
+        }
         try {
-            await postJob(id, payload);
+            await createJob(payload);
         } catch (err) {
-            console.log(err.config.data);
+            console.log(err);
         }
     };
 
@@ -112,11 +92,11 @@ const EditJobForm = () => {
             <Container className="mt-2">
                 <Row>
                     <Col className="col-md-8 offset-md-2">
-                        <legend>Edit Job Form</legend>
+                        <legend>Create Job Form</legend>
                         <form>
                             <Form.Group className="mb-3" controlId="formTitle">
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" defaultValue={title.current.value} ref={title}/>
+                                <Form.Control type="text" ref={title} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
@@ -194,8 +174,8 @@ const EditJobForm = () => {
                                     Add Offer
                                 </Button>
                             </Form.Group>
-                            <Button variant="primary" type="button" onClick={editSubmit}>
-                                Edit
+                            <Button variant="primary" type="button" onClick={createSubmit}>
+                                Create
                             </Button>
                         </form>
                     </Col>
@@ -205,4 +185,4 @@ const EditJobForm = () => {
     );
 };
 
-export default EditJobForm;
+export default CreateJobForm;

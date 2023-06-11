@@ -2,11 +2,10 @@ package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CandidateUserMapper;
 import ro.hiringsystem.mapper.JobApplicationMapper;
 import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.dto.JobApplicationDto;
-import ro.hiringsystem.model.dto.JobApplicationWithJobDto;
-import ro.hiringsystem.model.dto.JobDto;
+import ro.hiringsystem.model.dto.*;
 import ro.hiringsystem.model.entity.JobApplication;
 import ro.hiringsystem.model.enums.Status;
 import ro.hiringsystem.repository.JobApplicationRepository;
@@ -21,6 +20,8 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     private final JobApplicationRepository jobApplicationRepository;
     private final JobApplicationMapper jobApplicationMapper;
+
+    private final CandidateUserMapper candidateUserMapper;
 
     private final JobMapper jobMapper;
 
@@ -108,5 +109,22 @@ public class JobApplicationServiceImpl implements JobApplicationService {
             x.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean checkIfAlreadyApplied(UUID jobId, UUID userId) {
+        return jobApplicationRepository.hasAlreadyApplied(jobId, userId);
+    }
+
+    @Override
+    public List<JobApplicationWithUserDto> getAllByJobId(UUID jobId) {
+        List<Object[]> jobApplicationList = jobApplicationRepository.findAllByJobIdWithUser(jobId);
+        List<JobApplicationWithUserDto> jobApplicationWithUserDtos = new ArrayList<>();
+        for(Object[] pair : jobApplicationList){
+            JobApplicationDto jobApplicationDto = jobApplicationMapper.toDto((JobApplication) pair[0]);
+            CandidateUserDto candidateUserDto = candidateUserMapper.toDto((ro.hiringsystem.model.entity.CandidateUser) pair[1]);
+            jobApplicationWithUserDtos.add(new JobApplicationWithUserDto(jobApplicationDto, candidateUserDto));
+        }
+        return jobApplicationWithUserDtos;
     }
 }

@@ -1,0 +1,81 @@
+h1 {
+    text-align:center;
+    font-size: 35px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.job-box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.job-box {
+    background-color: #f2f2f2;
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin-top: 10px;
+}
+
+.job-title {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #000;
+}
+
+.job-box-label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-top: 10px;
+    color: #000;
+}
+
+.job-box-value {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+    color: #000;
+}
+
+.job-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 5.4em;
+    font-size: 16px;
+    margin-left: 10px;
+    color: #000;
+    margin-top: 10px;
+}
+
+.job-box-action {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
