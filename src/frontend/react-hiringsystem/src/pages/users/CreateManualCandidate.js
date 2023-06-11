@@ -1,10 +1,9 @@
-import React, {useState} from "react";
-import FormInput from "../components/forms/FormInput";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
+import FormInput from "../../components/forms/FormInput";
+import { useNavigate } from "react-router-dom";
 
-
-const CreateManualManager = () => {
+const CreateManualCandidate = () => {
     const [isEmailTaken, setIsEmailTaken] = useState(false);
 
     const navigate = useNavigate();
@@ -68,7 +67,7 @@ const CreateManualManager = () => {
         }
     ];
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (isEmailTaken) {
@@ -76,32 +75,34 @@ const CreateManualManager = () => {
             return;
         }
 
-        const managerDto = {
+        const candidateDto = {
             firstName: values.firstName,
             lastName: values.lastName,
             primaryEmail: values.email,
             mailList: [values.email],
             phoneNumberList: [],
-            birthDate: new Date(2000, 1, 1),
+            birthDate:  new Date(2000, 1, 1),
             password: values.password,
-            professionalBackground: null,
         };
 
         console.log("Data to send");
-        console.log(managerDto);
+        console.log(candidateDto);
 
-        axios.post("http://localhost:8081/api/v1/manager/create", managerDto)
-            .then(result => {
-                navigate(`/manager/profile/${result.data.id}`)
+        try {
+            axios.post("http://localhost:8081/api/v1/candidate/create", candidateDto)
+                .then(result => {
+                    navigate(`/candidate/profile/${result.data.id}`)
 
-                console.log("Manager created successfully");
-                const managerUserDto = result.data;
-                console.log(managerUserDto);
-            })
-            .catch(err => {
-                console.log("Error creating manager");
-                console.log(err);
-            });
+                    console.log("User registered successfully");
+                })
+                .catch(err => {
+                    console.log("Error registering user");
+                    console.log(err);
+                });
+        } catch (err) {
+            console.log("Error registering user with authentication system: ");
+            console.log(err);
+        }
     };
 
     const onChange = (e) => {
@@ -136,7 +137,7 @@ const CreateManualManager = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1>Create User</h1>
+            <h1>Create Candidate</h1>
             {inputs.map((input) => (
                 <div key={input.id}>
                     <FormInput
@@ -156,6 +157,6 @@ const CreateManualManager = () => {
             <button className="btn btn-success" type="submit">Submit</button>
         </form>
     );
-}
+};
 
-export default CreateManualManager;
+export default CreateManualCandidate;

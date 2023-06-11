@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import "./css/candidateProfile.css"
+import "../css/candidateProfile.css"
 import {useParams} from "react-router-dom";
 
 function CandidateProfile() {
@@ -33,7 +33,7 @@ function CandidateProfile() {
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
-                                    <img src={require("./css/images/candidate.png")} alt="Candidate" width="150"/>
+                                    <img src={require("../css/images/candidate.png")} alt="Candidate" width="150"/>
                                     <div className="mt-3 personalDataPanel">
                                         <h4>{user.firstName + ' ' + user.lastName}</h4>
                                         <p className="text-secondary mb-1">Candidate</p>
@@ -112,7 +112,7 @@ function CandidateProfile() {
                                                             </div>
                                                             <div className="row">
                                                                 <div className="col-sm-12">
-                                                                    <a className="btn btn-info " target="__blank" href="">Edit</a>
+                                                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
                                                                 </div>
                                                             </div>
                                                 </div>
@@ -137,7 +137,7 @@ function CandidateProfile() {
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@ function CandidateProfile() {
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,7 @@ function CandidateProfile() {
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12 m-3">
-                                        <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                        <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                     </div>
                                 </div>
                             </div>

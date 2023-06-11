@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import JobBox from './JobBox';
-import './css/displayJobsPage.css'
+import '../css/displayJobsPage.css'
 
 const DisplayJobsPage = () => {
     const [jobs, setJobs] = useState();
