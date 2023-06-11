@@ -18,6 +18,31 @@ const Layout = ({ children }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+              <Nav.Link as={Link} to="/jobs">
+                Jobs
+              </Nav.Link>
+              {user?.userType === "candidate" && (
+                <Nav.Link as={Link} to="/my-applications">
+                  My applications
+                </Nav.Link>
+              )}
+              {user && (
+                <Nav.Link as={Link} to="/my-interviews">
+                  My interviews
+                </Nav.Link>
+              )}
+              {user?.userType === "manager" && (
+                <Nav.Link as={Link} to="/manage-jobs">
+                  Manage jobs
+                </Nav.Link>
+              )}
+              {user?.userType === "manager" && (
+                <Nav.Link as={Link} to="/manage-users">
+                  Manage users
+                </Nav.Link>
+              )}
+          </Nav>
           <Nav className="ms-auto">
             {!user && (
               <Nav.Link as={Link} to="/login">
@@ -29,7 +54,11 @@ const Layout = ({ children }) => {
                 Register
               </Nav.Link>
             )}
-            {user && <Nav.Link href="#">{user?.email}</Nav.Link>}
+            {user && (
+              <Nav.Link as={Link} to="/profile">
+                Your Profile ({user?.email})
+              </Nav.Link>
+            )}
           </Nav>
           {user && (
             <Button

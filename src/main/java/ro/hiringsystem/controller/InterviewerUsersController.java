@@ -7,9 +7,7 @@ import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.service.InterviewerUserService;
 
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,7 +29,6 @@ public class InterviewerUsersController {
     @GetMapping("/types")
     public ResponseEntity<InterviewerType[]> getAllInterviewerTypes() {
         InterviewerType[] selectedTypes = Arrays.stream(InterviewerType.values())
-                .filter(type -> type != InterviewerType.NONE)
                 .toArray(InterviewerType[]::new);
 
         return ResponseEntity.ok(selectedTypes);

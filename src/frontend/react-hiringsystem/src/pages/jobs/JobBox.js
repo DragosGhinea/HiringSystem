@@ -8,7 +8,7 @@ const JobBox = ({job, index}) => {
     const navigate = useNavigate();
 
     const goToJob = () => {
-        navigate(`/view/job/${job.id}`);
+        navigate(`/jobs/job/${job.id}`);
     };
 
     return (

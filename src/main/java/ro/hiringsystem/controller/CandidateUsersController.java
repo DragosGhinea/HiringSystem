@@ -1,10 +1,12 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.UUID;
@@ -82,6 +84,11 @@ public class CandidateUsersController {
                 .password("test")
                 .build());
         */
+    }
+
+    @GetMapping(value="get/cv/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(candidateUserService.getUserCV(id));
     }
 
     @PostMapping("/create")

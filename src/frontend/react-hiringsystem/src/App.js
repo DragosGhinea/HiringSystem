@@ -112,7 +112,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/view/job/:id"
+                  path="/jobs/job/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <ViewJobPage />
@@ -120,7 +120,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/display/jobs"
+                  path="/jobs"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <DisplayJobsPage />
@@ -128,7 +128,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/all-applications/:jobId"
+                  path="/jobs/applications/:jobId"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <AllJobApplicationsPage />

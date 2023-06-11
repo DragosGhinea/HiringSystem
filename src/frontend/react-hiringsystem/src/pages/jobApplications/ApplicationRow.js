@@ -1,4 +1,12 @@
-const ApplicationRow = ({index, application}) => {
+import jwtInterceptor from "../../components/shared/JwtInterceptor";
+
+const ApplicationRow = ({index, application, setCV}) => {
+
+    const viewCv = async () => {
+        let cvData = await jwtInterceptor.get(`http://localhost:8081/api/v1/candidate/get/cv/${application.candidate_user.id}`);
+        cvData.data.user = application.candidate_user;
+        setCV(cvData.data);
+    }
 
     return (
         <tr>
@@ -7,7 +15,7 @@ const ApplicationRow = ({index, application}) => {
             <td>{application.candidate_user.primaryEmail}</td>
             <td>{application.job_application.applicationDate}</td>
             <td>{application.job_application.status}</td>
-            <td><button className="btn btn-primary">View CV</button></td>
+            <td><button onClick={viewCv} className="btn btn-primary">View CV</button></td>
         </tr>
     )
 }
