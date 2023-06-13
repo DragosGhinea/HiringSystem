@@ -47,8 +47,15 @@ public class JobsController {
     }
 
     @GetMapping("/get/all")
-    public ResponseEntity<Object> getAllJobs () {
+    public ResponseEntity<Object> getAllJobs() {
         return ResponseEntity.ok(jobService.getAll());
+    }
+
+    @GetMapping("/get/all/paginated")
+    public ResponseEntity<List<JobDto>> getAllJobs(@RequestParam Integer page, @RequestParam Integer size) {
+        if(page <= 0)
+            page = 1;
+        return ResponseEntity.ok(jobService.getAll(page-1, size));
     }
 
     @PostMapping("/create")

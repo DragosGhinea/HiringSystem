@@ -1,13 +1,19 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FormInput from "../../components/forms/FormInput";
 import "../css/createInterviewConferenceRoom.css";
 import axios from "axios";
 
 
 const CreateInterviewConferenceRoom = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+
+    const startDate = queryParams.get('startDate') || "";
+    console.log(startDate);
+
     const [values, setValues] = useState({
-        startDate: "",
+        startDate: startDate,
         participants: []
       });
 
@@ -33,7 +39,6 @@ const CreateInterviewConferenceRoom = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Data to send")
-        console.log(values)
         axios.post("http://localhost:8081/api/v1/interview/create", values)
             .then(result => {
                 navigate(`/interview/display/${result.data.id}`)

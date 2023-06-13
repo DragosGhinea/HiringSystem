@@ -2,6 +2,7 @@ package ro.hiringsystem.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.CVMapper;
@@ -114,5 +115,12 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     @Override
     public CVDto getUserCV(UUID userId) {
         return cvMapper.toDto(candidateUserRepository.getUserCV(userId));
+    }
+
+    @Override
+    public List<CandidateUserDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return candidateUserRepository.findAll(pageRequest).stream()
+                .map(candidateUserMapper::toDto).toList();
     }
 }

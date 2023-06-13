@@ -1,10 +1,11 @@
 package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.dto.JobDto;
+import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.repository.JobRepository;
 import ro.hiringsystem.service.JobService;
 
@@ -89,6 +90,13 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<JobDto> getAll() {
         return jobRepository.findAll().stream()
+                .map(jobMapper::toDto).toList();
+    }
+
+    @Override
+    public List<JobDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return jobRepository.findAll(pageRequest).stream()
                 .map(jobMapper::toDto).toList();
     }
 }

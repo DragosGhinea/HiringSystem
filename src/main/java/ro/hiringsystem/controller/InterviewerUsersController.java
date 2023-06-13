@@ -8,6 +8,7 @@ import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.service.InterviewerUserService;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,6 +16,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InterviewerUsersController {
     private final InterviewerUserService interviewerUserService;
+
+    @GetMapping("get/all/paginated")
+    public ResponseEntity<List<InterviewerUserDto>> getAllCandidateUsersPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+        if(page <= 0)
+            page = 1;
+        return ResponseEntity.ok(interviewerUserService.getAll(page-1, size));
+    }
+
+    @PostMapping("delete/{id}")
+    public ResponseEntity<Void> deleteCandidateUser(@PathVariable("id") UUID id) {
+        interviewerUserService.removeElementById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("profile/{id}")
     public ResponseEntity<InterviewerUserDto> getInterviewerUser(@PathVariable("id") UUID id) {

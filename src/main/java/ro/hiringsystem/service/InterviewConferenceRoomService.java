@@ -23,4 +23,6 @@ public interface InterviewConferenceRoomService {
     void cleanupOldRooms();
 
     List<InterviewConferenceRoomDto> getAllByUserId(UUID userId);
+
+    List<InterviewConferenceRoomDto> getAll();
 }

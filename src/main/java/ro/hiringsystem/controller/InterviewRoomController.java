@@ -28,6 +28,11 @@ public class InterviewRoomController {
         return ResponseEntity.ok(interviewConferenceRoomService.create(interviewConferenceRoomDto));
     }
 
+    @GetMapping("get/all")
+    public ResponseEntity<Object> getAllInterviewRooms(){
+        return ResponseEntity.ok(interviewConferenceRoomService.getAll());
+    }
+
     @GetMapping("get/{id}")
     public ResponseEntity<InterviewConferenceRoomDto> getInterviewRoom(@PathVariable("id") UUID id){
         return ResponseEntity.ok(interviewConferenceRoomService.getByIdFullyLoaded(id));

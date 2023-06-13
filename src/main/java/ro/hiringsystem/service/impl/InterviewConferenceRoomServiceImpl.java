@@ -103,4 +103,10 @@ public class InterviewConferenceRoomServiceImpl implements InterviewConferenceRo
             toReturn.add(interviewConferenceRoomMapper.toDtoFullyLoaded(room));
         return toReturn;
     }
+
+    @Override
+    public List<InterviewConferenceRoomDto> getAll() {
+        return interviewConferenceRoomRepository.findAll().stream()
+                .map(interviewConferenceRoomMapper::toDto).toList();
+    }
 }

@@ -33,13 +33,18 @@ const Layout = ({ children }) => {
                 </Nav.Link>
               )}
               {user?.userType === "manager" && (
-                <Nav.Link as={Link} to="/manage-jobs">
+                <Nav.Link as={Link} to="/jobs/manage">
                   Manage jobs
                 </Nav.Link>
               )}
               {user?.userType === "manager" && (
-                <Nav.Link as={Link} to="/manage-users">
+                <Nav.Link as={Link} to="/users/manage">
                   Manage users
+                </Nav.Link>
+              )}
+              {(user?.userType === "manager" || user?.userType === "interviewer") && (
+                <Nav.Link as={Link} to="/interviews/manage">
+                  Manage interviews
                 </Nav.Link>
               )}
           </Nav>
