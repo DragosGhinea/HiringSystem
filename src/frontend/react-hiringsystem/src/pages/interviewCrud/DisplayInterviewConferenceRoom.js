@@ -41,6 +41,7 @@ function DisplayInterviewConferenceRoom() {
       {interviewConferenceRoom ? (
         <>
           <InterviewConferenceRoom interviewConferenceRoom={interviewConferenceRoom} />
+          <button className="btn btn-info" onClick={() => navigate(`/interviews/edit/${id}`)} style={{marginRight: '20px'}}>Edit</button>
           <button className="btn btn-danger" onClick={deleteInterviewConferenceRoom}>Delete</button>
           <span ref={deleteErrorMessage}></span>
         </>

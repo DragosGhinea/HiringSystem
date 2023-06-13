@@ -21,7 +21,7 @@ public class Token {
     @GeneratedValue
     public UUID id;
 
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "TEXT")
     public String token;
 
     @Enumerated(EnumType.STRING)

@@ -15,7 +15,6 @@ import EditJob from "./pages/jobs/EditJob";
 import CreateInterviewConferenceRoom from "./pages/interviewCrud/CreateInterviewConferenceRoom";
 import DisplayInterviewConferenceRoom from "./pages/interviewCrud/DisplayInterviewConferenceRoom";
 import EditInterviewConferenceRoom from "./pages/interviewCrud/EditInterviewConferenceRoom";
-import InterviewRoomPage from "./pages/interviewRoom/InterviewRoomPage";
 import InterviewLeft from "./pages/interviewRoom/InterviewLeft";
 import InterviewWaitingRoom from "./pages/interviewRoom/InterviewWaitingRoom";
 import CreateApplication from "./pages/jobApplications/CreateApplication";
@@ -30,6 +29,9 @@ import ViewJobPage from "./pages/jobs/ViewJobPage";
 import AllJobApplicationsPage from "./pages/jobApplications/AllJobApplicationsPage";
 import MyApplicationsPage from "./pages/myApplications/MyApplicationsPage";
 import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
+import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
+import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
+import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
 
 function App() {
   return (
@@ -80,7 +82,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/job/create"
+                  path="/jobs/create"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <CreateJob />
@@ -88,7 +90,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/job/edit/:id"
+                  path="/jobs/edit/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <EditJob />
@@ -96,7 +98,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/job/delete/:id"
+                  path="/jobs/delete/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <DeleteJob />
@@ -104,7 +106,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/job/get/:id"
+                  path="/jobs/get/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <EditJob />
@@ -112,7 +114,7 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/view/job/:id"
+                  path="/jobs/job/:id"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <ViewJobPage />
@@ -120,15 +122,24 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/display/jobs"
+                  path="/jobs"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <DisplayJobsPage />
                       </ProtectedRoute>
                   }
               ></Route>
+
+            <Route
+                  path="/jobs/manage"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ManageJobsPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
               <Route
-                  path="/all-applications/:jobId"
+                  path="/jobs/applications/:jobId"
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <AllJobApplicationsPage />
@@ -150,33 +161,33 @@ function App() {
                   }
               ></Route>
               <Route
-                  path="/interview/create"
+                  path="/interviews/create"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CreateInterviewConferenceRoom />
                       </ProtectedRoute>
                   }
               ></Route>
               <Route
-                  path="/interview/display/:id"
+                  path="/interviews/display/:id"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <DisplayInterviewConferenceRoom />
                       </ProtectedRoute>
                   }
               ></Route>
               <Route
-                  path="/interview/edit/:id"
+                  path="/interviews/edit/:id"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <EditInterviewConferenceRoom />
                       </ProtectedRoute>
                   }
               ></Route>
               <Route
-                  path="/interview/delete/:id"
+                  path="/interviews/delete/:id"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <EditInterviewConferenceRoom />
                       </ProtectedRoute>
                   }
@@ -201,7 +212,7 @@ function App() {
               <Route
                   path="/candidate/create"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CreateManualCandidate />
                       </ProtectedRoute>
                   }
@@ -209,7 +220,7 @@ function App() {
               <Route
                   path="/interviewer/create"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CreateManualInterviewer />
                       </ProtectedRoute>
                   }
@@ -217,7 +228,7 @@ function App() {
               <Route
                   path="/manager/create"
                   element={
-                      <ProtectedRoute accessBy="non-authenticated">
+                      <ProtectedRoute accessBy="authenticated">
                           <CreateManualManager />
                       </ProtectedRoute>
                   }
@@ -235,6 +246,22 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <MyInterviewsPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/users/manage"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ManageUsersPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/interviews/manage"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ManageInterviewsPage />
                       </ProtectedRoute>
                   }
               ></Route>

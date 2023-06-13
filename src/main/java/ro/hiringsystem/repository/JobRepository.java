@@ -1,5 +1,7 @@
 package ro.hiringsystem.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ro.hiringsystem.model.entity.Job;
@@ -14,5 +16,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
 
     @Query("SELECT j FROM Job j")
     List<Job> findAll();
+
+    Page<Job> findAll(Pageable pageable);
 
 }

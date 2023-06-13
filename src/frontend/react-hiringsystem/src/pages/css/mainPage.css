@@ -104,3 +104,13 @@
 #tsparticles canvas{
     background: linear-gradient(to bottom, #2980B9, #6DD5FA);
 }
+
+.go-jobs{
+    background-color: #2980B9;
+    color: white;
+}
+
+.go-jobs:hover{
+    background-color: #6DD5FA;
+    color: white;
+}

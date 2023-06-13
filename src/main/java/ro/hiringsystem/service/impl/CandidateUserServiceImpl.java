@@ -2,10 +2,13 @@ package ro.hiringsystem.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CVMapper;
 import ro.hiringsystem.mapper.CandidateUserMapper;
 import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
@@ -19,6 +22,8 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     private final CandidateUserRepository candidateUserRepository;
     private final CandidateUserMapper candidateUserMapper;
+
+    private final CVMapper cvMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -105,5 +110,17 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
         candidateUserRepository.save(candidateEntity);
         return candidateUserMapper.toDto(candidateEntity);
+    }
+
+    @Override
+    public CVDto getUserCV(UUID userId) {
+        return cvMapper.toDto(candidateUserRepository.getUserCV(userId));
+    }
+
+    @Override
+    public List<CandidateUserDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return candidateUserRepository.findAll(pageRequest).stream()
+                .map(candidateUserMapper::toDto).toList();
     }
 }

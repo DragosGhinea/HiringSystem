@@ -56,7 +56,7 @@ const ViewJobPage = () => {
     };
 
     const handleViewApplications = () => {
-        navigate(`/all-applications/${id}`);
+        navigate(`/jobs/applications/${id}`);
     };
 
     return (

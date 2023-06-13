@@ -1,12 +1,14 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.service.CandidateUserService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -14,6 +16,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CandidateUsersController {
     private final CandidateUserService candidateUserService;
+
+    @PostMapping("delete/{id}")
+    public ResponseEntity<Void> deleteCandidateUser(@PathVariable("id") UUID id) {
+        candidateUserService.removeElementById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("get/all/paginated")
+    public ResponseEntity<List<CandidateUserDto>> getAllCandidateUsersPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+        if(page <= 0)
+            page = 1;
+        return ResponseEntity.ok(candidateUserService.getAll(page-1, size));
+    }
 
     @GetMapping("profile/{id}")
     public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") UUID id) {
@@ -82,6 +97,11 @@ public class CandidateUsersController {
                 .password("test")
                 .build());
         */
+    }
+
+    @GetMapping(value="get/cv/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(candidateUserService.getUserCV(id));
     }
 
     @PostMapping("/create")

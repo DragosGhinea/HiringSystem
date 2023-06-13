@@ -1,11 +1,12 @@
 package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.InterviewerUserMapper;
-import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.InterviewerUserRepository;
 import ro.hiringsystem.service.InterviewerUserService;
@@ -114,5 +115,12 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
         InterviewerUser interviewerEntity = interviewerUserMapper.toEntity(interviewerUserDto);
         interviewerUserRepository.save(interviewerEntity);
         return interviewerUserMapper.toDto(interviewerEntity);
+    }
+
+    @Override
+    public List<InterviewerUserDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return interviewerUserRepository.findAll(pageRequest).stream()
+                .map(interviewerUserMapper::toDto).toList();
     }
 }

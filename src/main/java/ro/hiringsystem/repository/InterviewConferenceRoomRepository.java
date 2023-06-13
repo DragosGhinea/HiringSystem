@@ -14,4 +14,5 @@ public interface InterviewConferenceRoomRepository extends JpaRepository<Intervi
 
     @Query("SELECT ir FROM InterviewConferenceRoom ir JOIN ir.participants p WHERE p.user.id = :userId")
     List<InterviewConferenceRoom> getAllByUserId(UUID userId);
+
 }

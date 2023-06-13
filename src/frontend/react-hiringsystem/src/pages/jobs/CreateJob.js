@@ -100,7 +100,7 @@ const CreateJobForm = () => {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" ref={description} />
+                                <Form.Control as="textarea" ref={description} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formJobType">
                                 <Form.Label>Job Type</Form.Label>

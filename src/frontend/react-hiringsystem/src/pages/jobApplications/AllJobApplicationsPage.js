@@ -3,10 +3,12 @@ import '../css/myApplications.css'
 import axios from "axios";
 import ApplicationRow from './ApplicationRow';
 import {useParams} from "react-router-dom";
+import CVModal from './CVModal';
 
 const AllJobApplicationsPage = () => {
     const { jobId } = useParams();
     const [applications, setApplications] = useState([]);
+    const [cvData, setCvData] = useState()
 
     useEffect(() => {
         axios.get(`http://localhost:8081/api/v1/application/get/all/${jobId}`)
@@ -40,13 +42,15 @@ const AllJobApplicationsPage = () => {
                         </thead>
                         <tbody>
                         {applications.map((app, index) => {
-                            return <ApplicationRow key={index} index={index+1} application={app} />
+                            return <ApplicationRow key={index} index={index+1} application={app} setCV={setCvData}/>
                         })}
                         </tbody>
                     </table>
                     {applications.length===0 &&
                         <h5 className='mt-5'>No applications yet!</h5>
                     }
+
+                    <CVModal cv = {cvData} setCV = {setCvData} />
                 </div>
             </div>
         </div>

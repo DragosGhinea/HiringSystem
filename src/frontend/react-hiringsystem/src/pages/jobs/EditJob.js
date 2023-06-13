@@ -39,6 +39,8 @@ const EditJobForm = () => {
             salary.current.value = job.salary;
             hoursPerWeek.current.value = job.hoursPerWeek;
             startDate.current.value = job.startDate;
+            setSkills(job.skillsNeeded);
+            setOffers(job.offers);
         };
         fetchJob();
     }, [id]);
@@ -120,7 +122,7 @@ const EditJobForm = () => {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formDescription">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" ref={description} />
+                                <Form.Control as="textarea" ref={description} style={{height: '300px'}}/>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formJobType">
                                 <Form.Label>Job Type</Form.Label>

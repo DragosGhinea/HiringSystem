@@ -13,6 +13,7 @@ function EditInterviewConferenceRoom() {
       try {
         const response = await axios.get(`http://localhost:8081/api/v1/interview/get/${id}`);
         const interviewData = response.data;
+        interviewData.startDate = interviewData.startDate.slice(0, 16)
         setValues(interviewData);
       } catch (error) {
         console.error('Error:', error);

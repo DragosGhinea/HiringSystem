@@ -1,7 +1,10 @@
 package ro.hiringsystem.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.entity.CandidateUser;
 
 import java.util.List;
@@ -22,5 +25,10 @@ public interface CandidateUserRepository extends JpaRepository<CandidateUser, UU
 
     @Query("SELECT u FROM CandidateUser u")
     List<CandidateUser> findAll();
+
+    @Query("SELECT cv FROM CV cv WHERE cv.id = :userId")
+    CV getUserCV(UUID userId);
+
+    Page<CandidateUser> findAll(Pageable pageable);
 
 }
