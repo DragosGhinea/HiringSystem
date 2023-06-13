@@ -1,6 +1,6 @@
 import "./App.css";
 import Layout from "./components/shared/Layout";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthContextProvider } from "./components/shared/AuthContext";
 import { JobContextProvider } from "./components/shared/JobContext";
@@ -32,6 +32,7 @@ import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
 import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
 import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
 import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
+import ProfilePage from "./pages/users/ProfilePage";
 
 function App() {
   return (
@@ -57,6 +58,19 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
+            <Route
+                exact
+                path="/profile"
+                element={<Navigate to="/profile/me" />}
+            />
+            <Route
+                  path="/profile/:id"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ProfilePage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
               <Route
                   path="/candidate/profile/:id"
                   element={

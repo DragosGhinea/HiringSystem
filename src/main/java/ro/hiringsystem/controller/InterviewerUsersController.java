@@ -2,6 +2,7 @@ package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
@@ -31,8 +32,11 @@ public class InterviewerUsersController {
     }
 
     @GetMapping("profile/{id}")
-    public ResponseEntity<InterviewerUserDto> getInterviewerUser(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(interviewerUserService.getById(id));
+    public ResponseEntity<InterviewerUserDto> getInterviewerUser(@PathVariable("id") String id, Authentication authentication) {
+        if(id.equals("me"))
+            return ResponseEntity.ok((InterviewerUserDto) authentication.getPrincipal());
+        else
+            return ResponseEntity.ok(interviewerUserService.getById(UUID.fromString(id)));
     }
 
     @PostMapping("create")

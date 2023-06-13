@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
 import "../css/candidateProfile.css"
 import {useParams} from "react-router-dom";
+import jwtInterceptor from '../../components/shared/JwtInterceptor';
 
 function CandidateProfile() {
 
@@ -11,9 +11,7 @@ function CandidateProfile() {
 
     useEffect(() => {
 
-        document.body.classList.add('containerCandidate');
-
-        axios
+        jwtInterceptor
             .get(`http://localhost:8081/api/v1/candidate/profile/${id}`)
             .then(function (response) {
                 console.log(response);
@@ -27,10 +25,9 @@ function CandidateProfile() {
 
     return (user &&
         <div className="containerCandidate">
-            <div className="main-body">
-                <div className="row gutters-sm">
-                    <div className="col-md-4 mb-3">
-                        <div className="card">
+            <div className="background"></div>
+            <div className="main-body candidate-info">
+                        <div className="card" id="personal">
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
                                     <img src={require("../css/images/candidate.png")} alt="Candidate" width="150"/>
@@ -122,12 +119,7 @@ function CandidateProfile() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                <div className="col-md-8">
-                    <div className="row gutters-sm">
-                        <div className="col-sm-6 mb-3">
-                            <div className="card experienceCard">
+                            <div className="card experienceCard" id="academicBackground">
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Academic Background</h6>
                                     <ul className="text-secondary">
@@ -140,10 +132,8 @@ function CandidateProfile() {
                                     <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="col-sm-6 mb-3">
-                            <div className="card experienceCard">
+                            <div className="card experienceCard" id="workExperience">
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Work Experience</h6>
                                     <ul className="text-secondary">
@@ -156,9 +146,7 @@ function CandidateProfile() {
                                     <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
-                        </div>
 
-                        <div col-sm-6="true" mb-3="true">
                             <div className="card" id = "projects">
                                 <div className="card-body">
                                     <h6 className="d-flex align-items-center mb-3">Projects</h6>
@@ -174,11 +162,7 @@ function CandidateProfile() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                </div>
-                </div>
-            </div>
         </div>
     )
 }

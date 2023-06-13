@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
 import "../css/interviewer-managerProfile.css"
 import {useParams} from "react-router-dom";
+import jwtInterceptor from '../../components/shared/JwtInterceptor';
 
 function ManagerProfile() {
 
@@ -11,9 +11,7 @@ function ManagerProfile() {
 
     useEffect(() => {
 
-        document.body.classList.add('containerInterviewerManager');
-
-        axios
+        jwtInterceptor
             .get(`http://localhost:8081/api/v1/manager/profile/${id}`)
             .then(function (response) {
                 console.log(response);
@@ -27,6 +25,7 @@ function ManagerProfile() {
 
     return (user &&
         <div className="containerInterviewerManager mt-5">
+            <div className="background"></div>
             <div className="row d-flex justify-content-center">
                 <div className="col-md-7">
                     <div className="card p-3 py-4">
