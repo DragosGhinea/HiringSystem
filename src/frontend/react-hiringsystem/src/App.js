@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./components/shared/AuthContext";
 import { JobContextProvider } from "./components/shared/JobContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
-import Register from "./pages/Register";
+import Register from "./pages/register/Register";
 import CandidateProfile from "./pages/users/CandidateProfile";
 import InterviewerProfile from "./pages/users/InterviewerProfile";
 import ManagerProfile from "./pages/users/ManagerProfile";
@@ -33,6 +33,8 @@ import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
 import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
 import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
 import TermsOfUsePage from "./pages/TermsOfUsePage";
+import RegisterSent from "./pages/register/RegisterSent";
+import RegisterConfirm from "./pages/register/RegisterConfirm";
 
 function App() {
   return (
@@ -55,6 +57,22 @@ function App() {
               element={
                 <ProtectedRoute accessBy="non-authenticated">
                   <Register />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/register/sent"
+              element={
+                <ProtectedRoute accessBy="non-authenticated">
+                  <RegisterSent />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/register/confirm/:id"
+              element={
+                <ProtectedRoute accessBy="non-authenticated">
+                  <RegisterConfirm />
                 </ProtectedRoute>
               }
             ></Route>

@@ -12,14 +12,6 @@
     text-align: center;
 }
 
-.logo {
-    align-content: center;
-    max-width: 100px;
-    height: auto;
-    margin: 20px;
-    border-radius: 20px;
-}
-
 .content {
     padding: 40px 30px;
 }
@@ -30,11 +22,11 @@
 }
 
 .cta-button {
+    text-decoration: unset;
     display: inline-block;
     padding: 10px 20px;
     background-color: #1e90ff;
-    color: #ffffff;
-    text-decoration: none;
+    color: white;
     border-radius: 4px;
 }
 
