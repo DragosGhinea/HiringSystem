@@ -3,14 +3,19 @@ import { createContext, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import jwtInterceptor from "./JwtInterceptor";
- 
+
 const AuthContext = createContext();
  
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     if (localStorage.getItem("tokens")) {
       let tokens = JSON.parse(localStorage.getItem("tokens"));
-      return {access_token: jwt_decode(tokens.access_token)};
+      const decoded = jwt_decode(tokens.access_token);
+
+      return {
+        email: decoded.sub,
+        userType: decoded.userType
+      };
     }
     return null;
   });
@@ -24,12 +29,23 @@ export const AuthContextProvider = ({ children }) => {
     );
 
     localStorage.setItem("tokens", JSON.stringify(apiResponse.data));
+    const decoded = jwt_decode(apiResponse.data.access_token);
     const userData = {
-      access_token: jwt_decode(apiResponse.data.access_token),
-      email: payload.email
+      email: payload.email,
+      userType: decoded.userType
     }
     setUser(userData);
-    navigate("/");
+
+    try {
+      const response = await axios.get(`http://localhost:8081/api/v1/user/id/${userData.email}`);
+      const { id } = response.data;
+      console.log(id)
+
+      navigate(`/candidate/profile/${id}`)
+    } catch (error) {
+      console.error('Error: ', error);
+      return null;
+    }
   };
  
   const login = async (payload) => {
@@ -38,9 +54,10 @@ export const AuthContextProvider = ({ children }) => {
       payload
     ).then(apiResponse => {
       localStorage.setItem("tokens", JSON.stringify(apiResponse.data));
+      const decoded = jwt_decode(apiResponse.data.access_token);
       const userData = {
-        access_token: jwt_decode(apiResponse.data.access_token),
-        email: payload.email
+        email: payload.email,
+        userType: decoded.userType
       }
       setUser(userData);
       navigate("/");

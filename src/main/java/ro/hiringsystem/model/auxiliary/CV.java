@@ -15,8 +15,7 @@ import java.util.UUID;
 @Entity
 public class CV {
     @Id
-    @GeneratedValue
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
     private File cvFile;
 
@@ -31,5 +30,9 @@ public class CV {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Project> projects;
+
+    public CV(UUID userId){
+        this.id = userId;
+    }
 
 }

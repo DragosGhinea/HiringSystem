@@ -21,7 +21,6 @@ import java.util.UUID;
 public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NonNull

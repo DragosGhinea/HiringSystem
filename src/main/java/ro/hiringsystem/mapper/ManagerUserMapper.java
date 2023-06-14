@@ -1,15 +1,11 @@
 package ro.hiringsystem.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.model.dto.ManagerUserDto;
+import ro.hiringsystem.model.entity.ManagerUser;
 
 @Mapper
 public interface ManagerUserMapper {
-
-    ManagerUserMapper INSTANCE = Mappers.getMapper(ManagerUserMapper.class);
-
     ManagerUserDto toDto(ManagerUser managerUser);
 
     ManagerUser toEntity(ManagerUserDto userDto);

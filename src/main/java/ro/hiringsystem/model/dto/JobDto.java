@@ -35,8 +35,6 @@ public class JobDto {
 
     private LocalDate startDate;
 
-    private Period period;
-
     private List<String> skillsNeeded;
 
     private List<String> offers;

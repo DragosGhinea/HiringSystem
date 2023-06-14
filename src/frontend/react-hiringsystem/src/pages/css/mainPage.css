@@ -1,0 +1,116 @@
+@keyframes rotationRight {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes rotationLeft {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-359deg);
+    }
+}
+
+.main-card{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 50px;
+    height: 70vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(to bottom, #f8f8f8, #d3d3d3);
+    border-radius: 25px;
+}
+
+.main-card .title .text-muted{
+    text-align: center;
+}
+
+.main-card .content{
+    width: 70%;
+    text-align: justify;
+}
+
+.gearGroup1{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: -15px;
+    left: -35px;
+}
+
+.gearGroup2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    bottom: 10px;
+    right: 0px;
+}
+
+.gear1 {
+    position: absolute;
+    top: 35px;
+    right: -10px;
+    width: 69px;
+    filter: invert(34%) sepia(77%) saturate(430%) hue-rotate(241deg) brightness(90%) contrast(88%);
+    transition-duration: 0.6s;
+    animation: rotationLeft 7s infinite linear;
+}
+
+.gear2 {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 95px;
+    filter: invert(74%) sepia(45%) saturate(7264%) hue-rotate(349deg) brightness(95%) contrast(87%);
+    transition-duration: 0.6s;
+    animation: rotationRight 7s infinite linear;
+}
+
+.gear3 {
+    position: absolute;
+    top: -19px;
+    right: 0px;
+    width: 170px;
+    filter: invert(44%) sepia(94%) saturate(5456%) hue-rotate(329deg) brightness(87%) contrast(89%);
+    transition-duration: 0.6s;
+    animation: rotationRight 7s infinite linear;
+}
+
+.gear4 {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 130px;
+    filter: invert(39%) sepia(44%) saturate(2172%) hue-rotate(176deg) brightness(89%) contrast(77%);
+    transition-duration: 0.6s;
+    animation: rotationLeft 7s infinite linear;
+}
+
+#tsparticles{
+    z-index: -1;
+}
+
+#tsparticles canvas{
+    background: linear-gradient(to bottom, #2980B9, #6DD5FA);
+}
+
+.go-jobs{
+    background-color: #2980B9;
+    color: white;
+}
+
+.go-jobs:hover{
+    background-color: #6DD5FA;
+    color: white;
+}

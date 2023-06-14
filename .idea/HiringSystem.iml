@@ -7,6 +7,7 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/annotations" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -69,6 +70,9 @@
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:bootstrap:5.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:6.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.19" level="project" />
@@ -141,7 +145,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: jakarta.inject:jakarta.inject-api:2.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.antlr:antlr4-runtime:4.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.orm:hibernate-hikaricp:6.1.7.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.5.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:5.0.1" level="project" />
@@ -155,5 +158,6 @@
     <orderEntry type="library" name="Maven: com.intellij:annotations:7.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:3.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:6.0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
   </component>
 </module>

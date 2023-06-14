@@ -1,13 +1,10 @@
 package ro.hiringsystem.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.ManagerUserDto;
-import ro.hiringsystem.model.entity.ManagerUser;
+import ro.hiringsystem.service.ManagerUserService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,23 +12,17 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/manager")
+@RequiredArgsConstructor
 public class ManagerUsersController {
+    private final ManagerUserService managerUserService;
 
-    @GetMapping("profile")
-    public ResponseEntity<ManagerUserDto> getManagerUser() {
-
-        return ResponseEntity.ok(ManagerUserDto.builder()
-                .id(UUID.randomUUID())
-                .firstName("Tom")
-                .lastName("Scott")
-                .primaryEmail("toms@gmail.com")
-                .password("test")
-                .mailList(List.of("tomscott@yahoo.com", "tom.scott@gmail.com"))
-                .phoneNumberList(List.of("0724143235", "0735877578"))
-                .birthDate(LocalDate.of(1975, 7, 4))
-                .professionalBackground("Tom is a seasoned IT manager with over 10 years of experience leading and managing teams in various IT companies. He has a Bachelor's degree in Computer Science and started his career as a software developer. Tom has expertise in managing complex IT projects, developing and implementing IT strategies, and leading teams of developers, designers, and other IT professionals. He has strong leadership, communication, and technical skills, and is proficient in agile methodologies and project management tools. Tom leverages his knowledge of the latest industry trends and technologies to improve the performance of his company.")
-                .build());
-
+    @GetMapping("profile/{id}")
+    public ResponseEntity<ManagerUserDto> getManagerUser(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(managerUserService.getById(id));
     }
 
+    @PostMapping("create")
+    public ResponseEntity<ManagerUserDto> createMangerUser(@RequestBody ManagerUserDto managerUserDto){
+        return ResponseEntity.ok(managerUserService.create(managerUserDto));
+    }
 }

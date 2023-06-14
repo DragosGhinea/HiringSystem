@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import "./css/candidateProfile.css"
-import { Link } from 'react-router-dom';
+import "../css/candidateProfile.css"
+import {useParams} from "react-router-dom";
 
 function CandidateProfile() {
+
+    const { id } = useParams();
 
     const [user, setUser] = useState(null);
 
@@ -12,7 +14,7 @@ function CandidateProfile() {
         document.body.classList.add('containerCandidate');
 
         axios
-            .get("http://localhost:8081/api/v1/candidate/profile")
+            .get(`http://localhost:8081/api/v1/candidate/profile/${id}`)
             .then(function (response) {
                 console.log(response);
                 setUser(response.data);
@@ -31,7 +33,7 @@ function CandidateProfile() {
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
-                                    <img src={require("./css/images/candidate.png")} alt="Candidate" width="150"/>
+                                    <img src={require("../css/images/candidate.png")} alt="Candidate" width="150"/>
                                     <div className="mt-3 personalDataPanel">
                                         <h4>{user.firstName + ' ' + user.lastName}</h4>
                                         <p className="text-secondary mb-1">Candidate</p>
@@ -45,7 +47,7 @@ function CandidateProfile() {
                                                         <div className="col-sm-9 text-secondary personalDataPanel">
                                                             <div className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                                                 <h6 className="mb-0">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-github mr-2 icon-inline">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-github mr-2 icon-inline">
                                                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                                                                     </svg>
                                                                 </h6>
@@ -102,7 +104,7 @@ function CandidateProfile() {
                                                                 </div>
                                                                 <div className="col-sm-9 text-secondary">
                                                                     <ul>
-                                                                        {user.cv.skills?.map(skill => (
+                                                                        {user.cv?.skills?.map(skill => (
                                                                             <li key={skill}>{skill}</li>
                                                                         ))}
                                                                     </ul>
@@ -110,7 +112,7 @@ function CandidateProfile() {
                                                             </div>
                                                             <div className="row">
                                                                 <div className="col-sm-12">
-                                                                    <a className="btn btn-info " target="__blank" href="">Edit</a>
+                                                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
                                                                 </div>
                                                             </div>
                                                 </div>
@@ -129,13 +131,13 @@ function CandidateProfile() {
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Academic Background</h6>
                                     <ul className="text-secondary">
-                                        {user.cv.academicBackground?.map(academicBackground => (
+                                        {user.cv?.academicBackground?.map(academicBackground => (
                                             <li key={academicBackground}>{academicBackground.startDate + '-' + academicBackground.endDate} <br></br> {academicBackground.institution + ', ' + academicBackground.specialization}</li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -145,30 +147,30 @@ function CandidateProfile() {
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Work Experience</h6>
                                     <ul className="text-secondary">
-                                        {user.cv.workExperience?.map(workExperience => (
+                                        {user.cv?.workExperience?.map(workExperience => (
                                             <li key={workExperience}>{workExperience.startDate + '-' + workExperience.endDate} <br></br> {workExperience.company + ', ' + workExperience.position}</li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div col-sm-6 mb-3>
+                        <div col-sm-6="true" mb-3="true">
                             <div className="card" id = "projects">
                                 <div className="card-body">
                                     <h6 className="d-flex align-items-center mb-3">Projects</h6>
                                     <ul className="text-secondary">
-                                        {user.cv.projects?.map(project => (
+                                        {user.cv?.projects?.map(project => (
                                             <li key={project}>{project.title} <br></br> {project.description}</li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12 m-3">
-                                        <a className="btn btn-info" target="__blank" href="">Edit</a>
+                                        <a className="btn btn-info" target="__blank" href=".">Edit</a>
                                     </div>
                                 </div>
                             </div>

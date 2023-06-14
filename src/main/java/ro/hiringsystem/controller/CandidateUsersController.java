@@ -1,29 +1,40 @@
 package ro.hiringsystem.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ro.hiringsystem.model.auxiliary.AcademicExperience;
-import ro.hiringsystem.model.auxiliary.CV;
-import ro.hiringsystem.model.auxiliary.Project;
-import ro.hiringsystem.model.auxiliary.WorkExperience;
 import ro.hiringsystem.model.dto.CandidateUserDto;
-import ro.hiringsystem.model.entity.CandidateUser;
+import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.service.CandidateUserService;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/candidate")
+@RequiredArgsConstructor
 public class CandidateUsersController {
+    private final CandidateUserService candidateUserService;
 
-    @GetMapping("profile")
-    public ResponseEntity<CandidateUserDto> getCandidateUser() throws MalformedURLException {
+    @PostMapping("delete/{id}")
+    public ResponseEntity<Void> deleteCandidateUser(@PathVariable("id") UUID id) {
+        candidateUserService.removeElementById(id);
+        return ResponseEntity.noContent().build();
+    }
 
+    @GetMapping("get/all/paginated")
+    public ResponseEntity<List<CandidateUserDto>> getAllCandidateUsersPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+        if(page <= 0)
+            page = 1;
+        return ResponseEntity.ok(candidateUserService.getAll(page-1, size));
+    }
+
+    @GetMapping("profile/{id}")
+    public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(candidateUserService.getById(id));
+
+        /*
         return ResponseEntity.ok(CandidateUserDto.builder()
                                                     .id(UUID.randomUUID())
                                                     .firstName("John")
@@ -85,7 +96,17 @@ public class CandidateUsersController {
                 .primaryEmail("test")
                 .password("test")
                 .build());
+        */
+    }
 
+    @GetMapping(value="get/cv/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(candidateUserService.getUserCV(id));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<CandidateUserDto> register(@RequestBody CandidateUserDto candidateUserDto){
+        return ResponseEntity.ok(candidateUserService.create(candidateUserDto));
     }
 
 }

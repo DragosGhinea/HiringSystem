@@ -1,5 +1,7 @@
 package ro.hiringsystem.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +48,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         jwtToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwtToken);
+        try {
+            userEmail = jwtService.extractUsername(jwtToken);
+        }catch(ExpiredJwtException | MalformedJwtException e){
+            filterChain.doFilter(request, response);
+            return;
+        }catch(Exception x){
+            x.printStackTrace();
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
             var isTokenValid = tokenRepository.findByToken(jwtToken)

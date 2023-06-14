@@ -7,7 +7,6 @@ import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.model.enums.Position;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,19 +19,21 @@ import java.util.UUID;
 @Table(name="JOB")
 public class Job {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NonNull
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     @NonNull
     private String description;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private JobType jobType;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     private Double salary;
@@ -41,14 +42,12 @@ public class Job {
 
     private LocalDate startDate;
 
-    private Period period;
-
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> skillsNeeded;
 
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> offers;
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany(mappedBy = "jobId", fetch=FetchType.LAZY)
     private List<JobApplication> jobApplications;
 }

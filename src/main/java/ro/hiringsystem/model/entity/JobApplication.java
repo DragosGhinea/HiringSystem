@@ -18,20 +18,26 @@ import java.util.UUID;
 public class JobApplication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "candidate_id")
+    @Column(name = "user_id")
+    private UUID candidateUserId;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private CandidateUser candidateUser;
 
-    @ManyToOne
-    @JoinColumn(name = "job_id")
+    @Column(name = "job_id")
+    private UUID jobId;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "job_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Job job;
 
     @NonNull
     private LocalDate applicationDate;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

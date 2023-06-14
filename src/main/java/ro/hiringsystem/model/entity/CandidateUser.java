@@ -2,9 +2,7 @@ package ro.hiringsystem.model.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToOne;
-import lombok.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +33,7 @@ public class CandidateUser extends User {
 
     private URL linkedInProfileLink;
 
-    @OneToMany(mappedBy = "candidateUser")
+    @OneToMany(mappedBy = "candidateUserId", fetch=FetchType.LAZY)
     private List<JobApplication> jobApplications;
 
     @Override

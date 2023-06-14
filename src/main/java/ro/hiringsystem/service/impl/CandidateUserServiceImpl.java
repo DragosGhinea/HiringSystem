@@ -2,8 +2,13 @@ package ro.hiringsystem.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CVMapper;
 import ro.hiringsystem.mapper.CandidateUserMapper;
+import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
@@ -16,6 +21,10 @@ import java.util.*;
 public class CandidateUserServiceImpl implements CandidateUserService {
 
     private final CandidateUserRepository candidateUserRepository;
+    private final CandidateUserMapper candidateUserMapper;
+
+    private final CVMapper cvMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CandidateUserDto getById(UUID id) {
@@ -25,13 +34,13 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+        return candidateUserMapper.toDto(candidateUser.get());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getByLastName(String lastName) {
         return listToMap(candidateUserRepository.findByLastName(lastName).stream()
-                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
+                            .map(candidateUserMapper::toDto).toList());
     }
 
     @Override
@@ -42,24 +51,24 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             throw new RuntimeException("User not found!");
         }
 
-        return CandidateUserMapper.INSTANCE.toDto(candidateUser.get());
+        return candidateUserMapper.toDto(candidateUser.get());
     }
 
     @Override
     public Map<UUID, CandidateUserDto> getAll() {
         return listToMap(candidateUserRepository.findAll().stream()
-                            .map(CandidateUserMapper.INSTANCE::toDto).toList());
+                            .map(candidateUserMapper::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, CandidateUserDto> candidateUserMap) {
         candidateUserRepository.saveAll(candidateUserMap.values().stream()
-                            .map(CandidateUserMapper.INSTANCE::toEntity).toList());
+                            .map(candidateUserMapper::toEntity).toList());
     }
 
     @Override
     public void add(CandidateUserDto candidateUser) {
-        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUser));
+        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUser));
     }
 
     @Override
@@ -75,8 +84,8 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     @Override
     public void saveElement(CandidateUserDto candidateUserDto) {
-        CandidateUser user = CandidateUserMapper.INSTANCE.toEntity(candidateUserDto);
-        candidateUserRepository.save(CandidateUserMapper.INSTANCE.toEntity(candidateUserDto));
+        CandidateUser user = candidateUserMapper.toEntity(candidateUserDto);
+        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
     }
 
     @Override
@@ -90,4 +99,28 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         return candidateUserDtoMap;
     }
 
+    @Override
+    public CandidateUserDto create(CandidateUserDto candidateUserDto) {
+        if(candidateUserDto.getId()==null)
+            candidateUserDto.setId(UUID.randomUUID());
+
+        candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
+        candidateUserDto.setCv(new CV());
+
+        CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
+        candidateUserRepository.save(candidateEntity);
+        return candidateUserMapper.toDto(candidateEntity);
+    }
+
+    @Override
+    public CVDto getUserCV(UUID userId) {
+        return cvMapper.toDto(candidateUserRepository.getUserCV(userId));
+    }
+
+    @Override
+    public List<CandidateUserDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return candidateUserRepository.findAll(pageRequest).stream()
+                .map(candidateUserMapper::toDto).toList();
+    }
 }
