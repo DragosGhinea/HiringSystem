@@ -18,11 +18,16 @@ import java.util.*;
 public class UserServiceImpl implements UserService<UserDto> {
 
     private final CandidateUserService candidateUserService;
-
     private final InterviewerUserService interviewerUserService;
-
     private final ManagerUserService managerUserService;
 
+    /**
+     * Retrieves a user by ID.
+     *
+     * @param id the ID of the user
+     * @return the UserDto object
+     * @throws RuntimeException if the user is not found
+     */
     @Override
     public UserDto getById(UUID id) {
         try {
@@ -31,11 +36,18 @@ public class UserServiceImpl implements UserService<UserDto> {
             try {
                 return interviewerUserService.getById(id);
             } catch(RuntimeException ei){
-                 return managerUserService.getById(id);
+                return managerUserService.getById(id);
             }
         }
     }
 
+    /**
+     * Retrieves a user by email.
+     *
+     * @param email the email of the user
+     * @return the UserDto object
+     * @throws RuntimeException if the user is not found
+     */
     @Override
     public UserDto getByEmail(String email) {
         try {
@@ -49,6 +61,11 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
     }
 
+    /**
+     * Retrieves all users as a map with IDs as keys and UserDto objects as values.
+     *
+     * @return a map of UserDto objects
+     */
     @Override
     public Map<UUID, UserDto> getAll() {
         Map<UUID, UserDto> userDtoMap = new HashMap<>();
@@ -60,6 +77,11 @@ public class UserServiceImpl implements UserService<UserDto> {
         return userDtoMap;
     }
 
+    /**
+     * Adds multiple users from the given map to the appropriate service.
+     *
+     * @param userDtoMap the map of UserDto objects
+     */
     @Override
     public void addAllFromGivenMap(Map<UUID, UserDto> userDtoMap) {
         for (UserDto user : userDtoMap.values()) {
@@ -67,6 +89,11 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
     }
 
+    /**
+     * Adds a user to the appropriate service based on its type.
+     *
+     * @param user the UserDto object to be added
+     */
     @Override
     public void add(UserDto user) {
         if (user instanceof CandidateUserDto candidateUserDto) {
@@ -80,6 +107,12 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
     }
 
+    /**
+     * Removes a user from the appropriate service based on its ID.
+     *
+     * @param id the ID of the user to be removed
+     * @throws RuntimeException if the user is not found
+     */
     @Override
     public void removeElementById(UUID id) {
         try {
@@ -93,6 +126,12 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
     }
 
+    /**
+     * Saves a user to the appropriate service based on its type.
+     *
+     * @param user the UserDto object to be saved
+     * @throws RuntimeException if the user is not found
+     */
     @Override
     public void saveElement(UserDto user) {
         if (user instanceof CandidateUserDto candidateUserDto) {
@@ -106,6 +145,12 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
     }
 
+    /**
+     * Converts a list of UserDto objects to a map with IDs as keys and UserDto objects as values.
+     *
+     * @param userDtoList the list of UserDto objects
+     * @return a map of UserDto objects
+     */
     @Override
     public Map<UUID, UserDto> listToMap(List<UserDto> userDtoList) {
         Map<UUID, UserDto> userDtoMap = new HashMap<>();
@@ -117,6 +162,12 @@ public class UserServiceImpl implements UserService<UserDto> {
         return userDtoMap;
     }
 
+    /**
+     * Creates a new user based on its type.
+     *
+     * @param newUser the UserDto object representing the new user
+     * @return the created UserDto object
+     */
     @Override
     public UserDto create(UserDto newUser) {
         if (newUser instanceof CandidateUserDto candidateUserDto) {

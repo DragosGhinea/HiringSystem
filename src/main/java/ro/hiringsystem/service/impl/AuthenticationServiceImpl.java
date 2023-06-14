@@ -47,6 +47,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserMapperService userMapper;
 
+    /**
+     * Registers a new candidate user.
+     *
+     * @param request the registration request containing user details
+     * @return the authentication response containing access token and refresh token
+     */
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
         try {
@@ -76,6 +82,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    /**
+     * Authenticates a user based on the provided credentials.
+     *
+     * @param request the authentication request containing user credentials
+     * @return the authentication response containing access token and refresh token
+     */
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -84,7 +96,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         request.getPassword()
                 )
         );
-
 
         UserDto user = userService.getByEmail(request.getEmail());
 
@@ -101,6 +112,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
+    /**
+     * Saves the user token to the token repository.
+     *
+     * @param user     the user associated with the token
+     * @param jwtToken the JWT token
+     */
     private void saveUserToken(UserDto user, String jwtToken) {
         var token = Token.builder()
                 .user(userMapper.toEntity(user))
@@ -112,6 +129,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         tokenRepository.save(token);
     }
 
+    /**
+     * Revokes all tokens for a given user.
+     *
+     * @param user the user whose tokens need to be revoked
+     */
     private void revokeAllUserTokens(UserDto user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
@@ -123,6 +145,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+    /**
+     * Refreshes the access token using a refresh token.
+     *
+     * @param request  the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @throws IOException if an I/O error occurs
+     */
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
@@ -137,10 +166,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         refreshToken = authHeader.substring(7);
         try {
             userEmail = jwtService.extractUsername(refreshToken);
-        }catch(ExpiredJwtException | MalformedJwtException e){
+        } catch (ExpiredJwtException | MalformedJwtException e) {
             return;
-        }
-        catch(Exception x){
+        } catch (Exception x) {
             x.printStackTrace();
             return;
         }

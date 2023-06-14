@@ -18,16 +18,33 @@ public class ApplicationConfig {
     private final UserService<UserDto> userService;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Creates a UserDetailsService bean based on the userService.
+     *
+     * @return the UserDetailsService bean
+     */
     @Bean
     public UserDetailsService userDetailsService(){
         return userService::getByEmail;
     }
 
+    /**
+     * Creates an AuthenticationManager bean based on the AuthenticationConfiguration.
+     *
+     * @param config the AuthenticationConfiguration
+     * @return the AuthenticationManager bean
+     * @throws Exception if an error occurs while retrieving the AuthenticationManager
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Creates an AuthenticationProvider bean based on the UserDetailsService and PasswordEncoder.
+     *
+     * @return the AuthenticationProvider bean
+     */
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -35,5 +52,4 @@ public class ApplicationConfig {
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
-
 }
