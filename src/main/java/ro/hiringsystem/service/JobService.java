@@ -20,4 +20,10 @@ public interface JobService{
     void saveElement(JobDto jobDto);
 
     Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList);
+
+    JobDto createEdit(JobDto jobDto);
+
+    List<JobDto> getAll();
+
+    List<JobDto> getAll(int page, int size);
 }

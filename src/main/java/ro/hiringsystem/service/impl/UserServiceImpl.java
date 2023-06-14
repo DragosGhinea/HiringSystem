@@ -117,4 +117,16 @@ public class UserServiceImpl implements UserService<UserDto> {
         return userDtoMap;
     }
 
+    @Override
+    public UserDto create(UserDto newUser) {
+        if (newUser instanceof CandidateUserDto candidateUserDto) {
+            return candidateUserService.create(candidateUserDto);
+        }
+        else if (newUser instanceof InterviewerUserDto interviewerUserDto) {
+            return interviewerUserService.create(interviewerUserDto);
+        }
+        else {
+            return managerUserService.create((ManagerUserDto) newUser);
+        }
+    }
 }

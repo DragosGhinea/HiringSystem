@@ -11,9 +11,7 @@ public enum InterviewerType {
 
     TECHNICAL("evaluates mostly hard-skills"),
 
-    HR("evaluates mostly soft-skills"),
-
-    NONE("none");
+    HR("evaluates mostly soft-skills");
 
     private final String roleInAssessmentProcess;
 

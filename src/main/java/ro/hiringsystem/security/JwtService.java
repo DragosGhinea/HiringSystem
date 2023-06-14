@@ -8,6 +8,9 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.model.dto.ManagerUserDto;
 
 import java.security.Key;
 import java.util.Date;
@@ -66,6 +69,18 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ){
+        String userType = null;
+        if(userDetails instanceof CandidateUserDto){
+            userType = "candidate";
+        }
+        else if(userDetails instanceof InterviewerUserDto){
+            userType = "interviewer";
+        }
+        else if(userDetails instanceof ManagerUserDto){
+            userType = "manager";
+        }
+
+        extraClaims.put("userType", userType);
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())

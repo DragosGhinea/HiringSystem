@@ -24,4 +24,6 @@ public interface UserService <T extends UserDto> {
 
     Map<UUID, T> listToMap(List<T> userList);
 
+    T create(T newUserDto);
+
 }

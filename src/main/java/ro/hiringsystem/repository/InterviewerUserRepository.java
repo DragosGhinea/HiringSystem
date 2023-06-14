@@ -1,5 +1,7 @@
 package ro.hiringsystem.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ro.hiringsystem.model.entity.InterviewerUser;
@@ -26,4 +28,5 @@ public interface InterviewerUserRepository extends JpaRepository<InterviewerUser
     @Query("SELECT u FROM InterviewerUser u WHERE u.interviewerType = :interviewerType")
     List<InterviewerUser> findByType(InterviewerType interviewerType);
 
+    Page<InterviewerUser> findAll(Pageable pageable);
 }

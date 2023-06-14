@@ -1,0 +1,236 @@
+.chatbox .chatbox-messages{
+    height: 90%;
+    max-height: 35vh;
+    overflow-y: auto;
+}
+
+.chatbox .card-body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.chatbox .chatbox-input{
+    outline: 1px solid gray;
+    background-color: #f0f2f5;
+}
+
+.chatbox .chatbox-input textarea{
+    resize: none;
+    width: 80%;
+    display: inline-block;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.chatbox .chatbox-input button{
+    width: 10%;
+    border-radius: 0;
+    margin: 0px;
+    border: 1px solid #b8bcc0;
+}
+
+.chatbox .chatbox-input button:last-child{
+    width: 10%;
+    border-radius: 0;
+    margin: 0px;
+    border-right: none;
+}
+
+.chatbox .chatbox-input textarea:focus{
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.chatbox{
+    height: 40vh;
+    max-height: 40vh;
+}
+
+.chatbox .chatbox-messages{
+    display: flex;
+    flex-direction: column;
+}
+
+.chatbox .chatbox-messages .join,.chatbox .chatbox-messages .leave{
+    display: inline-block;
+    align-self: center;
+    background-color: #58A6FF;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.chatbox .chatbox-messages .message{
+    display: block;
+    max-width: 60%;
+    margin-bottom: 40px;
+}
+
+.chatbox .chatbox-messages .outgoing{
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.chatbox .chatbox-messages .message .message-body{
+    display: inline-block;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: left
+}
+
+.chatbox .chatbox-messages .incoming .message-body{
+    background-color: #f4f1f1;
+}
+
+.chatbox .chatbox-messages .outgoing .message-body{
+    background-color: #58A6FF;
+    align-self: flex-end;
+}
+
+
+.videobox{
+    height: 40vh;
+    border: 1px solid gray;
+}
+
+.videobox{
+    margin: auto;
+    position: relative;
+    max-height: 100%;
+}
+
+/*
+
+.videobox .videos{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+*/
+
+.videobox .buttons{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.videobox .moderator-buttons{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.videobox .buttons div, .videobox .moderator-buttons div{
+    margin: 20px;
+}
+
+.videobox:hover .buttons,.videobox:hover .moderator-buttons{
+    opacity: 1;
+}
+
+.videobox .buttons .buttonsPad, .videobox .moderator-buttons .buttonsPad{
+    background-color:rgba(0, 0, 0, 0.425);
+    border-radius: 20px;
+    display: inline-block;
+    width: 30%;
+}
+
+/*
+.videobox video{
+    position: relative;
+    max-height: 100%;
+}
+*/
+
+.videobox .videos {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-tile {
+    width: 33.33%; 
+    height: 70.33%; 
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-tile video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.participant-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    color: #fff; 
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 14px; 
+    display: flex;
+}
+
+.participant-name .name{
+    width: 50%;
+}
+
+.participant-name .status{
+    width: 50%;
+    text-align: right;
+}
+
+.participant-name .status i{
+    margin: 10px;
+}
+  
+@media (max-width: 768px) {
+    .video-tile {
+        width: 50%;
+        height: 50%;
+    }
+}
+
+.audio-active {
+    outline: 4px solid rgb(8, 179, 8);
+    outline-offset: -5px;
+}
+
+
+  

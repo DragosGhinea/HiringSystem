@@ -1,12 +1,11 @@
 package ro.hiringsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.mapper.JobApplicationMapper;
 import ro.hiringsystem.mapper.JobMapper;
-import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.model.dto.JobDto;
-import ro.hiringsystem.model.entity.JobApplication;
+import ro.hiringsystem.model.entity.Job;
 import ro.hiringsystem.repository.JobRepository;
 import ro.hiringsystem.service.JobService;
 
@@ -17,6 +16,8 @@ import java.util.*;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
+    
+    private final JobMapper jobMapper;
 
     @Override
     public JobDto getById(UUID id) {
@@ -26,24 +27,24 @@ public class JobServiceImpl implements JobService {
             throw new RuntimeException("Job not found!");
         }
 
-        return JobMapper.INSTANCE.toDto(job.get());
+        return jobMapper.toDto(job.get());
     }
 
     @Override
     public Map<UUID, JobDto> getAllFromMap() {
         return listToMap(jobRepository.findAll().stream()
-                .map(JobMapper.INSTANCE::toDto).toList());
+                .map(jobMapper::toDto).toList());
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, JobDto> jobMap) {
         jobRepository.saveAll(jobMap.values().stream()
-                .map(JobMapper.INSTANCE::toEntity).toList());
+                .map(jobMapper::toEntity).toList());
     }
 
     @Override
     public void add(JobDto job) {
-        jobRepository.save(JobMapper.INSTANCE.toEntity(job));
+        jobRepository.save(jobMapper.toEntity(job));
     }
 
     @Override
@@ -59,9 +60,10 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void saveElement(JobDto jobDto) {
-        Job job = JobMapper.INSTANCE.toEntity(jobDto);
-        jobRepository.save(JobMapper.INSTANCE.toEntity(jobDto));
+        Job job = jobMapper.toEntity(jobDto);
+        jobRepository.save(job);
     }
+
 
     @Override
     public Map<UUID, JobDto> listToMap(List<JobDto> jobDtoList) {
@@ -72,5 +74,29 @@ public class JobServiceImpl implements JobService {
         }
 
         return jobDtoMap;
+    }
+
+    @Override
+    public JobDto createEdit(JobDto jobDto) {
+        try {
+            saveElement(jobDto);
+            return jobDto;
+        } catch (Exception x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<JobDto> getAll() {
+        return jobRepository.findAll().stream()
+                .map(jobMapper::toDto).toList();
+    }
+
+    @Override
+    public List<JobDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return jobRepository.findAll(pageRequest).stream()
+                .map(jobMapper::toDto).toList();
     }
 }

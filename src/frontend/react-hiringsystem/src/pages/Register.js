@@ -1,58 +1,165 @@
-import { useContext, useRef } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import FormInput from "../components/forms/FormInput";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../components/shared/AuthContext";
 
 const Register = () => {
-  const email = useRef("");
-  const password = useRef("");
-  const firstName = useRef("");
-  const lastName = useRef("");
+  const currentDate = new Date();
+  const maxDate = new Date(currentDate.getFullYear() - 14, currentDate.getMonth(), currentDate.getDate()).toISOString().split("T")[0];
+  const minDate = new Date(currentDate.getFullYear() - 80, currentDate.getMonth(), currentDate.getDate()).toISOString().split("T")[0];
+
+  const [isEmailTaken, setIsEmailTaken] = useState(false);
+
+  const navigate = useNavigate();
   const {register} = useContext(AuthContext)
- 
-  const registerSubmit = async () => {
-    let payload = {
-      email: email.current.value,
-      password: password.current.value,
-      firstName: firstName.current.value,
-      lastName: lastName.current.value
+
+  const [values, setValues] = useState({
+    firstName : '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    birthDate: ''
+  });
+
+  const inputs = [
+    {
+      id: 1,
+      name: "firstName",
+      type: "text",
+      placeholder: "First Name",
+      errorMessage: "This field is required!",
+      label: "First Name",
+      required: true,
+    },
+    {
+      id: 2,
+      name: "lastName",
+      type: "text",
+      placeholder: "Last Name",
+      errorMessage: "This field is required!",
+      label: "Last Name",
+      required: true,
+    },
+    {
+      id: 3,
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      errorMessage: "It should be a valid email address!",
+      label: "Email",
+      pattern: "^[\\w\\.-]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      required: true,
+    },
+    {
+      id: 4,
+      name: "password",
+      type: "password",
+      placeholder: "Password",
+      errorMessage: "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
+      label: "Password",
+      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      required: true,
+    },
+    {
+      id: 5,
+      name: "confirmPassword",
+      type: "password",
+      placeholder: "Confirm Password",
+      errorMessage: "Passwords don't match!",
+      label: "Confirm Password",
+      pattern: values.password,
+      required: true,
+    },
+    {
+      id: 6,
+      name: "birthDate",
+      type: "date",
+      placeholder: "Birth Date",
+      errorMessage: "This field is required!",
+      label: "Birth Date",
+      required: true,
+      min: minDate,
+      max: maxDate,
     }
-    await register(payload);
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isEmailTaken) {
+      console.log("Email is already in use.");
+      return;
+    }
+
+    try {
+      let payload = {
+        email: values.email,
+        password: values.password,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        birthDate: values.birthDate,
+      };
+
+      await register(payload);
+    } catch (err) {
+      console.log("Error registering user with authentication system: ");
+      console.log(err);
+    }
   };
 
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+
+    if (e.target.name === "email") {
+      setIsEmailTaken(false);
+    }
+  };
+
+  const checkEmailAvailability = async () => {
+    try {
+      if (values.email !== "") {
+        const response = await axios.get(
+            `http://localhost:8081/api/v1/user/${values.email}`
+        );
+
+        const isTaken = response.data;
+        setIsEmailTaken(isTaken);
+        console.log(isTaken);
+      }
+    } catch (error) {
+      console.log("Error checking email availability:", error);
+    }
+  };
+
+  const handleBlur = async (e) => {
+    if (e.target.name === "email" && !isEmailTaken && values.email !== "" && /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)) {
+      await checkEmailAvailability();
+    }
+  };
 
   return (
-    <>
-      <Container className="mt-2">
-        <Row>
-          <Col className="col-md-8 offset-md-2">
-            <legend>Register Form</legend>
-            <form>
-              <Form.Group className="mb-3" controlId="formEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="text" ref={email} />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formFirstName">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control type="text" ref={firstName} />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formLastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" ref={lastName} />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" ref={password} />
-              </Form.Group>
-              <Button variant="primary" type="button" onClick={registerSubmit}>
-                Register
-              </Button>
-            </form>
-          </Col>
-        </Row>
-      </Container>
-    </>
+      <form onSubmit={handleSubmit}>
+        <h1>Register User</h1>
+        {inputs.map((input) => (
+            <div key={input.id}>
+              <FormInput
+                  {...input}
+                  value={values[input.name]}
+                  onChange={onChange}
+                  onBlur={handleBlur}
+              />
+              {input.name === "email" && isEmailTaken && (
+                  <span style={{ color: "red", padding: "3px", fontSize: "16px"}}>Email is already in use!</span>
+              )}
+            </div>
+        ))}
+        <br />
+
+        <br />
+        <button className="btn btn-success" type="submit">Submit</button>
+      </form>
   );
 };
 

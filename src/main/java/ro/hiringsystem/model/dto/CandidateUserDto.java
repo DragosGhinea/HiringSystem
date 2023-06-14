@@ -1,5 +1,6 @@
 package ro.hiringsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CandidateUserDto extends UserDto {
 
+    @JsonIgnore
     private CV cv;
 
     private File recommendation;
@@ -26,6 +28,7 @@ public class CandidateUserDto extends UserDto {
 
     private URL linkedInProfileLink;
 
+    @JsonIgnore
     private List<JobApplicationDto> jobApplications;
 
 }

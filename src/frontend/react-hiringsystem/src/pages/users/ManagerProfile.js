@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import "./css/interviewer-managerProfile.css"
+import "../css/interviewer-managerProfile.css"
+import {useParams} from "react-router-dom";
 
 function ManagerProfile() {
+
+    const { id } = useParams();
 
     const [user, setUser] = useState(null);
 
@@ -11,7 +14,7 @@ function ManagerProfile() {
         document.body.classList.add('containerInterviewerManager');
 
         axios
-            .get("http://localhost:8081/api/v1/manager/profile")
+            .get(`http://localhost:8081/api/v1/manager/profile/${id}`)
             .then(function (response) {
                 console.log(response);
                 setUser(response.data);
@@ -29,7 +32,7 @@ function ManagerProfile() {
                     <div className="card p-3 py-4">
 
                         <div className="text-center">
-                            <img src={require("./css/images/manager.jpg")} alt="Manager" width="300" className="rounded-circle"/>
+                            <img src={require("../css/images/manager.jpg")} alt="Manager" width="300" className="rounded-circle"/>
                         </div>
 
                         <div className="text-center">
@@ -74,7 +77,7 @@ function ManagerProfile() {
 
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <a className="btn btn-info " target="__blank" href="">Edit</a>
+                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
                                 </div>
                             </div>
                         </div>
