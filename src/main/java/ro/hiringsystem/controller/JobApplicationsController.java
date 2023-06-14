@@ -80,4 +80,14 @@ public class JobApplicationsController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @PostMapping("/status/update/{status}/{id}")
+    public ResponseEntity<Object> updateStatus(@PathVariable("status") String status, @PathVariable("id") UUID id){
+        if(status.equalsIgnoreCase("ACCEPTED"))
+            return ResponseEntity.ok(jobApplicationService.accept(id));
+        else if(status.equalsIgnoreCase("DENIED"))
+            return ResponseEntity.ok(jobApplicationService.reject(id));
+        else
+            return ResponseEntity.badRequest().build();
+    }
 }
