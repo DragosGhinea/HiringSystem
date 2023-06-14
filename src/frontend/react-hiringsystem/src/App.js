@@ -32,6 +32,7 @@ import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
 import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
 import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
 import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
+import TermsOfUsePage from "./pages/TermsOfUsePage";
 
 function App() {
   return (
@@ -263,6 +264,12 @@ function App() {
                       <ProtectedRoute accessBy="authenticated">
                           <ManageInterviewsPage />
                       </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/terms-of-use"
+                  element={
+                      <TermsOfUsePage />
                   }
               ></Route>
           </Routes>
