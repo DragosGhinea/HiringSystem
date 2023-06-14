@@ -3,9 +3,12 @@ import { Col, Container, Row } from "react-bootstrap";
 import JobContext from "../../components/shared/JobContext";
 import {useNavigate, useParams} from 'react-router-dom';
 import jwtInterceptor from "../../components/shared/JwtInterceptor";
+import AuthContext from "../../components/shared/AuthContext";
 
 const ViewJobPage = () => {
     const { id } = useParams();
+
+    const { user } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -44,7 +47,6 @@ const ViewJobPage = () => {
             return;
 
         try {
-            console.log(id);
 
             await jwtInterceptor.post(`http://localhost:8081/api/v1/application/apply/${id}`)
 
@@ -67,11 +69,13 @@ const ViewJobPage = () => {
                         <div>
                             {job && (
                                 <>
-                                    <div className="text-end">
+                                    {(user.userType === "interviewer" || user.userType === "manager") &&
+                                     <div className="text-end">
                                         <button className="btn btn-secondary btn-lg mt-4" onClick={handleViewApplications}>
                                             View All Applications
                                         </button>
                                     </div>
+                                    }
                                     <h1 className="mb-4 mt-3 fs-9 fw-bold text-center">{job.title}</h1>
                                     <div className="d-flex justify-content-center my-4 mx-4">
                                         <p className="me-5" style={{ fontSize: '19px', marginTop: '10px' }}>
@@ -146,13 +150,15 @@ const ViewJobPage = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="col-md-6 d-flex justify-content-end align-items-center" style={{ marginTop: '80px' }}>
-                                            {!isApplied ? (
-                                                <button className="btn btn-primary" onClick={handleApplyNow}>Apply Now</button>
-                                            ) : (
-                                                <p style={{fontSize: '19px', fontStyle: 'italic'}}>You have applied to this job.</p>
-                                            )}
-                                        </div>
+                                        {user.userType === "candidate" &&
+                                            <div className="col-md-6 d-flex justify-content-end align-items-center" style={{ marginTop: '80px' }}>
+                                                {!isApplied ? (
+                                                    <button className="btn btn-primary" onClick={handleApplyNow}>Apply Now</button>
+                                                ) : (
+                                                    <p style={{fontSize: '19px', fontStyle: 'italic'}}>You have applied to this job.</p>
+                                                )}
+                                            </div>
+                                        }
                                     </div>
                                 </>
                             )}
