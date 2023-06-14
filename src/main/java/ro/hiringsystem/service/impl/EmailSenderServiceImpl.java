@@ -21,7 +21,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private String EMAIL;
 
     public void sendBasicEmail(String fromName, String toEmail, String subjectEmail, String bodyEmail){
-        /* A MORE SIMPLE FORMAT, might be useful
+        /* A SIMPLER FORMAT, might be useful
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom("HiringSystem");
         msg.setTo(toEmail);
