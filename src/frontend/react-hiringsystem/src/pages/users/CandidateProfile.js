@@ -7,9 +7,9 @@ import AcademicBackgroundModal from "./editModals/AcademicBackgroundModal";
 import WorkExperienceModal from "./editModals/WorkExperienceModal";
 import ProjectsModal from "./editModals/ProjectsModal";
 
-function CandidateProfile() {
+function CandidateProfile({userId}) {
 
-    const { id } = useParams();
+    const id = userId;
 
     const [user, setUser] = useState(null);
 
