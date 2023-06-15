@@ -16,7 +16,6 @@ export const JobApplicationContextProvider = ({ children }) => {
 
     const deleteApplication = async (jobApplicationId) => {
         await jwtInterceptor.post("http://localhost:8081/api/v1/application/delete?jobApplicationId=" + jobApplicationId);
-        navigate("/");
     }
 
     return (

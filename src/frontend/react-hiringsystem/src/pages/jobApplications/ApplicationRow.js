@@ -1,6 +1,9 @@
+import { useContext } from "react";
+import JobApplicationContext from "../../components/shared/JobApplicationContext";
 import jwtInterceptor from "../../components/shared/JwtInterceptor";
 
 const ApplicationRow = ({index, application, setCV}) => {
+    const {deleteApplication} = useContext(JobApplicationContext);
 
     const viewCv = async () => {
         let cvData = await jwtInterceptor.get(`http://localhost:8081/api/v1/candidate/get/cv/${application.candidate_user.id}`);
@@ -22,6 +25,11 @@ const ApplicationRow = ({index, application, setCV}) => {
             });
     }
 
+    const cancel = () => {
+        deleteApplication(application.job_application.id);
+        window.location.reload();
+    }
+
     return (
         <tr>
             <th scope="row">{index}</th>
@@ -37,6 +45,7 @@ const ApplicationRow = ({index, application, setCV}) => {
                 )
                 }
             </td>
+            <td><div className="btn btn-danger" onClick={cancel}>Cancel</div></td>
             <td>{application.candidate_user.firstName + " " + application.candidate_user.lastName}</td>
             <td>{application.candidate_user.primaryEmail}</td>
             <td>{application.job_application.applicationDate}</td>

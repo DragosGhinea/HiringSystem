@@ -130,17 +130,13 @@ function App() {
               <Route
                   path="/jobs/job/:id"
                   element={
-                      <ProtectedRoute accessBy="authenticated">
-                          <ViewJobPage />
-                      </ProtectedRoute>
+                    <ViewJobPage />
                   }
               ></Route>
               <Route
                   path="/jobs"
                   element={
-                      <ProtectedRoute accessBy="authenticated">
-                          <DisplayJobsPage />
-                      </ProtectedRoute>
+                    <DisplayJobsPage />
                   }
               ></Route>
 
