@@ -23,29 +23,12 @@ export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const register = async (payload) => {
-    const apiResponse = await axios.post(
+    await axios.post(
       "http://localhost:8081/api/v1/auth/register",
       payload
     );
 
-    localStorage.setItem("tokens", JSON.stringify(apiResponse.data));
-    const decoded = jwt_decode(apiResponse.data.access_token);
-    const userData = {
-      email: payload.email,
-      userType: decoded.userType
-    }
-    setUser(userData);
-
-    try {
-      const response = await axios.get(`http://localhost:8081/api/v1/user/id/${userData.email}`);
-      const { id } = response.data;
-      console.log(id)
-
-      navigate(`/candidate/profile/${id}`)
-    } catch (error) {
-      console.error('Error: ', error);
-      return null;
-    }
+    navigate("/register/sent");
   };
  
   const login = async (payload) => {

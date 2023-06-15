@@ -1,0 +1,19 @@
+.register-sent{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 50px;
+    height: 50vh;
+    top: 5vh;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    background-color: #f8f8f8;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.register-sent img{
+    border-radius: 50px;
+}

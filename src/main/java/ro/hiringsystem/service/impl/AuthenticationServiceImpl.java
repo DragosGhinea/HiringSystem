@@ -11,10 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.model.auxiliary.AcademicExperience;
 import ro.hiringsystem.model.auxiliary.CV;
-import ro.hiringsystem.model.auxiliary.Project;
-import ro.hiringsystem.model.auxiliary.WorkExperience;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.security.JwtService;
@@ -25,14 +22,15 @@ import ro.hiringsystem.security.token.Token;
 import ro.hiringsystem.security.token.TokenRepository;
 import ro.hiringsystem.security.token.TokenType;
 import ro.hiringsystem.service.AuthenticationService;
+import ro.hiringsystem.service.EmailSenderService;
 import ro.hiringsystem.service.UserMapperService;
 import ro.hiringsystem.service.UserService;
 
 import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +45,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserMapperService userMapper;
 
+    private final EmailSenderService emailSenderService;
+
+    private final Map<UUID, CandidateUserDto> usersAwaitingConfirmation = new ConcurrentHashMap<>();
+
     @Override
-    public AuthenticationResponse register(RegisterRequest request) {
+    public void register(RegisterRequest request) {
         try {
             CandidateUserDto candidateUser = CandidateUserDto.builder()
                     .id(UUID.randomUUID())
@@ -62,18 +64,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .cv(new CV())
                     .build();
 
-            userService.saveElement(candidateUser);
+            emailSenderService.sendAccountConfirmEmail(request.getEmail(), candidateUser.getId().toString());
+            usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
+            //userService.saveElement(candidateUser);
 
-            String jwtToken = jwtService.generateToken(candidateUser);
-            String refreshToken = jwtService.generateRefreshToken(candidateUser);
-            return AuthenticationResponse.builder()
-                    .accessToken(jwtToken)
-                    .refreshToken(refreshToken)
-                    .build();
         } catch (Exception x) {
             x.printStackTrace();
-            return null;
         }
+    }
+
+    @Override
+    public boolean confirmRegister(UUID token) {
+        CandidateUserDto candidateUser = usersAwaitingConfirmation.getOrDefault(token, null);
+        if (candidateUser == null)
+            return false;
+        userService.saveElement(candidateUser);
+        usersAwaitingConfirmation.remove(token);
+        return true;
     }
 
     @Override

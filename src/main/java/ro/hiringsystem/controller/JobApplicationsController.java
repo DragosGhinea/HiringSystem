@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.JobApplicationDto;
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.service.CandidateUserService;
+import ro.hiringsystem.service.EmailSenderService;
 import ro.hiringsystem.service.JobApplicationService;
 
 import java.util.UUID;
@@ -18,6 +20,10 @@ import java.util.UUID;
 public class JobApplicationsController {
 
     private final JobApplicationService jobApplicationService;
+
+    private final EmailSenderService emailSenderService;
+
+    private final CandidateUserService candidateUserService;
 
     @PostMapping("/create")
     public ResponseEntity<JobApplicationDto> create (@RequestParam(required = true) UUID jobId, Authentication authentication) {
@@ -79,5 +85,19 @@ public class JobApplicationsController {
         else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @PostMapping("/status/update/{status}/{id}")
+    public ResponseEntity<Object> updateStatus(@PathVariable("status") String status, @PathVariable("id") UUID id){
+        if(status.equalsIgnoreCase("ACCEPTED")) {
+            emailSenderService.sendApplicationAcceptedEmail(candidateUserService.getById(jobApplicationService.getById(id).getCandidateUserId()).getPrimaryEmail());
+            return ResponseEntity.ok(jobApplicationService.accept(id));
+        }
+        else if(status.equalsIgnoreCase("DENIED")) {
+            emailSenderService.sendDenyApplicationEmail(candidateUserService.getById(jobApplicationService.getById(id).getCandidateUserId()).getPrimaryEmail());
+            return ResponseEntity.ok(jobApplicationService.reject(id));
+        }
+        else
+            return ResponseEntity.badRequest().build();
     }
 }

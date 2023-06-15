@@ -42,7 +42,7 @@ public class JobApplicationSeeder{
                 .candidateUserId(UUID.fromString("38e57c39-38b0-4dfb-8f4f-0b8e6b3efbce"))
                 .jobId(UUID.fromString("164f3b65-cd86-41fe-b5b2-e9c67c59f222"))
                 .applicationDate(LocalDate.of(2023, 5, 14))
-                .status(Status.PENDING)
+                .status(Status.SUBMITTED)
                 .build();
 
         JobApplication jobApplication4 = JobApplication.builder()
@@ -58,7 +58,7 @@ public class JobApplicationSeeder{
                 .candidateUserId(UUID.fromString("7cddfa88-78c0-4fe6-97c4-2964c634fb77"))
                 .jobId(UUID.fromString("164f3b65-cd86-41fe-b5b2-e9c67c59f856"))
                 .applicationDate(LocalDate.of(2023, 4, 1))
-                .status(Status.PENDING)
+                .status(Status.SUBMITTED)
                 .build();
 
         // Save the jobs applications

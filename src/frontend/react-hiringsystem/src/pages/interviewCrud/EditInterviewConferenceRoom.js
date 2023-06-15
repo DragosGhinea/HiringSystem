@@ -48,7 +48,7 @@ function EditInterviewConferenceRoom() {
         console.log(values)
         axios.post(`http://localhost:8081/api/v1/interview/edit/${id}`, values)
             .then(result => {
-                navigate(`/interview/display/${id}`)
+                navigate(`/interviews/display/${id}`)
             })
             .catch(err => {
                 console.log("Error triggered")
