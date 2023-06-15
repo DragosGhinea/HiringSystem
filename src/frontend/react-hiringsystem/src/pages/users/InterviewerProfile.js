@@ -75,7 +75,7 @@ function InterviewerProfile() {
 
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
+                                    {/*<a className="btn btn-info " target="__blank" href=".">Edit</a>*/}
                                 </div>
                             </div>
                         </div>
