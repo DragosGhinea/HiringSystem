@@ -87,6 +87,46 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
+    @Override
+    public void sendApplicationAcceptedEmail(String toEmail) {
+        try {
+            String subject = "Application Accepted";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/accepted.html");
+            String htmlContent = readResourceContent(htmlResource);
+
+            // Load CSS file
+            Resource cssResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.css");
+            String cssContent = readResourceContent(cssResource);
+
+            // Combine HTML and CSS
+            String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
+
+            sendBasicEmail("HiringSystem", toEmail, subject, body);
+        }catch(Exception x){
+            x.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendDenyApplicationEmail(String toEmail) {
+        try {
+            String subject = "Application Denied";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/denied.html");
+            String htmlContent = readResourceContent(htmlResource);
+
+            // Load CSS file
+            Resource cssResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.css");
+            String cssContent = readResourceContent(cssResource);
+
+            // Combine HTML and CSS
+            String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
+
+            sendBasicEmail("HiringSystem", toEmail, subject, body);
+        }catch(Exception x){
+            x.printStackTrace();
+        }
+    }
+
     private String readResourceContent(Resource resource) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
             StringBuilder contentBuilder = new StringBuilder();
