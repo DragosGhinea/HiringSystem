@@ -20,53 +20,62 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
+/**
+ * Configuration class that sets up the security settings for the application.
+ */
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
+    /**
+     * Configures the security filter chain for handling HTTP requests.
+     *
+     * @param http the HttpSecurity object used for configuring security
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http    .cors()
+        http
+                .cors() // Enable Cross-Origin Resource Sharing (CORS)
                 .and()
-                .csrf()
+                .csrf() // Disable CSRF protection
                 .disable()
-                .authorizeHttpRequests()
+                .authorizeHttpRequests() // Configure authorization for different requests
                 .requestMatchers("api/v1/auth/**").permitAll()
                 .requestMatchers("h2-console", "/h2-console/**").permitAll()
                 .requestMatchers("manager/profile").authenticated()
                 .requestMatchers("login").permitAll()
-                .anyRequest()
-                .permitAll()
-                    //.authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .and()
-//                .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .successForwardUrl("/")
-//                .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless session management
                 .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout()
-                    .logoutUrl("/api/v1/auth/logout")
-                    .addLogoutHandler(logoutHandler)
-                    .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+                .authenticationProvider(authenticationProvider) // Configure the authentication provider
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // Add the JwtAuthFilter before the UsernamePasswordAuthenticationFilter
+                .logout() // Configure logout handling
+                .logoutUrl("/api/v1/auth/logout") // Specify the logout URL
+                .addLogoutHandler(logoutHandler) // Add the logout handler
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()); // Clear the security context on successful logout
 
-        // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
+        // Fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
         http.headers().frameOptions().sameOrigin();
 
         return http.build();
     }
 
+    /**
+     * Creates a CorsFilter bean to handle CORS configuration.
+     *
+     * @return the CorsFilter bean
+     */
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

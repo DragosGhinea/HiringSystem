@@ -48,11 +48,23 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
 
     private final InterviewConferenceRoomService interviewConferenceRoomService;
 
+    /**
+     * Retrieves the connected interview participants in a specific room.
+     *
+     * @param roomId the ID of the interview room
+     * @return a map of participant IDs to their extra user info DTOs
+     */
     @Override
     public Map<UUID, InterviewParticipantExtraUserInfoDto> getConnectedInterviewParticipants(UUID roomId) {
         return users.getOrDefault(roomId, null);
     }
 
+    /**
+     * Retrieves the remaining time until a room becomes available.
+     *
+     * @param roomId the ID of the interview room
+     * @return the remaining time in seconds, or null if the room is not found or expired
+     */
     @Override
     public Long untilRoomAvailable(UUID roomId) {
         InterviewConferenceRoomDto interviewConferenceRoomDto = rooms.getOrDefault(roomId, null);
@@ -73,6 +85,13 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         return interviewConferenceRoomDto.getStartDate().atZone(ZoneId.systemDefault()).toEpochSecond() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
+    /**
+     * Tries to connect a participant to an interview room.
+     *
+     * @param roomId the ID of the interview room
+     * @param userId the ID of the user/participant
+     * @return the extra user info DTO if connected successfully, null otherwise
+     */
     @Override
     public InterviewParticipantExtraUserInfoDto tryConnectToInterviewRoom(UUID roomId, UUID userId) {
         InterviewParticipantExtraUserInfoDto user = interviewConferenceRoomService.getParticipantInfo(roomId, userId);
@@ -96,6 +115,13 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         return user;
     }
 
+    /**
+     * Leaves an interview room.
+     *
+     * @param roomId the ID of the interview room
+     * @param userId the ID of the user/participant
+     * @return true if the user successfully left the room, false otherwise
+     */
     @Override
     public Boolean leaveInterviewRoom(UUID roomId, UUID userId) {
         usersToRooms.remove(userId);
@@ -113,11 +139,23 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         return true;
     }
 
+    /**
+     * Retrieves the ID of the room connected to a user/participant.
+     *
+     * @param userId the ID of the user/participant
+     * @return the ID of the connected room, or null if not connected
+     */
     @Override
     public UUID getConnectedRoomId(UUID userId) {
         return usersToRooms.getOrDefault(userId, null);
     }
 
+    /**
+     * Closes an interview room.
+     *
+     * @param roomId the ID of the interview room
+     * @return true if the room was closed successfully, false otherwise
+     */
     @Override
     public Boolean closeInterviewRoom(UUID roomId) {
         rooms.remove(roomId);
