@@ -3,9 +3,11 @@ package ro.hiringsystem.model.abstracts;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ro.hiringsystem.model.entity.interview.InterviewParticipant;
 import ro.hiringsystem.security.token.Token;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +45,10 @@ public abstract class User {
     @NonNull
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval = true)
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+    private List<InterviewParticipant> interviewParticipants = new ArrayList<>();
 
 }

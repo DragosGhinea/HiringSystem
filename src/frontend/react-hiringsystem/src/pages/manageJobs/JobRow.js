@@ -17,7 +17,8 @@ const JobRow = ({job, index}) => {
         else{
             deleteRef.current.innerText= "Are you sure?";
             setTimeout(() => {
-                deleteRef.current.innerText = "Delete";
+                if(deleteRef.current)
+                    deleteRef.current.innerText = "Delete";
             }, 3000)
         }
     }
