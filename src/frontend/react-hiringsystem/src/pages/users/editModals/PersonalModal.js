@@ -1,4 +1,4 @@
-import { Modal, Button, Form, ListGroup, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
@@ -58,6 +58,7 @@ const PersonalModal = ({ show, onClose, user, cv }) => {
                 console.log("Error triggered")
                 console.log(err)
             })
+
         onClose();
     };
 
@@ -208,7 +209,7 @@ const PersonalModal = ({ show, onClose, user, cv }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
+                <Button variant="danger" onClick={onClose}>
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={handleSave}>

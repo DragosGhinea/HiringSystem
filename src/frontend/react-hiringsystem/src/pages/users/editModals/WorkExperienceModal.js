@@ -1,23 +1,23 @@
-import { Modal, Button, Form, ListGroup, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
 
-const AcademicBackgroundModal = ({ show, onClose, cv }) => {
-    const [editedAcademicBackground, setEditedAcademicBackground] = useState(
-        cv?.academicBackground || []
+const WorkExperienceModal = ({ show, onClose, cv }) => {
+    const [editedWorkExperience, setEditedWorkExperience] = useState(
+        cv?.workExperience || []
     );
 
     useEffect(() => {
-        setEditedAcademicBackground(cv?.academicBackground || []);
+        setEditedWorkExperience(cv?.workExperience || []);
     }, [cv]);
 
     const handleSave = () => {
         const cvDto = {
             skills: cv.skills,
-            academicBackground: editedAcademicBackground,
-            workExperience: cv.workExperience,
+            academicBackground: cv.academicBackground,
+            workExperience: editedWorkExperience,
             projects: cv.projects
         }
 
@@ -26,51 +26,51 @@ const AcademicBackgroundModal = ({ show, onClose, cv }) => {
         axios.post(`http://localhost:8081/api/v1/candidate/edit/cv/${cv.id}`, cvDto)
             .then(() => window.location.reload()
             )
-        .catch(err => {
+            .catch(err => {
                 console.log("Error triggered")
                 console.log(err)
             })
+
+        onClose();
     };
 
-    const handleAddAcademicBackground = () => {
-        setEditedAcademicBackground([
-            ...editedAcademicBackground,
-            { startDate: '', endDate: '', institution: '', specialization: '' }
+    const handleAddWorkExperience = () => {
+        setEditedWorkExperience([
+            ...editedWorkExperience,
+            { startDate: new Date(), endDate: new Date(), company: '', position: '' }
         ]);
     };
 
-    const handleRemoveAcademicBackground = (index) => {
-        const updatedAcademicBackground = [...editedAcademicBackground];
-        updatedAcademicBackground.splice(index, 1);
-        setEditedAcademicBackground(updatedAcademicBackground);
+    const handleRemoveWorkExperience = (index) => {
+        const updatedWorkExperience = [...editedWorkExperience];
+        updatedWorkExperience.splice(index, 1);
+        setEditedWorkExperience(updatedWorkExperience);
     };
 
-    const handleAcademicBackgroundChange = (index, field, value) => {
-        const updatedAcademicBackground = [...editedAcademicBackground];
-        updatedAcademicBackground[index][field] = value;
-        setEditedAcademicBackground(updatedAcademicBackground);
+    const handleWorkExperienceChange = (index, field, value) => {
+        const updatedWorkExperience = [...editedWorkExperience];
+        updatedWorkExperience[index][field] = value;
+        setEditedWorkExperience(updatedWorkExperience);
     };
 
     return (
         <Modal show={show} onHide={onClose} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title style={{ fontWeight: 'bold', fontSize: '20px' }}>Edit Academic Background</Modal.Title>
+                <Modal.Title style={{ fontWeight: 'bold', fontSize: '20px' }}>Edit Work Experience</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    {/* Academic Background Section */}
-                    <h4 style={{ fontWeight: 'bold', fontSize: '18px' }}>Academic Background</h4>
-                    {editedAcademicBackground.map((background, index) => (
+                    {editedWorkExperience.map((experience, index) => (
                         <div key={index}>
                             <Row>
                                 <Col>
                                     <Form.Group controlId={`formStartDate${index}`}>
-                                        <Form.Label style={{ fontWeight: 'bold' }}>Start Date</Form.Label>
+                                        <Form.Label style={{ fontWeight: 'bold', fontSize: '17px', marginTop: '10px' }}>Start Date</Form.Label>
                                         <br />
                                         <DatePicker
-                                            selected={background.startDate ? new Date(background.startDate) : null}
+                                            selected={experience.startDate ? new Date(experience.startDate) : null}
                                             onChange={(date) =>
-                                                handleAcademicBackgroundChange(
+                                                handleWorkExperienceChange(
                                                     index,
                                                     'startDate',
                                                     date.toISOString()
@@ -82,12 +82,12 @@ const AcademicBackgroundModal = ({ show, onClose, cv }) => {
                                 </Col>
                                 <Col>
                                     <Form.Group controlId={`formEndDate${index}`}>
-                                        <Form.Label style={{ fontWeight: 'bold' }}>End Date</Form.Label>
+                                        <Form.Label style={{ fontWeight: 'bold', fontSize: '17px', marginTop: '10px' }}>End Date</Form.Label>
                                         <br />
                                         <DatePicker
-                                            selected={background.endDate ? new Date(background.endDate) : null}
+                                            selected={experience.endDate ? new Date(experience.endDate) : null}
                                             onChange={(date) =>
-                                                handleAcademicBackgroundChange(
+                                                handleWorkExperienceChange(
                                                     index,
                                                     'endDate',
                                                     date.toISOString()
@@ -98,52 +98,44 @@ const AcademicBackgroundModal = ({ show, onClose, cv }) => {
                                     </Form.Group>
                                 </Col>
                             </Row>
-                            <Form.Group controlId={`formInstitution${index}`}>
-                                <Form.Label style={{ fontWeight: 'bold' }}>Institution</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={background.institution}
-                                    onChange={(e) =>
-                                        handleAcademicBackgroundChange(
+                            <Form.Group controlId={`formCompany${index}`}>
+                                <Form.Label style={{ fontWeight: 'bold', fontSize: '17px', marginTop: '10px' }}>Company</Form.Label>
+                                <Form.Control type="text" value={experience.company} onChange={(e) =>
+                                        handleWorkExperienceChange(
                                             index,
-                                            'institution',
+                                            'company',
                                             e.target.value
                                         )
                                     }
                                 />
                             </Form.Group>
-                            <Form.Group controlId={`formSpecialization${index}`}>
-                                <Form.Label style={{ fontWeight: 'bold' }}>Specialization</Form.Label>
+                            <Form.Group controlId={`formPosition${index}`}>
+                                <Form.Label style={{ fontWeight: 'bold', fontSize: '17px', marginTop: '10px' }}>Position</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={background.specialization}
+                                    value={experience.position}
                                     onChange={(e) =>
-                                        handleAcademicBackgroundChange(
+                                        handleWorkExperienceChange(
                                             index,
-                                            'specialization',
+                                            'position',
                                             e.target.value
                                         )
                                     }
                                 />
                             </Form.Group>
-                            <Button
-                                variant="danger"
-                                size="sm"
-                                style={{ marginTop: '10px', marginRight: '10px' }}
-                                onClick={() => handleRemoveAcademicBackground(index)}
-                            >
+                            <Button variant="danger" size="sm" style={{ marginTop: '10px' }} onClick={() => handleRemoveWorkExperience(index)}>
                                 Remove
                             </Button>
                             <hr />
                         </div>
                     ))}
-                    <Button variant="secondary" size="sm" onClick={handleAddAcademicBackground}>
-                        Add Academic Background
+                    <Button variant="secondary" size="sm" onClick={handleAddWorkExperience}>
+                        Add Work Experience
                     </Button>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
+                <Button variant="danger" onClick={onClose}>
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={handleSave}>
@@ -154,4 +146,4 @@ const AcademicBackgroundModal = ({ show, onClose, cv }) => {
     );
 };
 
-export default AcademicBackgroundModal;
+export default WorkExperienceModal;

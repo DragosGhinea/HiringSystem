@@ -2,8 +2,10 @@ import React, {useState, useEffect} from 'react';
 import "../css/candidateProfile.css"
 import {useParams} from "react-router-dom";
 import jwtInterceptor from '../../components/shared/JwtInterceptor';
-import PersonalModal from "./PersonalModal";
-import AcademicBackgroundModal from "./AcademicBackgroundModal";
+import PersonalModal from "./editModals/PersonalModal";
+import AcademicBackgroundModal from "./editModals/AcademicBackgroundModal";
+import WorkExperienceModal from "./editModals/WorkExperienceModal";
+import ProjectsModal from "./editModals/ProjectsModal";
 
 function CandidateProfile() {
 
@@ -23,6 +25,8 @@ function CandidateProfile() {
     const handleOpenAcademicBackgroundModal = () => setAcademicBackgroundModal(true);
     const handleCloseAcademicBackgroundModal = () => setAcademicBackgroundModal(false);
     const handleOpenWorkExperienceModal = () => setWorkExperienceModal(true);
+    const handleCloseWorkExperienceModal = () => setWorkExperienceModal(false);
+    const handleOpenProjectsModal = () => setProjectsModal(true);
     const handleCloseProjectsModal = () => setProjectsModal(false);
 
     useEffect(() => {
@@ -188,7 +192,8 @@ function CandidateProfile() {
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    {/*<a className="btn btn-info" target="__blank" href="."  onClick={handleWorkExperienceModal}>Edit</a>*/}
+                                    <button className="btn btn-info" onClick={handleOpenWorkExperienceModal}>Edit</button>
+                                    <WorkExperienceModal show={workExperienceModal} onClose={handleCloseWorkExperienceModal} cv={cv}/>
                                 </div>
                             </div>
 
@@ -205,7 +210,8 @@ function CandidateProfile() {
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12 m-3">
-                                        {/*<a className="btn btn-info" target="__blank" href="."  onClick={handleProjectsModal}>Edit</a>*/}
+                                        <button className="btn btn-info" onClick={handleOpenProjectsModal}>Edit</button>
+                                        <ProjectsModal show={projectsModal} onClose={handleCloseProjectsModal} cv={cv}/>
                                     </div>
                                 </div>
                             </div>
