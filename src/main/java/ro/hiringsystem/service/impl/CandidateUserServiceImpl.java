@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.mapper.CVMapper;
-import ro.hiringsystem.mapper.CandidateUserMapper;
+import ro.hiringsystem.mapper.*;
+import ro.hiringsystem.model.auxiliary.AcademicExperience;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
@@ -122,5 +122,14 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         PageRequest pageRequest = PageRequest.of(page, size);
         return candidateUserRepository.findAll(pageRequest).stream()
                 .map(candidateUserMapper::toDto).toList();
+    }
+
+    @Override
+    public void updateCv(CVDto cvDto) {
+        System.out.println("INTRA");
+        CandidateUser candidate = candidateUserRepository.getReferenceById(cvDto.getId());
+        CV cv = cvMapper.toEntity(cvDto);
+        candidate.setCv(cv);
+        candidateUserRepository.save(candidate);
     }
 }

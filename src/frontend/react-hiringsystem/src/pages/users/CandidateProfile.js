@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import "../css/candidateProfile.css"
 import {useParams} from "react-router-dom";
 import jwtInterceptor from '../../components/shared/JwtInterceptor';
+import PersonalModal from "./PersonalModal";
+import AcademicBackgroundModal from "./AcademicBackgroundModal";
 
 function CandidateProfile() {
 
@@ -16,10 +18,12 @@ function CandidateProfile() {
     const [workExperienceModal, setWorkExperienceModal] = useState(false);
     const [projectsModal, setProjectsModal] = useState(false);
 
-    const handlePersonalModal = () => setPersonalModal(true);
-    const handleAcademicBackgroundModal = () => setAcademicBackgroundModal(true);
-    const handleWorkExperienceModal = () => setWorkExperienceModal(true);
-    const handleProjectsModal = () => setProjectsModal(true);
+    const handleOpenPersonalModal = () => setPersonalModal(true);
+    const handleClosePersonalModal = () => setPersonalModal(false);
+    const handleOpenAcademicBackgroundModal = () => setAcademicBackgroundModal(true);
+    const handleCloseAcademicBackgroundModal = () => setAcademicBackgroundModal(false);
+    const handleOpenWorkExperienceModal = () => setWorkExperienceModal(true);
+    const handleCloseProjectsModal = () => setProjectsModal(false);
 
     useEffect(() => {
         jwtInterceptor
@@ -142,7 +146,8 @@ function CandidateProfile() {
                                                             </div>
                                                             <div className="row">
                                                                 <div className="col-sm-12">
-                                                                    {/*<a className="btn btn-info " target="__blank" href="." onClick={handlePersonalModal}>Edit</a>*/}
+                                                                    <button className="btn btn-info" onClick={handleOpenPersonalModal}>Edit</button>
+                                                                    <PersonalModal show={personalModal} onClose={handleClosePersonalModal} user={user} cv={cv}/>
                                                                 </div>
                                                             </div>
                                                 </div>
@@ -165,7 +170,8 @@ function CandidateProfile() {
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    {/*<a className="btn btn-info" target="__blank" href="."  onClick={handleAcademicBackgroundModal}>Edit</a>*/}
+                                    <button className="btn btn-info" onClick={handleOpenAcademicBackgroundModal}>Edit</button>
+                                    <AcademicBackgroundModal show={academicBackgroundModal} onClose={handleCloseAcademicBackgroundModal} cv={cv}/>
                                 </div>
                             </div>
 

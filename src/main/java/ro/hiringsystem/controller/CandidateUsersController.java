@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.List;
@@ -49,4 +50,24 @@ public class CandidateUsersController {
         return ResponseEntity.ok(candidateUserService.create(candidateUserDto));
     }
 
+    @PostMapping("edit/{id}")
+    public ResponseEntity<CandidateUserDto> editCandidateUser(
+            @PathVariable("id") UUID id,
+            @RequestBody CandidateUserDto candidateUserDto
+    ){
+        candidateUserDto.setId(id);
+        candidateUserService.saveElement(candidateUserDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("edit/cv/{id}")
+    public ResponseEntity<CandidateUserDto> editCandidateUserCv(
+            @PathVariable("id") UUID id,
+            @RequestBody CVDto cvDto
+    ){
+        cvDto.setId(id);
+        System.out.println("matoda Controller");
+        candidateUserService.updateCv(cvDto);
+        return ResponseEntity.ok().build();
+    }
 }
