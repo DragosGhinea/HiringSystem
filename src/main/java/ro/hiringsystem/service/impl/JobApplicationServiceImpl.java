@@ -20,11 +20,15 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     private final JobApplicationRepository jobApplicationRepository;
     private final JobApplicationMapper jobApplicationMapper;
-
     private final CandidateUserMapper candidateUserMapper;
-
     private final JobMapper jobMapper;
 
+    /**
+     * Retrieves all job applications for a specific user along with the corresponding job information.
+     *
+     * @param userId the ID of the user
+     * @return a list of JobApplicationWithJobDto containing job application and job information
+     */
     @Override
     public List<JobApplicationWithJobDto> getAllByUserId(UUID userId) {
         List<Object[]> jobApplicationList = jobApplicationRepository.findAllByUserIdWithJob(userId);
@@ -37,6 +41,12 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return jobApplicationWithJobDtoList;
     }
 
+    /**
+     * Retrieves a job application by its ID.
+     *
+     * @param id the ID of the job application
+     * @return the JobApplicationDto if found, or throws a RuntimeException if not found
+     */
     @Override
     public JobApplicationDto getById(UUID id) {
         Optional<JobApplication> jobApplication = jobApplicationRepository.findById(id);
@@ -48,23 +58,43 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return jobApplicationMapper.toDto(jobApplication.get());
     }
 
+    /**
+     * Retrieves all job applications as a map, with the IDs as keys and JobApplicationDto as values.
+     *
+     * @return a map of JobApplicationDto objects
+     */
     @Override
     public Map<UUID, JobApplicationDto> getAllFromMap() {
         return listToMap(jobApplicationRepository.findAll().stream()
                 .map(jobApplicationMapper::toDto).toList());
     }
 
+    /**
+     * Adds all job applications from the given map to the repository.
+     *
+     * @param jobApplicationMap the map of JobApplicationDto objects
+     */
     @Override
     public void addAllFromGivenMap(Map<UUID, JobApplicationDto> jobApplicationMap) {
         jobApplicationRepository.saveAll(jobApplicationMap.values().stream()
                 .map(jobApplicationMapper::toEntity).toList());
     }
 
+    /**
+     * Adds a job application to the repository.
+     *
+     * @param jobApplicationDto the JobApplicationDto to be added
+     */
     @Override
     public void add(JobApplicationDto jobApplicationDto) {
         jobApplicationRepository.save(jobApplicationMapper.toEntity(jobApplicationDto));
     }
 
+    /**
+     * Removes a job application from the repository by its ID.
+     *
+     * @param id the ID of the job application
+     */
     @Override
     public void removeElementById(UUID id) {
         Optional<JobApplication> jobApplication = jobApplicationRepository.findById(id);
@@ -76,12 +106,23 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         else jobApplicationRepository.delete(jobApplication.get());
     }
 
+    /**
+     * Saves a job application in the repository.
+     *
+     * @param jobApplicationDto the JobApplicationDto to be saved
+     */
     @Override
     public void saveElement(JobApplicationDto jobApplicationDto) {
         JobApplication jobApplication = jobApplicationMapper.toEntity(jobApplicationDto);
         jobApplicationRepository.save(jobApplication);
     }
 
+    /**
+     * Converts a list of JobApplicationDto objects to a map with IDs as keys and JobApplicationDto as values.
+     *
+     * @param jobApplicationDtoList the list of JobApplicationDto objects
+     * @return a map of JobApplicationDto objects
+     */
     @Override
     public Map<UUID, JobApplicationDto> listToMap(List<JobApplicationDto> jobApplicationDtoList) {
         Map<UUID, JobApplicationDto> jobApplicationDtoMap = new HashMap<>();
@@ -93,6 +134,13 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         return jobApplicationDtoMap;
     }
 
+    /**
+     * Creates a new job application with the given job ID and user ID.
+     *
+     * @param jobId  the ID of the job
+     * @param userId the ID of the user
+     * @return the created JobApplicationDto, or null if an exception occurs
+     */
     @Override
     public JobApplicationDto create(UUID jobId, UUID userId) {
         JobApplicationDto jobApplicationDto = JobApplicationDto.builder()
@@ -111,11 +159,24 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
     }
 
+    /**
+     * Checks if a user has already applied for a job.
+     *
+     * @param jobId  the ID of the job
+     * @param userId the ID of the user
+     * @return true if the user has already applied, false otherwise
+     */
     @Override
     public boolean checkIfAlreadyApplied(UUID jobId, UUID userId) {
         return jobApplicationRepository.hasAlreadyApplied(jobId, userId);
     }
 
+    /**
+     * Retrieves all job applications for a specific job along with the corresponding user information.
+     *
+     * @param jobId the ID of the job
+     * @return a list of JobApplicationWithUserDto containing job application and user information
+     */
     @Override
     public List<JobApplicationWithUserDto> getAllByJobId(UUID jobId) {
         List<Object[]> jobApplicationList = jobApplicationRepository.findAllByJobIdWithUser(jobId);
