@@ -188,4 +188,30 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
         return jobApplicationWithUserDtos;
     }
+
+    @Override
+    public boolean accept(UUID jobApplicationId) {
+        try{
+            JobApplication jobApplication = jobApplicationRepository.getReferenceById(jobApplicationId);
+            jobApplication.setStatus(Status.ACCEPTED);
+            jobApplicationRepository.save(jobApplication);
+            return true;
+        } catch (Exception x) {
+            x.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean reject(UUID jobApplicationId) {
+        try{
+            JobApplication jobApplication = jobApplicationRepository.getReferenceById(jobApplicationId);
+            jobApplication.setStatus(Status.DENIED);
+            jobApplicationRepository.save(jobApplication);
+            return true;
+        } catch (Exception x) {
+            x.printStackTrace();
+            return false;
+        }
+    }
 }

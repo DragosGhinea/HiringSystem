@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import FormInput from "../components/forms/FormInput";
+import FormInput from "../../components/forms/FormInput";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../components/shared/AuthContext";
+import AuthContext from "../../components/shared/AuthContext";
 
 const Register = () => {
   const currentDate = new Date();

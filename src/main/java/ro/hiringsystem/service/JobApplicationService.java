@@ -31,4 +31,8 @@ public interface JobApplicationService {
     List<JobApplicationWithUserDto> getAllByJobId(UUID jobId);
 
     List<JobApplicationWithJobDto> getAllByUserId(UUID userId);
+
+    boolean accept(UUID jobApplicationId);
+
+    boolean reject(UUID jobApplicationId);
 }

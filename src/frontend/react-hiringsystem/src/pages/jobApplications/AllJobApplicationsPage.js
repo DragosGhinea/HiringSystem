@@ -13,7 +13,6 @@ const AllJobApplicationsPage = () => {
     useEffect(() => {
         axios.get(`http://localhost:8081/api/v1/application/get/all/${jobId}`)
             .then(data => {
-                console.log(data.data)
                 setApplications(data.data);
             })
             .catch(err => {
@@ -34,10 +33,12 @@ const AllJobApplicationsPage = () => {
                         <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Action</th>
                             <th scope="col">Candidate name</th>
                             <th scope="col">Candidate email</th>
                             <th scope="col">Submitted on</th>
                             <th scope="col">Status</th>
+                            <th scope="col">CV</th>
                         </tr>
                         </thead>
                         <tbody>
