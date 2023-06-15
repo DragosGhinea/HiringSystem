@@ -46,6 +46,7 @@ public class UserSeeder{
                     .password(passwordEncoder.encode("password"))
                     .birthDate(LocalDate.of(1995, 3, 22))
                     .mailList(Arrays.asList("mark@example.com"))
+                    .phoneNumberList(Arrays.asList("0747018912"))
                     .build();
 
             // Seed InterviewerUser
@@ -59,6 +60,7 @@ public class UserSeeder{
                     .interviewerType(InterviewerType.TECHNICAL)
                     .mailList(Arrays.asList("john@example.com"))
                     .professionalBackground("Software Engineering")
+                    .phoneNumberList(Arrays.asList("0736789899"))
                     .build();
 
             InterviewerUser interviewer2 = InterviewerUser.builder()
@@ -70,6 +72,7 @@ public class UserSeeder{
                     .birthDate(LocalDate.of(1985, 2, 10))
                     .interviewerType(InterviewerType.HR)
                     .mailList(Arrays.asList("jane@example.com"))
+                    .phoneNumberList(Arrays.asList("07767891202"))
                     .build();
 
             // Seed CandidateUsers
@@ -124,6 +127,7 @@ public class UserSeeder{
                             .build()
                     )
                     .mailList(Arrays.asList("alice@example.com"))
+                    .phoneNumberList(Arrays.asList("0776789822", "0798122454"))
                     .build();
 
             CandidateUser candidate2 = CandidateUser.builder()
@@ -180,6 +184,7 @@ public class UserSeeder{
                                 .build()
                     )
                     .mailList(Arrays.asList("bob@example.com"))
+                    .phoneNumberList(Arrays.asList("0743567821"))
                     .build();
 
             CandidateUser candidate3 = CandidateUser.builder()
@@ -246,6 +251,7 @@ public class UserSeeder{
                             .build()
                     )
                     .mailList(Arrays.asList("emily@example.com"))
+                    .phoneNumberList(Arrays.asList("0775689433"))
                     .build();
 
             // Save the users
