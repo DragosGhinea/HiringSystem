@@ -8,11 +8,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
+import ro.hiringsystem.model.dto.interview.InterviewParticipantDto;
 import ro.hiringsystem.model.dto.interview.InterviewParticipantExtraUserInfoDto;
 import ro.hiringsystem.model.dto.interview.messaging.InterviewForceAction;
+import ro.hiringsystem.service.EmailSenderService;
 import ro.hiringsystem.service.InterviewConferenceRoomService;
 import ro.hiringsystem.service.InterviewManagerService;
+import ro.hiringsystem.service.UserService;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @RestController
@@ -23,8 +28,26 @@ public class InterviewRoomController {
     private final InterviewManagerService interviewManagerService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    private final EmailSenderService emailSenderService;
+
+    private final UserService<UserDto> userService;
+
     @PostMapping("create")
     public ResponseEntity<InterviewConferenceRoomDto> createInterviewRoom(@RequestBody InterviewConferenceRoomDto interviewConferenceRoomDto){
+        interviewConferenceRoomDto.setId(UUID.randomUUID());
+        for(InterviewParticipantDto participantDto : interviewConferenceRoomDto.getParticipants()){
+            if(!participantDto.getIsRoomModerator()) {
+                try {
+                    //loading the whole user instead of just the email, very impractical but rushing to meet the deadline
+                    emailSenderService.sendInterviewCreationEmail(userService.getById(participantDto.getUserId()).getPrimaryEmail(),
+                            interviewConferenceRoomDto.getId().toString(),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm (z)").format(interviewConferenceRoomDto.getStartDate().atZone(ZoneId.systemDefault()))
+                    );
+                }catch(Exception x){
+                    x.printStackTrace();
+                }
+            }
+        }
         return ResponseEntity.ok(interviewConferenceRoomService.create(interviewConferenceRoomDto));
     }
 
