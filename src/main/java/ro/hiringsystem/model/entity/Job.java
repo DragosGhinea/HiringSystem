@@ -48,6 +48,6 @@ public class Job {
     @ElementCollection(fetch=FetchType.EAGER)
     private List<String> offers;
 
-    @OneToMany(mappedBy = "jobId", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "jobId", fetch=FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<JobApplication> jobApplications;
 }

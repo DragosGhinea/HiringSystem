@@ -136,26 +136,33 @@ const CreateManualCandidate = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Create Candidate</h1>
-            {inputs.map((input) => (
-                <div key={input.id}>
-                    <FormInput
-                        {...input}
-                        value={values[input.name]}
-                        onChange={onChange}
-                        onBlur={handleBlur}
-                    />
-                    {input.name === "email" && isEmailTaken && (
-                        <span style={{ color: "red", padding: "3px", fontSize: "16px"}}>Email is already in use!</span>
-                    )}
-                </div>
-            ))}
-            <br />
-
-            <br />
-            <button className="btn btn-success" type="submit">Submit</button>
-        </form>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <div>
+                <h1 style={{ marginTop: '20px', marginBottom: '25px' }}>Create Candidate</h1>
+                <form onSubmit={handleSubmit}>
+                    <div style={{boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", padding: "20px",
+                        marginBottom: "25px", width: "500px", display: "flex", flexDirection: "column", borderRadius: '20px', alignItems: "center"}}>
+                        {inputs.map((input) => (
+                            <div key={input.id}>
+                                <FormInput
+                                    {...input}
+                                    value={values[input.name]}
+                                    onChange={onChange}
+                                    onBlur={handleBlur}
+                                />
+                                {input.name === "email" && isEmailTaken && (
+                                    <span style={{color: "red", padding: "3px", fontSize: "16px",}}>
+                                        Email is already in use!
+                                    </span>)}
+                            </div>
+                        ))}
+                        <button className="btn btn-success" type="submit" style={{alignSelf: "flex-end"}}>
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

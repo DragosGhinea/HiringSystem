@@ -28,4 +28,6 @@ public interface InterviewManagerService {
     UUID getConnectedRoomId(UUID userId);
 
     Boolean closeInterviewRoom(UUID roomId);
+
+    void clearCacheRoom(UUID roomId);
 }

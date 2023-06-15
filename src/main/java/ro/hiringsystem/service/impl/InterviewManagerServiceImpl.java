@@ -164,4 +164,11 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
         interviewConferenceRoomService.deleteById(roomId);
         return true;
     }
+
+    @Override
+    public void clearCacheRoom(UUID roomId) {
+        rooms.remove(roomId);
+        users.remove(roomId);
+        usersToRooms.entrySet().removeIf(entry -> entry.getValue().equals(roomId));
+    }
 }

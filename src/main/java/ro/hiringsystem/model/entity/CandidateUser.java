@@ -24,7 +24,7 @@ import java.util.List;
 @Entity
 public class CandidateUser extends User {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CV cv;
 
     private File recommendation;
@@ -33,7 +33,7 @@ public class CandidateUser extends User {
 
     private URL linkedInProfileLink;
 
-    @OneToMany(mappedBy = "candidateUserId", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "candidateUserId", fetch=FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<JobApplication> jobApplications;
 
     @Override

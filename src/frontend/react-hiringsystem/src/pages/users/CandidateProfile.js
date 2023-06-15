@@ -1,19 +1,36 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
 import "../css/candidateProfile.css"
 import {useParams} from "react-router-dom";
+import jwtInterceptor from '../../components/shared/JwtInterceptor';
+import PersonalModal from "./editModals/PersonalModal";
+import AcademicBackgroundModal from "./editModals/AcademicBackgroundModal";
+import WorkExperienceModal from "./editModals/WorkExperienceModal";
+import ProjectsModal from "./editModals/ProjectsModal";
 
-function CandidateProfile() {
+function CandidateProfile({userId}) {
 
-    const { id } = useParams();
+    const id = userId;
 
     const [user, setUser] = useState(null);
 
+    const [cv, setCv] = useState(null);
+
+    const [personalModal, setPersonalModal] = useState(false);
+    const [academicBackgroundModal, setAcademicBackgroundModal] = useState(false);
+    const [workExperienceModal, setWorkExperienceModal] = useState(false);
+    const [projectsModal, setProjectsModal] = useState(false);
+
+    const handleOpenPersonalModal = () => setPersonalModal(true);
+    const handleClosePersonalModal = () => setPersonalModal(false);
+    const handleOpenAcademicBackgroundModal = () => setAcademicBackgroundModal(true);
+    const handleCloseAcademicBackgroundModal = () => setAcademicBackgroundModal(false);
+    const handleOpenWorkExperienceModal = () => setWorkExperienceModal(true);
+    const handleCloseWorkExperienceModal = () => setWorkExperienceModal(false);
+    const handleOpenProjectsModal = () => setProjectsModal(true);
+    const handleCloseProjectsModal = () => setProjectsModal(false);
+
     useEffect(() => {
-
-        document.body.classList.add('containerCandidate');
-
-        axios
+        jwtInterceptor
             .get(`http://localhost:8081/api/v1/candidate/profile/${id}`)
             .then(function (response) {
                 console.log(response);
@@ -22,15 +39,36 @@ function CandidateProfile() {
             .catch(function (error) {
                 console.log(error);
             });
+    }, [id]);
 
-    }, [])
+    useEffect(() => {
+        if (user != null) {
+            jwtInterceptor
+                .get(`http://localhost:8081/api/v1/candidate/get/cv/${user.id}`)
+                .then(function (response) {
+                    console.log(response);
+                    setCv(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }, [user]);
+
+    function formatDate(date) {
+        if (!date) {
+            return 'N/A';
+        }
+
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(date).toLocaleDateString(undefined, options);
+    }
 
     return (user &&
         <div className="containerCandidate">
-            <div className="main-body">
-                <div className="row gutters-sm">
-                    <div className="col-md-4 mb-3">
-                        <div className="card">
+            <div className="background"></div>
+            <div className="main-body candidate-info">
+                        <div className="card" id="personal">
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
                                     <img src={require("../css/images/candidate.png")} alt="Candidate" width="150"/>
@@ -78,8 +116,8 @@ function CandidateProfile() {
                                                         </div>
                                                         <div className="col-sm-9 text-secondary">
                                                             <ul className="style-type-none">
-                                                                {user.mailList?.map(mail => (
-                                                                    <li key={mail}>{mail}</li>
+                                                                {user.mailList?.map((mail, index) => (
+                                                                    <li key={index}>{mail}</li>
                                                                 ))}
                                                             </ul>
                                                         </div>
@@ -91,8 +129,8 @@ function CandidateProfile() {
                                                             </div>
                                                             <div className="col-sm-9 text-secondary">
                                                                 <ul className="style-type-none">
-                                                                    {user.phoneNumberList?.map(phone => (
-                                                                        <li key={phone}>{phone}</li>
+                                                                    {user.phoneNumberList?.map((phone, index) => (
+                                                                        <li key={index}>{phone}</li>
                                                                     ))}
                                                                 </ul>
                                                             </div>
@@ -104,7 +142,7 @@ function CandidateProfile() {
                                                                 </div>
                                                                 <div className="col-sm-9 text-secondary">
                                                                     <ul>
-                                                                        {user.cv?.skills?.map(skill => (
+                                                                        {cv?.skills?.map(skill => (
                                                                             <li key={skill}>{skill}</li>
                                                                         ))}
                                                                     </ul>
@@ -112,7 +150,8 @@ function CandidateProfile() {
                                                             </div>
                                                             <div className="row">
                                                                 <div className="col-sm-12">
-                                                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
+                                                                    <button className="btn btn-info" onClick={handleOpenPersonalModal}>Edit</button>
+                                                                    <PersonalModal show={personalModal} onClose={handleClosePersonalModal} user={user} cv={cv}/>
                                                                 </div>
                                                             </div>
                                                 </div>
@@ -122,63 +161,61 @@ function CandidateProfile() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                <div className="col-md-8">
-                    <div className="row gutters-sm">
-                        <div className="col-sm-6 mb-3">
-                            <div className="card experienceCard">
+                            <div className="card experienceCard" id="academicBackground">
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Academic Background</h6>
                                     <ul className="text-secondary">
-                                        {user.cv?.academicBackground?.map(academicBackground => (
-                                            <li key={academicBackground}>{academicBackground.startDate + '-' + academicBackground.endDate} <br></br> {academicBackground.institution + ', ' + academicBackground.specialization}</li>
+                                        {cv?.academicBackground?.map((academicBackground, index) => (
+                                            <li key={index} style={{ marginBottom: '10px' }}>
+                                                {formatDate(academicBackground.startDate)} - {formatDate(academicBackground.endDate)} <br />
+                                                <strong>{academicBackground.institution}</strong>, {academicBackground.specialization}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
+                                    <button className="btn btn-info" onClick={handleOpenAcademicBackgroundModal}>Edit</button>
+                                    <AcademicBackgroundModal show={academicBackgroundModal} onClose={handleCloseAcademicBackgroundModal} cv={cv}/>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="col-sm-6 mb-3">
-                            <div className="card experienceCard">
+                            <div className="card experienceCard" id="workExperience">
                                 <div className="card-body align-items-center justify-content-between">
                                     <h6 className="mb-3 mt-3">Work Experience</h6>
                                     <ul className="text-secondary">
-                                        {user.cv?.workExperience?.map(workExperience => (
-                                            <li key={workExperience}>{workExperience.startDate + '-' + workExperience.endDate} <br></br> {workExperience.company + ', ' + workExperience.position}</li>
+                                        {cv?.workExperience?.map((workExperience, index) => (
+                                            <li key={index} style={{ marginBottom: '10px' }}>
+                                                {formatDate(workExperience.startDate)} - {formatDate(workExperience.endDate)} <br />
+                                                <strong>{workExperience.company}</strong>, {workExperience.position}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="card-footer">
-                                    <a className="btn btn-info" target="__blank" href=".">Edit</a>
+                                    <button className="btn btn-info" onClick={handleOpenWorkExperienceModal}>Edit</button>
+                                    <WorkExperienceModal show={workExperienceModal} onClose={handleCloseWorkExperienceModal} cv={cv}/>
                                 </div>
                             </div>
-                        </div>
 
-                        <div col-sm-6="true" mb-3="true">
                             <div className="card" id = "projects">
                                 <div className="card-body">
                                     <h6 className="d-flex align-items-center mb-3">Projects</h6>
                                     <ul className="text-secondary">
-                                        {user.cv?.projects?.map(project => (
-                                            <li key={project}>{project.title} <br></br> {project.description}</li>
+                                        {cv?.projects?.map((project, index) => (
+                                            <li key={index}>
+                                                <strong>{project.title}</strong> <br /> {project.description}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12 m-3">
-                                        <a className="btn btn-info" target="__blank" href=".">Edit</a>
+                                        <button className="btn btn-info" onClick={handleOpenProjectsModal}>Edit</button>
+                                        <ProjectsModal show={projectsModal} onClose={handleCloseProjectsModal} cv={cv}/>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                </div>
-                </div>
-            </div>
         </div>
     )
 }

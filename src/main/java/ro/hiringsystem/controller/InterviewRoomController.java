@@ -67,6 +67,7 @@ public class InterviewRoomController {
             @RequestBody InterviewConferenceRoomDto interviewConferenceRoomDto
     ){
         interviewConferenceRoomDto.setId(id);
+        interviewManagerService.clearCacheRoom(id);
         interviewConferenceRoomService.saveElement(interviewConferenceRoomDto);
         return ResponseEntity.ok().build();
     }

@@ -11,22 +11,22 @@ export const JobContextProvider = ({ children }) => {
 
     const createJob = async (payload) => {
         await jwtInterceptor.post("http://localhost:8081/api/v1/job/create", payload);
-        navigate("/");
+        navigate("/jobs/manage");
     };
 
     const getJob = async (id) => {
-        const response = await jwtInterceptor.get("http://localhost:8081/api/v1/job/get?id=" + id);
+        const response = await axios.get("http://localhost:8081/api/v1/job/get?id=" + id);
         return response.data;
     };
 
     const postJob = async (id, payload) => {
         await jwtInterceptor.post("http://localhost:8081/api/v1/job/edit?id=" + id, payload);
-        navigate("/");
+        navigate("/jobs/manage");
     };
 
     const deleteJob = async (id) => {
         await jwtInterceptor.post("http://localhost:8081/api/v1/job/delete?id=" + id);
-        navigate("/");
+        navigate("/jobs/manage");
     };
 
     return (

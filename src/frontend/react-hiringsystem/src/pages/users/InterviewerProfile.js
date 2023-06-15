@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
 import "../css/interviewer-managerProfile.css"
 import {useParams} from "react-router-dom";
+import jwtInterceptor from '../../components/shared/JwtInterceptor';
 
 function InterviewerProfile() {
 
@@ -10,10 +10,7 @@ function InterviewerProfile() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-
-        document.body.classList.add('containerInterviewerManager');
-
-        axios
+        jwtInterceptor
             .get(`http://localhost:8081/api/v1/interviewer/profile/${id}`)
             .then(function (response) {
                 console.log(response);
@@ -27,6 +24,7 @@ function InterviewerProfile() {
     
     return (user &&
         <div className="containerInterviewerManager mt-5">
+            <div className="background"></div>
             <div className="row d-flex justify-content-center">
                 <div className="col-md-7">
                     <div className="card p-3 py-4">
@@ -77,7 +75,7 @@ function InterviewerProfile() {
 
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <a className="btn btn-info " target="__blank" href=".">Edit</a>
+                                    {/*<a className="btn btn-info " target="__blank" href=".">Edit</a>*/}
                                 </div>
                             </div>
                         </div>

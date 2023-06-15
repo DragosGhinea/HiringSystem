@@ -37,13 +37,13 @@ const ViewJobPage = () => {
             }
         };
 
-        if (id != null) {
+        if (user && id != null) {
             checkApplicationStatus();
         }
     }, [id]);
 
     const handleApplyNow = async () => {
-        if(id == null)
+        if(id === null || user === null)
             return;
 
         try {
@@ -69,7 +69,7 @@ const ViewJobPage = () => {
                         <div>
                             {job && (
                                 <>
-                                    {(user.userType === "interviewer" || user.userType === "manager") &&
+                                    {(user && (user.userType === "interviewer" || user.userType === "manager")) &&
                                      <div className="text-end">
                                         <button className="btn btn-secondary btn-lg mt-4" onClick={handleViewApplications}>
                                             View All Applications
@@ -150,7 +150,7 @@ const ViewJobPage = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        {user.userType === "candidate" &&
+                                        {user && user.userType === "candidate" &&
                                             <div className="col-md-6 d-flex justify-content-end align-items-center" style={{ marginTop: '80px' }}>
                                                 {!isApplied ? (
                                                     <button className="btn btn-primary" onClick={handleApplyNow}>Apply Now</button>

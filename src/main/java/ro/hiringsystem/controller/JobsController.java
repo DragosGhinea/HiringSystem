@@ -60,6 +60,7 @@ public class JobsController {
 
     @PostMapping("/create")
     public ResponseEntity<JobDto> create (@RequestBody JobDto jobDto) {
+        jobDto.setId(UUID.randomUUID());
         return ResponseEntity.ok(jobService.createEdit(jobDto));
     }
 

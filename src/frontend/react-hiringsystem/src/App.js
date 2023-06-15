@@ -1,6 +1,6 @@
 import "./App.css";
 import Layout from "./components/shared/Layout";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthContextProvider } from "./components/shared/AuthContext";
 import { JobContextProvider } from "./components/shared/JobContext";
@@ -32,9 +32,7 @@ import MyInterviewsPage from "./pages/myInterviews/MyInterviewsPage";
 import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
 import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
 import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
-import TermsOfUsePage from "./pages/TermsOfUsePage";
-import RegisterSent from "./pages/register/RegisterSent";
-import RegisterConfirm from "./pages/register/RegisterConfirm";
+import ProfilePage from "./pages/users/ProfilePage";
 
 function App() {
   return (
@@ -61,21 +59,18 @@ function App() {
               }
             ></Route>
             <Route
-              path="/register/sent"
-              element={
-                <ProtectedRoute accessBy="non-authenticated">
-                  <RegisterSent />
-                </ProtectedRoute>
-              }
-            ></Route>
+                exact
+                path="/profile"
+                element={<Navigate to="/profile/me" />}
+            />
             <Route
-              path="/register/confirm/:id"
-              element={
-                <ProtectedRoute accessBy="non-authenticated">
-                  <RegisterConfirm />
-                </ProtectedRoute>
-              }
-            ></Route>
+                  path="/profile/:id"
+                  element={
+                      <ProtectedRoute accessBy="authenticated">
+                          <ProfilePage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
               <Route
                   path="/candidate/profile/:id"
                   element={
@@ -135,17 +130,13 @@ function App() {
               <Route
                   path="/jobs/job/:id"
                   element={
-                      <ProtectedRoute accessBy="authenticated">
-                          <ViewJobPage />
-                      </ProtectedRoute>
+                    <ViewJobPage />
                   }
               ></Route>
               <Route
                   path="/jobs"
                   element={
-                      <ProtectedRoute accessBy="authenticated">
-                          <DisplayJobsPage />
-                      </ProtectedRoute>
+                    <DisplayJobsPage />
                   }
               ></Route>
 
@@ -282,12 +273,6 @@ function App() {
                       <ProtectedRoute accessBy="authenticated">
                           <ManageInterviewsPage />
                       </ProtectedRoute>
-                  }
-              ></Route>
-              <Route
-                  path="/terms-of-use"
-                  element={
-                      <TermsOfUsePage />
                   }
               ></Route>
           </Routes>
