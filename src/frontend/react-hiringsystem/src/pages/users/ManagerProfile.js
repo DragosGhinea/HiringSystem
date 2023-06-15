@@ -10,7 +10,6 @@ function ManagerProfile() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-
         jwtInterceptor
             .get(`http://localhost:8081/api/v1/manager/profile/${id}`)
             .then(function (response) {

@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./components/shared/AuthContext";
 import { JobContextProvider } from "./components/shared/JobContext";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import MainPage from "./pages/MainPage";
-import Register from "./pages/Register";
+import Register from "./pages/register/Register";
 import CandidateProfile from "./pages/users/CandidateProfile";
 import InterviewerProfile from "./pages/users/InterviewerProfile";
 import ManagerProfile from "./pages/users/ManagerProfile";

@@ -1,13 +1,13 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
-import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.List;
@@ -34,6 +34,9 @@ public class CandidateUsersController {
 
     @GetMapping("profile/{id}")
     public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") String id, Authentication authentication) {
+        if(authentication == null || !authentication.isAuthenticated())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         if(id.equals("me"))
             return ResponseEntity.ok((CandidateUserDto) authentication.getPrincipal());
         else
