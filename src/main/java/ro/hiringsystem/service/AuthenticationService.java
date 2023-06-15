@@ -7,10 +7,13 @@ import ro.hiringsystem.security.auth.AuthenticationResponse;
 import ro.hiringsystem.security.auth.RegisterRequest;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public interface AuthenticationService {
 
-    AuthenticationResponse register(RegisterRequest request);
+    void register(RegisterRequest request);
+
+    boolean confirmRegister(UUID token);
 
     AuthenticationResponse authenticate(AuthenticationRequest request);
 

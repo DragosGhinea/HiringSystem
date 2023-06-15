@@ -41,7 +41,7 @@ const CreateInterviewConferenceRoom = () => {
         console.log("Data to send")
         axios.post("http://localhost:8081/api/v1/interview/create", values)
             .then(result => {
-                navigate(`/interview/display/${result.data.id}`)
+                navigate(`/interviews/display/${result.data.id}`)
             })
             .catch(err => {
                 console.log("Error triggered")

@@ -1,0 +1,37 @@
+.container {
+    border-collapse: collapse;
+    width: 600px;
+    font-family: 'Roboto', sans-serif;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.header {
+    padding: 40px 0;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.content {
+    padding: 40px 30px;
+}
+
+.cta {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    text-decoration: unset;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: white;
+    border-radius: 4px;
+}
+
+.footer {
+    padding: 5px;
+    text-align: center;
+    background-color: #f0f0f0;
+}
