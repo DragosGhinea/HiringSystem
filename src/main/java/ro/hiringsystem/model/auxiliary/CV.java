@@ -19,16 +19,16 @@ public class CV {
 
     private File cvFile;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AcademicExperience> academicBackground;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkExperience> workExperience;
 
     @ElementCollection
     private List<String> skills;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects;
 
     public CV(UUID userId){

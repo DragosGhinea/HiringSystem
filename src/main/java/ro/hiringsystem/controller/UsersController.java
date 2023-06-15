@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.model.entity.CandidateUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
+import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.repository.UserRepository;
 
 import java.util.HashMap;
@@ -28,6 +31,25 @@ public class UsersController {
     public ResponseEntity<Object> getIdByMail(@PathVariable("mail") String mail){
         Map<String, UUID> map = new HashMap<>();
         map.put("id", userRepository.findIdByEmail(mail));
+        return ResponseEntity.ok(map);
+    }
+
+    @GetMapping("/type/{id}")
+    public ResponseEntity<Object> getTypeById(@PathVariable("id") UUID id){
+        Map<String, String> map = new HashMap<>();
+        Class<?> type = userRepository.findTypeById(id);
+        String typeString="unknown";
+        if(type == CandidateUser.class){
+            typeString = "candidate";
+        }
+        else if(type == InterviewerUser.class){
+            typeString = "interviewer";
+        }
+        else if(type == ManagerUser.class){
+            typeString = "manager";
+        }
+
+        map.put("type", typeString);
         return ResponseEntity.ok(map);
     }
 

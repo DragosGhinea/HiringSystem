@@ -34,6 +34,7 @@ const AllJobApplicationsPage = () => {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Action</th>
+                            <th scope="col">Cancel</th>
                             <th scope="col">Candidate name</th>
                             <th scope="col">Candidate email</th>
                             <th scope="col">Submitted on</th>
