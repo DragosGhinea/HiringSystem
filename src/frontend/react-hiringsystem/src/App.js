@@ -33,6 +33,9 @@ import ManageJobsPage from "./pages/manageJobs/ManageJobsPage";
 import ManageUsersPage from "./pages/manageUsers/ManageUsersPage";
 import ManageInterviewsPage from "./pages/manageInterviews/ManageInterviewsPage";
 import ProfilePage from "./pages/users/ProfilePage";
+import TermsOfUsePage from "./pages/TermsOfUsePage";
+import RegisterSent from "./pages/register/RegisterSent";
+import RegisterConfirm from './pages/register/RegisterConfirm'
 
 function App() {
   return (
@@ -272,6 +275,28 @@ function App() {
                   element={
                       <ProtectedRoute accessBy="authenticated">
                           <ManageInterviewsPage />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/terms-of-use"
+                  element={
+                        <TermsOfUsePage />
+                  }
+              ></Route>
+               <Route
+                  path="/register/sent"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <RegisterSent />
+                      </ProtectedRoute>
+                  }
+              ></Route>
+              <Route
+                  path="/register/confirm/:id"
+                  element={
+                      <ProtectedRoute accessBy="non-authenticated">
+                          <RegisterConfirm />
                       </ProtectedRoute>
                   }
               ></Route>

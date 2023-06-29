@@ -69,7 +69,6 @@ public class CandidateUsersController {
             @RequestBody CVDto cvDto
     ){
         cvDto.setId(id);
-        System.out.println("matoda Controller");
         candidateUserService.updateCv(cvDto);
         return ResponseEntity.ok().build();
     }
