@@ -208,3 +208,26 @@ The frontend and backend communicate via axios requests.
 - The application is not responsive! We didn't have enough time to properly handle the design of the frontend.
 - We made the skeleton of the security for the application by ensuring the tokens work, but we do not take into account privileges when accessing pages. If we go back to this project, that is a **must do**.
 - The frontend forms offer validation messages of its inputs, but the email sending takes a while and it does not indicate that an email is being sent, it just freezes there.
+
+# Bibliography
+
+Things we used to help us build this application:
+
+- https://www.baeldung.com/spring-boot-hibernate
+- https://start.spring.io/
+- https://www.baeldung.com/security-spring
+- https://www.youtube.com/watch?v=KxqlJblhzfI
+- https://www.youtube.com/playlist?list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3
+- https://www.baeldung.com/java-dto-pattern
+- https://www.youtube.com/watch?v=tIdNeoHniEY
+- https://getbootstrap.com/docs/5.3/
+- https://icons.getbootstrap.com/
+- https://www.baeldung.com/java-clean-code
+- https://www.oracle.com/ro/technical-resources/articles/java/javadoc-tool.html
+- https://www.npmjs.com/package//react-big-calendar
+- https://particles.js.org/samples/index.html#slow
+- https://www.npmjs.com/package/simple-peer
+- https://chat.openai.com/
+- https://www.baeldung.com/junit-5
+- https://www.baeldung.com/mockito-series
+- https://www.drawio.com/
